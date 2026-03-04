@@ -2,57 +2,93 @@
 
 A modular pipeline for automatic highlight extraction from full-length soccer broadcast footage. The system combines shot boundary detection, YOLOv8-based play/no-play classification, and OCR-based scoreboard reading to produce concise video summaries centered around goal events.
 
+![Pipeline Architecture](docs/figures/pipeline_architecture.png)
+
 ## Background
 
-This project originates from a Master's thesis (TFM) by Lixing Fan at Universidad Politecnica de Madrid, titled *"Development of a Deep Learning Model for Video Summarization of Soccer Matches"*. The thesis explored multiple approaches (multimodal fusion, CLIP embeddings, transformer-based methods, WhisperX audio transcription) before converging on a pragmatic pipeline that combines visual analysis with scoreboard OCR. The original codebase was scattered across many experimental files. This repository is a clean, modular rewrite of the working components, designed to scale evaluation across 25 La Liga matches and produce journal-quality results.
+This project originates from a Master's thesis (TFM) by Lixing Fan at Universidad Politécnica de Madrid, titled *"Development of a Deep Learning Model for Video Summarization of Soccer Matches"*. The thesis explored multiple approaches (multimodal fusion, CLIP embeddings, transformer-based methods, WhisperX audio transcription) before converging on a pragmatic pipeline that combines visual analysis with scoreboard OCR. The original codebase was scattered across many experimental files. This repository is a clean, modular rewrite of the working components, designed to scale evaluation across 25 La Liga matches and produce journal-quality results.
+
+## Dataset
+
+![Dataset Overview](docs/figures/dataset_overview.png)
+
+- **25 full La Liga matches** (Match1 through Match25), spanning seasons 2013/14 to 2023/24
+- **139 total goals** across all matches (average 5.6 goals/match), ranging from 2-goal to 8-goal matches
+- **Ground truth**: 25 CSV files with commentary-level annotations. Each row is a commentary segment with columns: `start`, `end`, `text`, `GoalGT1`, `GoalGT2` (binary flags indicating whether the segment overlaps with a goal event for each team)
+- **Trained model**: YOLOv8 Medium (`best.pt`) with 4 classes (ball, goalkeeper, player, referee). mAP@50 = 0.929. People classes (goalkeeper + player + referee) are aggregated for player counting
 
 ## Pipeline Architecture
 
 The system operates in two parallel branches that converge at the highlight assembly stage:
 
-```
-                        Input Video
-                       /           \
-              Visual Analysis    Scoreboard Analysis
-              /          \              |
-    Shot Boundary    YOLO Object     OCR Score
-    Detection        Detection       Reading
-         |               |              |
-    Shot Filtering   Play/No-Play   Goal Event
-    (min duration)   Classification  Detection
-              \          /              |
-           Intersection:               |
-        Long Shots AND Play Moments    |
-                       \              /
-                     Highlight Assembly
-                    (backward lookup from goals)
-                            |
-                      Summary Video
-```
+### 1. Shot Boundary Detection
 
-### Module Descriptions
+Detects camera cuts by computing the mean absolute difference between consecutive grayscale frames. Uses an adaptive threshold with local maximum detection:
 
-| Module | Description | Method |
-|--------|-------------|--------|
-| **Shot Segmentation** | Detects shot boundaries (camera cuts) | Frame differencing with adaptive threshold: `tau = max(fixed, mu + k*sigma)`, local maximum detection, minimum shot length constraint |
-| **Object Detection** | Counts players visible per frame | YOLOv8 Medium trained on custom 45,080-image dataset (2 classes: Ball, Players). mAP@50 = 0.929, F1 = 0.92 |
-| **Play/No-Play Classifier** | Classifies time segments as active play or dead time | Smoothed player count (50-frame rolling average) thresholded at >= 5 players |
-| **OCR Scoreboard** | Reads the broadcast scoreboard to detect score changes | Automatic scoreboard localization via pixel variance analysis + PaddleOCR |
-| **Highlight Assembler** | Produces the final summary video | Intersection of (long shots) AND (play moments), merge adjacent segments, backward lookup from goal timestamps |
+$$\tau = \max(\tau_{\text{fixed}},\ \mu + k \cdot \sigma)$$
+
+where $\mu$ and $\sigma$ are the mean and standard deviation of frame differences, and $k=2.0$ by default. Multiprocessing is used to parallelize frame loading across CPU cores. A minimum shot length constraint (10 frames) prevents false positives from flickering or compression artifacts.
+
+### 2. YOLOv8 Object Detection
+
+A YOLOv8 Medium model counts the number of visible players per frame. The model was trained on a consolidated Roboflow dataset of 45,080 images with 4 classes (ball, goalkeeper, player, referee). For player counting, all person classes (`{goalkeeper, player, referee}`) are aggregated.
+
+To reduce computational cost, YOLO runs on every 5th frame (effective 5 fps at 25 fps video), which is sufficient for reliable player counting.
+
+### 3. Play/No-Play Classification
+
+Classifies each time segment as active play or dead time (replays, close-ups, crowd shots, etc.) based on the number of visible players:
+
+1. **Interpolation**: Fill gaps from frame-sampled YOLO data to all frames
+2. **Smoothing**: Apply 50-frame rolling average to the player count signal
+3. **Thresholding**: Frames with $\geq 5$ smoothed players are classified as "play"
+4. **Segmentation**: Group consecutive same-label frames into play/no-play segments
+
+The intuition is simple: wide-angle game footage typically shows 15-22 players, while replays, close-ups, and crowd shots show 0-3 players.
+
+### 4. Automatic Scoreboard Localization (OCR)
+
+![Scoreboard Detection](docs/figures/scoreboard_detection.png)
+
+Replaces hardcoded pixel coordinates with **automatic scoreboard localization via pixel variance analysis**:
+
+1. **Build static overlay mask** — Sample ~80 frames spread evenly across the match and compute per-pixel variance in grayscale. Static overlays (scoreboard, channel logo, clock) have consistently low variance while the game action underneath changes constantly.
+2. **Extract candidates** — Threshold the variance map at the 15th percentile. Apply morphological operations (close + open) and extract connected components filtered by area.
+3. **Identify scoreboard** — Run EasyOCR on each candidate region from a mid-match frame. The region matching a score-like regex pattern (`\d+\s*[-:]\s*\d+`, e.g., "2 - 1", "0:0") is the scoreboard.
+4. **Track score changes** — Sample 1 frame every 3 seconds, crop only the cached scoreboard region (very fast), run OCR on the small crop. Apply temporal majority voting over a sliding window for robustness. Validate that scores only increase by 1 at a time.
+
+This approach works regardless of scoreboard position (top, bottom, corner) and handles different broadcasters and seasons automatically.
+
+### 5. Highlight Assembly
+
+Computes the intersection of long shots and play moments:
+
+1. **Filter short shots**: Remove shots shorter than 4 seconds
+2. **Intersect**: Keep only segments that are both a long shot AND classified as play
+3. **Merge**: Combine adjacent segments with gaps $\leq 0.5$ seconds
+
+### Example Output
+
+The figure below shows the pipeline output for a 2-minute test clip from Match 1 (Valencia 2-3 FC Barcelona, 2013/14). From top to bottom: detected shot boundaries, player count with play/no-play classification, extracted highlights, and ground truth goal annotations.
+
+![Timeline Visualization](docs/figures/timeline_visualization.png)
+
+The pipeline correctly identifies play moments (green) where 5+ players are visible, distinguishing them from replays and close-ups (pink). The 4 highlight segments total 44 seconds (35% of the clip), achieving 65% compression while covering the active play periods.
+
 
 ## Project Structure
 
 ```
 soccer_summarization/          # Core Python package
     __init__.py
-    config.py                  # YAML-based configuration loader
+    config.py                  # YAML-based configuration with dataclasses
     shot_segmentation.py       # Shot boundary detection with multiprocessing
     object_detection.py        # YOLOv8 inference and per-frame player counting
     play_classifier.py         # Play/no-play classification with smoothing
     ocr_scoreboard.py          # Adaptive scoreboard localization and OCR
     highlight_assembler.py     # Shot filtering, intersection, segment merging
-    evaluation.py              # Metrics computation (P/R/F1, compression, coverage)
-    utils.py                   # Time formatting, I/O helpers
+    evaluation.py              # Metrics: P/R/F1, compression ratio, goal coverage
+    utils.py                   # Time formatting, video I/O helpers
 
 scripts/                       # Entry points
     run_single_match.py        # Process one match end-to-end
@@ -64,87 +100,174 @@ config/                        # Configuration files
     default.yaml               # Default hyperparameters and thresholds
     matches.yaml               # Per-match metadata (video path, GT, teams, score)
 
+docs/figures/                  # Generated figures for documentation
 results/                       # Auto-populated by the pipeline
     per_match/                 # One directory per match with all intermediates
     aggregate/                 # Summary tables, plots, aggregate metrics
 ```
 
-## Dataset
 
-- **25 full La Liga matches** (Match1 through Match25), spanning seasons 2013/14 to 2023/24
-- **Ground truth**: 25 CSV files with commentary-level annotations. Each row is a commentary segment with columns: `start`, `end`, `text`, `GoalGT1`, `GoalGT2` (binary flags indicating whether the segment overlaps with a goal event for each team)
-- **Trained model**: YOLOv8 Medium (`best.pt`) trained on a consolidated Roboflow dataset of 45,080 images with 2 classes (Ball=0, Players=1)
+## Installation
 
-## Implementation Roadmap
+```bash
+# Clone the repository
+git clone <repository-url>
+cd Soccer-Video-Summarization
 
-### Phase 1: Clean Project Structure & Modular Pipeline
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
 
-Extract and refactor the four core modules from the original codebase into clean, configurable classes:
+# Install dependencies
+pip install ultralytics opencv-python easyocr pandas numpy matplotlib pyyaml tqdm
+```
 
-- `ShotSegmentation.py` &rarr; `shot_segmentation.py` — Parallel frame analysis with adaptive thresholding
-- `YOLOpredictBox.py` &rarr; `object_detection.py` — YOLO inference with correct 2-class mapping, configurable frame sampling
-- `ShotsegAndPlaynoplay.py` &rarr; `play_classifier.py` — Dual-criteria analysis (shot-level average + frame-level smoothed count)
-- `ShotSegmentationAndPlayNoplayBoundary.py` &rarr; `highlight_assembler.py` — Duration filtering, intersection computation, segment merging, video export
+### Requirements
 
-All hardcoded paths and thresholds are moved to YAML configuration files.
+- Python 3.10+
+- CUDA-capable GPU (recommended for YOLO and EasyOCR)
+- `ultralytics` (YOLOv8)
+- `opencv-python`
+- `easyocr` (PyTorch-based OCR)
+- `pandas`, `numpy`, `matplotlib`
+- `PyYAML`
+- `tqdm`
 
-### Phase 2: Adaptive OCR Scoreboard Detection
 
-Replace the original hardcoded pixel coordinates with automatic scoreboard localization using **pixel variance analysis**:
+## Usage
 
-1. **Build static overlay mask** — Sample ~50-100 frames across the match and compute per-pixel variance. Static overlays (scoreboard, channel logo) have low variance while the game action changes constantly
-2. **Identify scoreboard** — Run PaddleOCR on each low-variance connected component, match score patterns via regex (`\d+\s*[-:]\s*\d+`)
-3. **Track score changes** — Sample 1 frame every 2-5 seconds, crop only the cached scoreboard region, detect when the score increments
+### Process a single match
 
-This approach works regardless of scoreboard position (top, bottom, corner) and handles different broadcast layouts automatically. As a fallback, WhisperX transcriptions can be searched for goal-related keywords ("gol", "golazo").
+```bash
+# Using match ID from matches.yaml
+python scripts/run_single_match.py --match-id Match1
 
-### Phase 3: Evaluation Framework
+# Using explicit paths
+python scripts/run_single_match.py --video /path/to/video.mp4 --gt /path/to/gt.csv
 
-Bridge the gap between system output (highlight segments) and ground truth (commentary-level goal annotations):
+# Skip OCR (faster, uses only visual analysis)
+python scripts/run_single_match.py --match-id Match1 --skip-ocr
 
-- **Goal event extraction**: Group consecutive GoalGT=1 segments into discrete goal events (new event when gap > 30s)
-- **Goal detection metrics**: Precision, Recall, F1 with configurable tolerance window (default +/-30s)
-- **Highlight quality metrics**: Compression ratio, goal time coverage, false inclusion rate
-- **Ablation study**: Sweep over player count threshold (3-7), min shot duration (3-7s), smoothing window (25-100 frames)
+# Skip video export (only compute intermediates and metrics)
+python scripts/run_single_match.py --match-id Match1 --skip-video-export
+```
 
-### Phase 4: Batch Processing
+### Process all 25 matches
 
-- Build a match registry mapping each match to its video file, GT file, and metadata
-- Process all 25 matches with intermediate result caching at each stage (shot boundaries, YOLO detections, play segments, OCR scores, highlights)
-- Speed optimizations: YOLO inference every 5th frame (5 fps is sufficient for player counting), OCR sampling every 125 frames
+```bash
+# All matches
+python scripts/run_all_matches.py
 
-### Phase 5: Baselines & Comparisons
+# Specific matches
+python scripts/run_all_matches.py --matches Match1,Match5,Match10
+
+# Skip OCR for all (much faster)
+python scripts/run_all_matches.py --skip-ocr --skip-video-export
+```
+
+### Evaluate from saved results
+
+```bash
+# Re-evaluate without re-running the pipeline
+python scripts/evaluate.py
+
+# Specific matches
+python scripts/evaluate.py --matches Match1,Match2,Match3
+```
+
+### Generate LaTeX tables
+
+```bash
+python scripts/generate_tables.py
+# Outputs to results/tables/per_match_table.tex and aggregate_table.tex
+```
+
+### Pipeline outputs (per match)
+
+Each processed match produces the following files in `results/per_match/MatchN/`:
+
+| File | Description |
+|------|-------------|
+| `shot_boundaries.csv` | Shot segments with start/end frames and times |
+| `player_counts.csv` | Per-frame player count from YOLO |
+| `frame_classification.csv` | Per-frame play/no-play classification |
+| `play_segments.csv` | Play/no-play segments with durations |
+| `score_events.csv` | Detected score changes from OCR |
+| `scoreboard_region.json` | Detected scoreboard bounding box |
+| `highlights.csv` | Final highlight segments |
+| `highlight_video.mp4` | Exported highlight video |
+| `evaluation.json` | All metrics (P/R/F1, compression, coverage, timings) |
+
+All intermediate results are cached — re-running the pipeline on the same match will skip completed stages.
+
+
+## Evaluation Methodology
+
+### Goal Detection Metrics
+
+Ground truth goal events are extracted by grouping consecutive `GoalGT=1` commentary segments. A new goal event starts when the gap between consecutive flagged segments exceeds 30 seconds.
+
+A predicted goal (from OCR score change) matches a ground truth event if it falls within a tolerance window of $\pm 30$ seconds around the event boundaries. Standard precision, recall, and F1 are computed. Both macro-averaged (per-match mean) and micro-averaged (pooled across all matches) metrics are reported.
+
+### Highlight Quality Metrics
+
+| Metric | Definition |
+|--------|-----------|
+| **Compression ratio** | $1 - \frac{\text{highlight duration}}{\text{video duration}}$ — fraction of the video removed |
+| **Goal coverage** | Fraction of ground truth goal-event time captured in highlights |
+
+### Planned Ablation Studies
+
+| Parameter | Range | Purpose |
+|-----------|-------|---------|
+| Player count threshold | 3–7 | Sensitivity of play detection |
+| Min shot duration | 3–7 seconds | Shot filtering aggressiveness |
+| Smoothing window | 25–100 frames | Temporal smoothing of player count |
+| OCR on/off | — | Contribution of scoreboard reading |
+
+
+## Configuration
+
+All hyperparameters are defined in `config/default.yaml`:
+
+```yaml
+shot_segmentation:
+  threshold: 30.0              # Fixed threshold for frame differencing
+  adaptive_k: 2.0             # Multiplier for adaptive threshold
+  min_shot_length_frames: 10   # Minimum frames per shot
+
+object_detection:
+  model_path: "data/models/best.pt"
+  confidence_threshold: 0.5
+  frame_step: 5                # Process every 5th frame
+
+play_classifier:
+  play_threshold: 5            # Minimum players for "play"
+  smoothing_window: 50         # Rolling average window (frames)
+
+ocr_scoreboard:
+  num_sample_frames: 80        # Frames for variance map
+  variance_threshold_percentile: 15.0
+  score_sample_interval: 3.0   # Seconds between OCR samples
+
+highlight_assembler:
+  min_shot_duration: 4.0       # Seconds
+  merge_gap_threshold: 0.5     # Seconds
+```
+
+Match metadata (video paths, GT paths, teams, scores) is defined in `config/matches.yaml`.
+
+
+## Planned Baselines
 
 | Baseline | Description | Purpose |
 |----------|-------------|---------|
-| Uniform sampling | Random segments of equal total duration | Lower bound |
-| Shot-length-only | Keep shots > K seconds, no play/no-play filtering | Isolates YOLO contribution |
-| Commentary keyword | Search WhisperX transcriptions for "gol" | Text-only baseline |
-| System ablations | With/without OCR, varied thresholds | Component analysis |
+| **Uniform sampling** | Random segments of equal total duration | Lower bound |
+| **Shot-length-only** | Keep shots > K seconds, no play/no-play filtering | Isolates YOLO contribution |
+| **Commentary keyword** | Search WhisperX transcriptions for "gol" | Text-only baseline |
+| **System ablations** | With/without OCR, varied thresholds | Component analysis |
 
-### Phase 6: Paper-Ready Output
-
-- Result tables (LaTeX): YOLO detection performance, shot segmentation statistics, per-match and aggregate goal detection P/R/F1
-- Visualizations: Pipeline architecture diagram, shot+play timeline plots, precision-recall curves, ablation bar charts
-- Statistical significance: Confidence intervals and Wilcoxon signed-rank tests across 25 matches
-
-## Verification Plan
-
-1. Run the clean pipeline on a single test match and compare against original results to ensure no regression
-2. Validate GT parsing by manually checking 2-3 matches (compare extracted goal count against known match scores)
-3. Run full batch on all 25 matches and inspect per-match results for outliers
-4. Generate evaluation tables and verify metrics are reasonable
-
-## Requirements
-
-- Python 3.10+
-- ultralytics (YOLOv8)
-- opencv-python
-- paddleocr
-- pandas, numpy, matplotlib
-- PyYAML
-- tqdm
 
 ## Original Thesis
 
-Fan, L. (2024). *Development of a Deep Learning Model for Video Summarization of Soccer Matches*. Master's Thesis, Universidad Politecnica de Madrid.
+Fan, L. (2024). *Development of a Deep Learning Model for Video Summarization of Soccer Matches*. Master's Thesis, Universidad Politécnica de Madrid.

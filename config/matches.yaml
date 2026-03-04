@@ -1,0 +1,203 @@
+# Per-match metadata for the 25 La Liga matches
+# video_path and gt_path are relative to data_dir
+
+matches:
+  Match1:
+    video_path: "Laliga/Match1/Full Match/Valencia CF - FC Barcelona (2-3) LALIGA 2013\u29F82014 FULL MATCH [Qzrg3QDmQ4k].mp4"
+    gt_path: "Laliga/csvfiles/Match1_GT.csv"
+    home_team: "Valencia CF"
+    away_team: "FC Barcelona"
+    score: "2-3"
+    season: "2013/14"
+
+  Match2:
+    video_path: "Laliga/Match2/Real Betis  2-3 Real Madrid \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2020\u29F821 [ZM4g2XlRsu0].mp4"
+    gt_path: "Laliga/csvfiles/Match2_GT.csv"
+    home_team: "Real Betis"
+    away_team: "Real Madrid"
+    score: "2-3"
+    season: "2020/21"
+
+  Match3:
+    video_path: "Laliga/Match3/Real Madrid vs FC Barcelona (2-1) J30 2020\u29F82021 - FULL MATCH [EhodpjwTtag].mp4"
+    gt_path: "Laliga/csvfiles/Match3_GT.csv"
+    home_team: "Real Madrid"
+    away_team: "FC Barcelona"
+    score: "2-1"
+    season: "2020/21"
+
+  Match4:
+    video_path: "Laliga/Match4/Rayo Vallecano - FC Barcelona (2-3) LALIGA 2018\u29F82019 FULL MATCH [0-hMkXHO8eo].mp4"
+    gt_path: "Laliga/csvfiles/Match4_GT.csv"
+    home_team: "Rayo Vallecano"
+    away_team: "FC Barcelona"
+    score: "2-3"
+    season: "2018/19"
+
+  Match5:
+    video_path: "Laliga/Match5/FC Barcelona 1 - 3 Real Madrid \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2020\u29F821 [J6HGKSJi448].mp4"
+    gt_path: "Laliga/csvfiles/Match5_GT.csv"
+    home_team: "FC Barcelona"
+    away_team: "Real Madrid"
+    score: "1-3"
+    season: "2020/21"
+
+  Match6:
+    video_path: "Laliga/Match6/Real Madrid 3-2 FC Barcelona \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [lPRW7d0B3BE].mp4"
+    gt_path: "Laliga/csvfiles/Match6_GT.csv"
+    home_team: "Real Madrid"
+    away_team: "FC Barcelona"
+    score: "3-2"
+    season: "2023/24"
+
+  Match7:
+    video_path: "Laliga/Match7/Villarreal CF 3 - 4 FC Barcelona \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [pqSCO4G4LW4].mp4"
+    gt_path: "Laliga/csvfiles/Match7_GT.csv"
+    home_team: "Villarreal CF"
+    away_team: "FC Barcelona"
+    score: "3-4"
+    season: "2023/24"
+
+  Match8:
+    video_path: "Laliga/Match8/FC Barcelona 2-4 Girona FC \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [HJ8UF-706iw].mp4"
+    gt_path: "Laliga/csvfiles/Match8_GT.csv"
+    home_team: "FC Barcelona"
+    away_team: "Girona FC"
+    score: "2-4"
+    season: "2023/24"
+
+  Match9:
+    video_path: "Laliga/Match9/FC Barcelona 3 - 5 Villarreal CF \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [9dC5EvrhOEc].mp4"
+    gt_path: "Laliga/csvfiles/Match9_GT.csv"
+    home_team: "FC Barcelona"
+    away_team: "Villarreal CF"
+    score: "3-5"
+    season: "2023/24"
+
+  Match10:
+    video_path: "Laliga/Match10/FC Barcelona 5-0 Real Betis \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [JaDHm8QNKMg].mp4"
+    gt_path: "Laliga/csvfiles/Match10_GT.csv"
+    home_team: "FC Barcelona"
+    away_team: "Real Betis"
+    score: "5-0"
+    season: "2023/24"
+
+  Match11:
+    video_path: "Laliga/Match11/Real Madrid 5 - 0 Deportivo Alav\u00E9s \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [TLwpe2_4cUI].mp4"
+    gt_path: "Laliga/csvfiles/Match11_GT.csv"
+    home_team: "Real Madrid"
+    away_team: "Deportivo Alavés"
+    score: "5-0"
+    season: "2023/24"
+
+  Match12:
+    video_path: "Laliga/Match12/Real Betis 2 - 4 FC Barcelona \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [IpugzkfSYsc].mp4"
+    gt_path: "Laliga/csvfiles/Match12_GT.csv"
+    home_team: "Real Betis"
+    away_team: "FC Barcelona"
+    score: "2-4"
+    season: "2023/24"
+
+  Match13:
+    video_path: "Laliga/Match13/Girona FC 4 - 3 Atl\u00E9tico de Madrid \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [kxT0iUxBY1c].mp4"
+    gt_path: "Laliga/csvfiles/Match13_GT.csv"
+    home_team: "Girona FC"
+    away_team: "Atlético de Madrid"
+    score: "4-3"
+    season: "2023/24"
+
+  Match14:
+    video_path: "Laliga/Match14/Atl\u00E9tico de Madrid 1 - 4 CA Osasuna \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [pqTZdlpj908].mp4"
+    gt_path: "Laliga/csvfiles/Match14_GT.csv"
+    home_team: "Atlético de Madrid"
+    away_team: "CA Osasuna"
+    score: "1-4"
+    season: "2023/24"
+
+  Match15:
+    video_path: "Laliga/Match15/Girona FC 5 - 1 Sevilla FC \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [vpnL4epp6lM].mp4"
+    gt_path: "Laliga/csvfiles/Match15_GT.csv"
+    home_team: "Girona FC"
+    away_team: "Sevilla FC"
+    score: "5-1"
+    season: "2023/24"
+
+  Match16:
+    video_path: "Laliga/Match16/Real Betis 3-2 UD Almer\u00EDa \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [19XdF8EfQaM].mp4"
+    gt_path: "Laliga/csvfiles/Match16_GT.csv"
+    home_team: "Real Betis"
+    away_team: "UD Almería"
+    score: "3-2"
+    season: "2023/24"
+
+  Match17:
+    video_path: "Laliga/Match17/Athletic Club 2 - 1 Real Sociedad \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [e1C8F5ewNa8].f606.mp4"
+    gt_path: "Laliga/csvfiles/Match17_GT.csv"
+    home_team: "Athletic Club"
+    away_team: "Real Sociedad"
+    score: "2-1"
+    season: "2023/24"
+
+  Match18:
+    video_path: "Laliga/Match18/RC Celta 4 - 1 UD Las Palmas \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [x2_vPfFriLk].mp4"
+    gt_path: "Laliga/csvfiles/Match18_GT.csv"
+    home_team: "RC Celta"
+    away_team: "UD Las Palmas"
+    score: "4-1"
+    season: "2023/24"
+
+  Match19:
+    video_path: "Laliga/Match19/Girona FC 5 - 3 RCD Mallorca \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [CU5zSygQvBU].mp4"
+    gt_path: "Laliga/csvfiles/Match19_GT.csv"
+    home_team: "Girona FC"
+    away_team: "RCD Mallorca"
+    score: "5-3"
+    season: "2023/24"
+
+  Match20:
+    video_path: "Laliga/Match20/Rayo Vallecano 2 - 0 Real Betis \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [pJU_OjS-uh0].mp4"
+    gt_path: "Laliga/csvfiles/Match20_GT.csv"
+    home_team: "Rayo Vallecano"
+    away_team: "Real Betis"
+    score: "2-0"
+    season: "2023/24"
+
+  Match21:
+    video_path: "Laliga/Match21/RCD Mallorca 3- 2 CA Osasuna \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [ocBfGGWGIxM].mp4"
+    gt_path: "Laliga/csvfiles/Match21_GT.csv"
+    home_team: "RCD Mallorca"
+    away_team: "CA Osasuna"
+    score: "3-2"
+    season: "2023/24"
+
+  Match22:
+    video_path: "Laliga/Match22/Rayo Vallecano 0 - 7 Atl\u00E9tico de Madrid \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [xjdzdZlgITo].mp4"
+    gt_path: "Laliga/csvfiles/Match22_GT.csv"
+    home_team: "Rayo Vallecano"
+    away_team: "Atlético de Madrid"
+    score: "0-7"
+    season: "2023/24"
+
+  Match23:
+    video_path: "Laliga/Match23/Villarreal CF 4-4 Real Madrid \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [WdZFu3Rfn8M].mp4"
+    gt_path: "Laliga/csvfiles/Match23_GT.csv"
+    home_team: "Villarreal CF"
+    away_team: "Real Madrid"
+    score: "4-4"
+    season: "2023/24"
+
+  Match24:
+    video_path: "Laliga/Match24/CA Osasuna 2 - 4 Real Madrid \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [vKJy1Zny19s].mp4"
+    gt_path: "Laliga/csvfiles/Match24_GT.csv"
+    home_team: "CA Osasuna"
+    away_team: "Real Madrid"
+    score: "2-4"
+    season: "2023/24"
+
+  Match25:
+    video_path: "Laliga/Match25/Real Sociedad 5 - 3 Granada CF \uFF5C PARTIDO COMPLETO \uFF5C LALIGA EA SPORTS 2023\u29F824 [DUQkPb05UFs].mp4"
+    gt_path: "Laliga/csvfiles/Match25_GT.csv"
+    home_team: "Real Sociedad"
+    away_team: "Granada CF"
+    score: "5-3"
+    season: "2023/24"

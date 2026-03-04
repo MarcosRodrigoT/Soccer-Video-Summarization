@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Results and data (too large for git)
+results/
+data/models/*.pt
+
+# OS
+.DS_Store
+Thumbs.db

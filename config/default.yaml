@@ -1,0 +1,41 @@
+# Default pipeline configuration
+# Override per-match or per-experiment as needed
+
+shot_segmentation:
+  threshold: 30.0
+  min_shot_length_frames: 10
+  adaptive_k: 2.0
+  num_processes: null  # null = use all CPUs
+
+object_detection:
+  model_path: "data/models/best.pt"
+  confidence_threshold: 0.5
+  frame_step: 5  # process every 5th frame (5fps at 25fps video)
+
+play_classifier:
+  play_threshold: 5       # min players for "play"
+  smoothing_window: 50     # rolling average window in frames
+  min_shot_duration: 4.0   # seconds
+
+ocr_scoreboard:
+  num_sample_frames: 80
+  variance_threshold_percentile: 15.0
+  min_region_area: 500
+  max_region_area: 50000
+  score_sample_interval: 3.0   # seconds between OCR samples
+  score_pattern: "\\d+\\s*[-:]\\s*\\d+"
+  majority_window: 5
+
+highlight_assembler:
+  min_shot_duration: 4.0
+  merge_gap_threshold: 0.5    # seconds
+  goal_context_before: 30.0   # seconds before goal
+  goal_context_after: 15.0    # seconds after goal
+
+evaluation:
+  tolerance_window: 30.0      # seconds for goal matching
+  goal_gap_threshold: 30.0    # seconds gap to separate GT events
+
+# Global paths
+data_dir: "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos"
+results_dir: "results"
