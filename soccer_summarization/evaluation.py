@@ -5,7 +5,7 @@ timestamps) and ground truth (commentary-level goal annotations in CSV).
 """
 
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 import numpy as np
@@ -22,6 +22,10 @@ class GoalEvent:
     start_time: float
     end_time: float
     team: str  # "team1", "team2", or "any"
+
+    @property
+    def midpoint(self) -> float:
+        return (self.start_time + self.end_time) / 2.0
 
 
 @dataclass
@@ -40,6 +44,59 @@ class EvaluationResult:
     highlight_duration: float
     compression_ratio: float
     goal_coverage: float  # fraction of goal-event time captured in highlights
+    # Extended metrics
+    num_segments: int = 0
+    mean_segment_duration: float = 0.0
+    mean_tiou: float = 0.0
+    goal_timing_mae: float = 0.0  # mean abs error in seconds for TPs
+    tiou_per_event: list = field(default_factory=list)
+    f1_at_tiou: dict = field(default_factory=dict)
+
+
+def _compute_temporal_iou(seg_start: float, seg_end: float,
+                          gt_start: float, gt_end: float) -> float:
+    """Compute temporal IoU between a predicted segment and a GT segment."""
+    intersection_start = max(seg_start, gt_start)
+    intersection_end = min(seg_end, gt_end)
+    intersection = max(0.0, intersection_end - intersection_start)
+
+    union = (seg_end - seg_start) + (gt_end - gt_start) - intersection
+    if union <= 0:
+        return 0.0
+    return intersection / union
+
+
+def _find_best_segment_for_event(
+    highlight_segments: list[tuple[float, float]],
+    event: GoalEvent,
+    tolerance: float,
+) -> tuple[float, float, Optional[tuple[float, float]]]:
+    """Find the highlight segment with highest tIoU for a GT event.
+
+    Returns (best_tiou, timing_error, best_segment_or_None).
+    """
+    best_tiou = 0.0
+    best_seg = None
+
+    # Expand event by tolerance for matching context
+    expanded_start = event.start_time - tolerance
+    expanded_end = event.end_time + tolerance
+
+    for seg_start, seg_end in highlight_segments:
+        tiou = _compute_temporal_iou(seg_start, seg_end,
+                                     expanded_start, expanded_end)
+        if tiou > best_tiou:
+            best_tiou = tiou
+            best_seg = (seg_start, seg_end)
+
+    # Timing error: distance from segment midpoint to event midpoint
+    if best_seg is not None:
+        seg_mid = (best_seg[0] + best_seg[1]) / 2.0
+        timing_error = abs(seg_mid - event.midpoint)
+    else:
+        timing_error = float("inf")
+
+    return best_tiou, timing_error, best_seg
 
 
 class Evaluator:
@@ -210,12 +267,90 @@ class Evaluator:
 
         goal_coverage = goal_time_covered / total_goal_time if total_goal_time > 0 else 0.0
 
+        # Segment statistics
+        num_segments = len(highlight_segments)
+        mean_segment_duration = highlight_duration / num_segments if num_segments > 0 else 0.0
+
         return {
             "total_video_duration": total_video_duration,
             "highlight_duration": highlight_duration,
             "compression_ratio": compression_ratio,
             "goal_coverage": goal_coverage,
+            "num_segments": num_segments,
+            "mean_segment_duration": mean_segment_duration,
         }
+
+    def evaluate_temporal_quality(
+        self,
+        highlight_segments: list[tuple[float, float]],
+        predicted_goal_times: list[float],
+        gt_events: list[GoalEvent],
+    ) -> dict:
+        """Compute temporal IoU, timing MAE, and F1 at tIoU thresholds."""
+        tolerance = self.config.tolerance_window
+
+        # Per-event tIoU: for each GT event, find best matching highlight segment
+        tiou_per_event = []
+        timing_errors = []
+
+        for event in gt_events:
+            best_tiou, timing_error, _ = _find_best_segment_for_event(
+                highlight_segments, event, tolerance
+            )
+            tiou_per_event.append(best_tiou)
+            if best_tiou > 0:
+                timing_errors.append(timing_error)
+
+        mean_tiou = float(np.mean(tiou_per_event)) if tiou_per_event else 0.0
+        goal_timing_mae = float(np.mean(timing_errors)) if timing_errors else 0.0
+
+        # F1 at tIoU thresholds
+        f1_at_tiou = {}
+        for threshold in [0.1, 0.3, 0.5, 0.7]:
+            tp = sum(1 for t in tiou_per_event if t >= threshold)
+            fn = len(gt_events) - tp
+            # For FP: count predicted goals not matched at this threshold
+            fp = self._count_fp_at_tiou(
+                highlight_segments, predicted_goal_times, gt_events, threshold, tolerance
+            )
+            p = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+            r = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+            f1 = 2 * p * r / (p + r) if (p + r) > 0 else 0.0
+            f1_at_tiou[str(threshold)] = f1
+
+        return {
+            "mean_tiou": mean_tiou,
+            "goal_timing_mae": goal_timing_mae,
+            "tiou_per_event": tiou_per_event,
+            "f1_at_tiou": f1_at_tiou,
+        }
+
+    def _count_fp_at_tiou(
+        self,
+        highlight_segments: list[tuple[float, float]],
+        predicted_goal_times: list[float],
+        gt_events: list[GoalEvent],
+        tiou_threshold: float,
+        tolerance: float,
+    ) -> int:
+        """Count false positives at a given tIoU threshold."""
+        fp = 0
+        for pred_time in predicted_goal_times:
+            matched = False
+            for event in gt_events:
+                expanded_start = event.start_time - tolerance
+                expanded_end = event.end_time + tolerance
+                if expanded_start <= pred_time <= expanded_end:
+                    # Check if any highlight segment covers this well enough
+                    best_tiou, _, _ = _find_best_segment_for_event(
+                        highlight_segments, event, tolerance
+                    )
+                    if best_tiou >= tiou_threshold:
+                        matched = True
+                        break
+            if not matched:
+                fp += 1
+        return fp
 
     def evaluate_match(
         self,
@@ -230,17 +365,23 @@ class Evaluator:
         quality_metrics = self.evaluate_highlight_quality(
             highlight_segments, gt_events, total_video_duration
         )
+        temporal_metrics = self.evaluate_temporal_quality(
+            highlight_segments, predicted_goal_times, gt_events
+        )
 
         result = EvaluationResult(
             match_id=match_id,
             **goal_metrics,
             **quality_metrics,
+            **temporal_metrics,
         )
 
         logger.info(
-            "Match %s: P=%.2f R=%.2f F1=%.2f | Compression=%.1f%% Coverage=%.1f%%",
+            "Match %s: P=%.2f R=%.2f F1=%.2f | Compression=%.1f%% Coverage=%.1f%% | "
+            "tIoU=%.3f MAE=%.1fs Segments=%d",
             match_id, result.precision, result.recall, result.f1,
             result.compression_ratio * 100, result.goal_coverage * 100,
+            result.mean_tiou, result.goal_timing_mae, result.num_segments,
         )
         return result
 
@@ -274,4 +415,88 @@ class Evaluator:
         p, r = metrics["micro_precision"], metrics["micro_recall"]
         metrics["micro_f1"] = 2 * p * r / (p + r) if (p + r) > 0 else 0.0
 
+        # Extended aggregate metrics
+        metrics["mean_tiou_mean"] = float(np.mean([r.mean_tiou for r in results]))
+        metrics["mean_tiou_std"] = float(np.std([r.mean_tiou for r in results]))
+        metrics["goal_timing_mae_mean"] = float(np.mean([r.goal_timing_mae for r in results]))
+        metrics["goal_timing_mae_std"] = float(np.std([r.goal_timing_mae for r in results]))
+        metrics["num_segments_mean"] = float(np.mean([r.num_segments for r in results]))
+        metrics["num_segments_std"] = float(np.std([r.num_segments for r in results]))
+        metrics["mean_segment_duration_mean"] = float(np.mean([r.mean_segment_duration for r in results]))
+        metrics["mean_segment_duration_std"] = float(np.std([r.mean_segment_duration for r in results]))
+
+        # F1 at tIoU thresholds (average across matches)
+        tiou_thresholds = ["0.1", "0.3", "0.5", "0.7"]
+        for t in tiou_thresholds:
+            vals = [r.f1_at_tiou.get(t, 0.0) for r in results if r.f1_at_tiou]
+            if vals:
+                metrics[f"f1_at_tiou_{t}_mean"] = float(np.mean(vals))
+                metrics[f"f1_at_tiou_{t}_std"] = float(np.std(vals))
+
+        # Bootstrap 95% CIs
+        bootstrap_cis = Evaluator._bootstrap_confidence_intervals(results)
+        metrics["bootstrap_ci"] = bootstrap_cis
+
         return metrics
+
+    @staticmethod
+    def _bootstrap_confidence_intervals(
+        results: list[EvaluationResult],
+        n_iterations: int = 1000,
+        ci: float = 0.95,
+    ) -> dict:
+        """Compute bootstrap 95% CIs for key metrics."""
+        if len(results) < 2:
+            return {}
+
+        rng = np.random.RandomState(42)
+        n = len(results)
+        alpha = (1 - ci) / 2
+
+        metric_extractors = {
+            "precision": lambda r: r.precision,
+            "recall": lambda r: r.recall,
+            "f1": lambda r: r.f1,
+            "compression_ratio": lambda r: r.compression_ratio,
+            "goal_coverage": lambda r: r.goal_coverage,
+            "mean_tiou": lambda r: r.mean_tiou,
+            "goal_timing_mae": lambda r: r.goal_timing_mae,
+            "num_segments": lambda r: float(r.num_segments),
+            "mean_segment_duration": lambda r: r.mean_segment_duration,
+        }
+
+        cis = {}
+        for metric_name, extractor in metric_extractors.items():
+            values = np.array([extractor(r) for r in results])
+            bootstrap_means = np.array([
+                np.mean(rng.choice(values, size=n, replace=True))
+                for _ in range(n_iterations)
+            ])
+            lower = float(np.percentile(bootstrap_means, alpha * 100))
+            upper = float(np.percentile(bootstrap_means, (1 - alpha) * 100))
+            cis[metric_name] = {"lower": lower, "upper": upper, "mean": float(np.mean(values))}
+
+        # Micro-averaged bootstrap
+        tp_arr = np.array([r.true_positives for r in results])
+        fp_arr = np.array([r.false_positives for r in results])
+        fn_arr = np.array([r.false_negatives for r in results])
+
+        micro_f1_boots = []
+        for _ in range(n_iterations):
+            idx = rng.choice(n, size=n, replace=True)
+            tp_sum = tp_arr[idx].sum()
+            fp_sum = fp_arr[idx].sum()
+            fn_sum = fn_arr[idx].sum()
+            p = tp_sum / (tp_sum + fp_sum) if (tp_sum + fp_sum) > 0 else 0.0
+            r_val = tp_sum / (tp_sum + fn_sum) if (tp_sum + fn_sum) > 0 else 0.0
+            f1_val = 2 * p * r_val / (p + r_val) if (p + r_val) > 0 else 0.0
+            micro_f1_boots.append(f1_val)
+
+        micro_f1_boots = np.array(micro_f1_boots)
+        cis["micro_f1"] = {
+            "lower": float(np.percentile(micro_f1_boots, alpha * 100)),
+            "upper": float(np.percentile(micro_f1_boots, (1 - alpha) * 100)),
+            "mean": float(np.mean(micro_f1_boots)),
+        }
+
+        return cis

@@ -159,11 +159,15 @@ def run_pipeline(
         logger.info("Stage 4: OCR skipped")
     elif score_cache.exists():
         logger.info("Loading cached score events")
-        score_df = pd.read_csv(score_cache)
-        from soccer_summarization.ocr_scoreboard import ScoreEvent
-        score_events = [
-            ScoreEvent(**row) for _, row in score_df.iterrows()
-        ]
+        try:
+            score_df = pd.read_csv(score_cache)
+            from soccer_summarization.ocr_scoreboard import ScoreEvent
+            score_events = [
+                ScoreEvent(**row) for _, row in score_df.iterrows()
+            ]
+        except (pd.errors.EmptyDataError, KeyError):
+            logger.info("  Empty or invalid score_events.csv, treating as no detections")
+            score_events = []
     else:
         logger.info("Stage 4: OCR scoreboard detection...")
         t0 = time.time()
@@ -247,10 +251,22 @@ def run_pipeline(
         "num_gt_events": len(gt_events),
         "num_predicted_goals": len(predicted_goal_times),
         "num_highlights": len(highlights),
+        # Extended metrics
+        "num_segments": result.num_segments,
+        "mean_segment_duration": result.mean_segment_duration,
+        "mean_tiou": result.mean_tiou,
+        "goal_timing_mae": result.goal_timing_mae,
+        "tiou_per_event": result.tiou_per_event,
+        "f1_at_tiou": result.f1_at_tiou,
         "timings": timings,
     }
+    def _json_default(obj):
+        if hasattr(obj, 'item'):  # numpy scalar
+            return obj.item()
+        return float(obj)
+
     with open(out / "evaluation.json", "w") as f:
-        json.dump(eval_results, f, indent=2, default=float)
+        json.dump(eval_results, f, indent=2, default=_json_default)
 
     logger.info("Pipeline complete for %s", match_id)
     return result

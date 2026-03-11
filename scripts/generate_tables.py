@@ -51,15 +51,14 @@ def generate_per_match_table(results: list[dict]) -> str:
         r"\caption{Per-match goal detection and highlight quality results.}",
         r"\label{tab:per_match}",
         r"\resizebox{\textwidth}{!}{%",
-        r"\begin{tabular}{llccccccc}",
+        r"\begin{tabular}{llcccccccccc}",
         r"\toprule",
-        r"Match & Score & GT Goals & Det. Goals & P & R & F1 & Comp. (\%) & Cov. (\%) \\",
+        r"Match & Score & GT & Det. & P & R & F1 & Comp. & Cov. & tIoU & MAE (s) & Segs \\",
         r"\midrule",
     ]
 
     for r in results:
         match_id = r.get("match_id", "?")
-        teams = f"{r.get('home_team', '')} vs {r.get('away_team', '')}"
         score = r.get("score", "?")
         gt_goals = r.get("num_gt_events", 0)
         pred_goals = r.get("num_predicted_goals", 0)
@@ -68,10 +67,14 @@ def generate_per_match_table(results: list[dict]) -> str:
         f1 = r.get("f1", 0)
         comp = r.get("compression_ratio", 0) * 100
         cov = r.get("goal_coverage", 0) * 100
+        tiou = r.get("mean_tiou", 0)
+        mae = r.get("goal_timing_mae", 0)
+        segs = r.get("num_segments", r.get("num_highlights", 0))
 
         lines.append(
             f"{match_id} & {score} & {gt_goals} & {pred_goals} & "
-            f"{p:.2f} & {rec:.2f} & {f1:.2f} & {comp:.1f} & {cov:.1f} \\\\"
+            f"{p:.2f} & {rec:.2f} & {f1:.2f} & {comp:.1f} & {cov:.1f} & "
+            f"{tiou:.3f} & {mae:.1f} & {segs} \\\\"
         )
 
     lines.extend([
@@ -89,25 +92,37 @@ def generate_aggregate_table(agg_path: Path) -> str:
     with open(agg_path) as f:
         agg = json.load(f)
 
+    ci = agg.get("bootstrap_ci", {})
+
+    def fmt_ci(metric_name):
+        if metric_name in ci:
+            return f"[{ci[metric_name]['lower']:.3f}, {ci[metric_name]['upper']:.3f}]"
+        return "---"
+
     lines = [
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{Aggregate goal detection and highlight quality metrics.}",
+        r"\caption{Aggregate goal detection and highlight quality metrics across all matches.}",
         r"\label{tab:aggregate}",
-        r"\begin{tabular}{lcc}",
+        r"\begin{tabular}{lccc}",
         r"\toprule",
-        r"Metric & Mean & Std \\",
+        r"Metric & Mean $\pm$ Std & 95\% CI \\",
         r"\midrule",
-        f"Precision (macro) & {agg['precision_mean']:.3f} & {agg['precision_std']:.3f} \\\\",
-        f"Recall (macro) & {agg['recall_mean']:.3f} & {agg['recall_std']:.3f} \\\\",
-        f"F1 (macro) & {agg['f1_mean']:.3f} & {agg['f1_std']:.3f} \\\\",
+        f"Precision (macro) & {agg['precision_mean']:.3f} $\\pm$ {agg['precision_std']:.3f} & {fmt_ci('precision')} \\\\",
+        f"Recall (macro) & {agg['recall_mean']:.3f} $\\pm$ {agg['recall_std']:.3f} & {fmt_ci('recall')} \\\\",
+        f"F1 (macro) & {agg['f1_mean']:.3f} $\\pm$ {agg['f1_std']:.3f} & {fmt_ci('f1')} \\\\",
         r"\midrule",
         f"Precision (micro) & {agg['micro_precision']:.3f} & --- \\\\",
         f"Recall (micro) & {agg['micro_recall']:.3f} & --- \\\\",
-        f"F1 (micro) & {agg['micro_f1']:.3f} & --- \\\\",
+        f"F1 (micro) & {agg['micro_f1']:.3f} & {fmt_ci('micro_f1')} \\\\",
         r"\midrule",
-        f"Compression (\\%) & {agg['compression_mean']*100:.1f} & {agg['compression_std']*100:.1f} \\\\",
-        f"Goal Coverage (\\%) & {agg['goal_coverage_mean']*100:.1f} & {agg['goal_coverage_std']*100:.1f} \\\\",
+        f"Compression (\\%) & {agg['compression_mean']*100:.1f} $\\pm$ {agg['compression_std']*100:.1f} & {fmt_ci('compression_ratio')} \\\\",
+        f"Goal Coverage (\\%) & {agg['goal_coverage_mean']*100:.1f} $\\pm$ {agg['goal_coverage_std']*100:.1f} & {fmt_ci('goal_coverage')} \\\\",
+        r"\midrule",
+        f"Mean tIoU & {agg.get('mean_tiou_mean', 0):.3f} $\\pm$ {agg.get('mean_tiou_std', 0):.3f} & {fmt_ci('mean_tiou')} \\\\",
+        f"Goal Timing MAE (s) & {agg.get('goal_timing_mae_mean', 0):.1f} $\\pm$ {agg.get('goal_timing_mae_std', 0):.1f} & {fmt_ci('goal_timing_mae')} \\\\",
+        f"Num. Segments & {agg.get('num_segments_mean', 0):.1f} $\\pm$ {agg.get('num_segments_std', 0):.1f} & {fmt_ci('num_segments')} \\\\",
+        f"Mean Seg. Duration (s) & {agg.get('mean_segment_duration_mean', 0):.1f} $\\pm$ {agg.get('mean_segment_duration_std', 0):.1f} & {fmt_ci('mean_segment_duration')} \\\\",
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",

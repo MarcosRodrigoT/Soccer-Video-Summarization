@@ -13,7 +13,7 @@ This project originates from a Master's thesis (TFM) by Lixing Fan at Universida
 ![Dataset Overview](docs/figures/dataset_overview.png)
 
 - **25 full La Liga matches** (Match1 through Match25), spanning seasons 2013/14 to 2023/24
-- **139 total goals** across all matches (average 5.6 goals/match), ranging from 2-goal to 8-goal matches
+- **138 total goals** across all matches (average 5.5 goals/match), ranging from 2-goal to 8-goal matches
 - **Ground truth**: 25 CSV files with commentary-level annotations. Each row is a commentary segment with columns: `start`, `end`, `text`, `GoalGT1`, `GoalGT2` (binary flags indicating whether the segment overlaps with a goal event for each team)
 - **Trained model**: YOLOv8 Medium (`best.pt`) with 4 classes (ball, goalkeeper, player, referee). mAP@50 = 0.929. People classes (goalkeeper + player + referee) are aggregated for player counting
 
@@ -52,12 +52,20 @@ The intuition is simple: wide-angle game footage typically shows 15-22 players, 
 
 Replaces hardcoded pixel coordinates with **automatic scoreboard localization via pixel variance analysis**:
 
-1. **Build static overlay mask** — Sample ~80 frames spread evenly across the match and compute per-pixel variance in grayscale. Static overlays (scoreboard, channel logo, clock) have consistently low variance while the game action underneath changes constantly.
+1. **Build static overlay mask** — Sample ~80 frames spread evenly across the match and compute per-pixel variance in grayscale, restricted to the top 30% of the frame. Static overlays (scoreboard, channel logo, clock) have consistently low variance while the game action underneath changes constantly.
 2. **Extract candidates** — Threshold the variance map at the 15th percentile. Apply morphological operations (close + open) and extract connected components filtered by area.
-3. **Identify scoreboard** — Run EasyOCR on each candidate region from a mid-match frame. The region matching a score-like regex pattern (`\d+\s*[-:]\s*\d+`, e.g., "2 - 1", "0:0") is the scoreboard.
-4. **Track score changes** — Sample 1 frame every 3 seconds, crop only the cached scoreboard region (very fast), run OCR on the small crop. Apply temporal majority voting over a sliding window for robustness. Validate that scores only increase by 1 at a time.
+3. **Identify scoreboard** — Run EasyOCR on each candidate region (upscaled 3x for better digit recognition) from a mid-match frame. The region matching a score-like regex pattern (`\d+\s*[-:]\s*\d+`, e.g., "2 - 1", "0:0") is the scoreboard.
+4. **Track score changes** — Sample 1 frame every 3 seconds, crop only the cached scoreboard region, run OCR on the small crop. Two parsing strategies are used:
+   - **"X-Y" pattern matching** for classic score formats (e.g., "2-1", common in 2013-2018 broadcasts)
+   - **Position-cluster tracking** for modern formats where home and away scores appear as separate digits at fixed positions (common in 2020+ broadcasts)
+5. **Robustness filters** — Multiple filters prevent false detections:
+   - **Layout detection**: Relative spatial spread (`dy > dx`) distinguishes vertical from horizontal scoreboard layouts
+   - **Temporal median filter**: Per-cluster sliding window (15 readings) removes transient stat overlay spikes (e.g., when the scoreboard temporarily shows possession or throw counts instead of goals)
+   - **Cluster concentration filter**: Rejects clusters with uniform digit distributions (clock positions) and static non-zero elements (channel branding)
+   - **Forward persistence validation**: Score transitions must persist for 8+ future readings (~24 seconds) to be accepted
+   - **Max jump constraint**: Only accepts score transitions where total change is $\leq 2$, filtering large stat overlay jumps
 
-This approach works regardless of scoreboard position (top, bottom, corner) and handles different broadcasters and seasons automatically.
+This approach works regardless of scoreboard position (top, bottom, corner), layout orientation (horizontal or vertical), and handles different broadcasters and seasons automatically.
 
 ### 5. Highlight Assembly
 
@@ -90,11 +98,18 @@ soccer_summarization/          # Core Python package
     evaluation.py              # Metrics: P/R/F1, compression ratio, goal coverage
     utils.py                   # Time formatting, video I/O helpers
 
-scripts/                       # Entry points
+scripts/                       # Entry points and analysis
     run_single_match.py        # Process one match end-to-end
     run_all_matches.py         # Batch processing with intermediate caching
     evaluate.py                # Run evaluation against ground truth
+    run_baselines.py           # Run 6 internal baselines (random, uniform, shot-only, etc.)
+    run_ablation.py            # Run 7 parameter ablation studies
+    run_component_analysis.py  # Component contribution analysis
+    error_analysis.py          # TP/FP/FN categorization per match
+    statistical_analysis.py    # Wilcoxon signed-rank tests + Cliff's delta
+    generate_figures.py        # Generate journal-quality figures
     generate_tables.py         # Generate LaTeX-ready result tables
+    generate_debug_visuals.py  # Visual debug outputs for each pipeline stage
 
 config/                        # Configuration files
     default.yaml               # Default hyperparameters and thresholds
@@ -104,6 +119,13 @@ docs/figures/                  # Generated figures for documentation
 results/                       # Auto-populated by the pipeline
     per_match/                 # One directory per match with all intermediates
     aggregate/                 # Summary tables, plots, aggregate metrics
+    baselines/                 # Baseline comparison results
+    ablation/                  # Parameter ablation results
+    component_analysis/        # Component contribution analysis
+    error_analysis/            # TP/FP/FN categorization
+    statistical/               # Statistical test results
+    figures/                   # Generated PDF figures
+    tables/                    # Generated LaTeX tables
 ```
 
 
@@ -119,7 +141,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install ultralytics opencv-python easyocr pandas numpy matplotlib pyyaml tqdm
+pip install ultralytics opencv-python easyocr pandas numpy matplotlib pyyaml tqdm scipy
 ```
 
 ### Requirements
@@ -130,6 +152,7 @@ pip install ultralytics opencv-python easyocr pandas numpy matplotlib pyyaml tqd
 - `opencv-python`
 - `easyocr` (PyTorch-based OCR)
 - `pandas`, `numpy`, `matplotlib`
+- `scipy` (statistical tests)
 - `PyYAML`
 - `tqdm`
 
@@ -175,11 +198,27 @@ python scripts/evaluate.py
 python scripts/evaluate.py --matches Match1,Match2,Match3
 ```
 
-### Generate LaTeX tables
+### Run analysis scripts
 
 ```bash
+# Baselines comparison
+python scripts/run_baselines.py
+
+# Parameter ablation studies
+python scripts/run_ablation.py
+
+# Component contribution analysis
+python scripts/run_component_analysis.py
+
+# Error analysis (TP/FP/FN categorization)
+python scripts/error_analysis.py
+
+# Statistical significance tests (Wilcoxon + Cliff's delta)
+python scripts/statistical_analysis.py
+
+# Generate figures and tables
+python scripts/generate_figures.py
 python scripts/generate_tables.py
-# Outputs to results/tables/per_match_table.tex and aggregate_table.tex
 ```
 
 ### Pipeline outputs (per match)
@@ -215,15 +254,49 @@ A predicted goal (from OCR score change) matches a ground truth event if it fall
 |--------|-----------|
 | **Compression ratio** | $1 - \frac{\text{highlight duration}}{\text{video duration}}$ — fraction of the video removed |
 | **Goal coverage** | Fraction of ground truth goal-event time captured in highlights |
+| **Mean tIoU** | Temporal Intersection over Union between predicted highlights and GT goal segments |
+| **Goal timing MAE** | Mean absolute error between predicted goal timestamps and GT midpoints |
+| **F1@tIoU** | F1 score at various tIoU thresholds (0.1, 0.3, 0.5, 0.7) |
 
-### Planned Ablation Studies
 
-| Parameter | Range | Purpose |
-|-----------|-------|---------|
-| Player count threshold | 3–7 | Sensitivity of play detection |
-| Min shot duration | 3–7 seconds | Shot filtering aggressiveness |
-| Smoothing window | 25–100 frames | Temporal smoothing of player count |
-| OCR on/off | — | Contribution of scoreboard reading |
+## Results
+
+### Aggregate Performance (25 matches)
+
+| Metric | Value |
+|--------|-------|
+| Goal Detection F1 (macro) | 0.561 $\pm$ 0.378 |
+| Goal Detection F1 (micro) | 0.626 |
+| Precision (macro) | 0.639 |
+| Recall (macro) | 0.523 |
+| Compression | 32.7% $\pm$ 3.6% |
+| Goal Coverage | 35.9% $\pm$ 9.6% |
+| Mean tIoU | 0.210 $\pm$ 0.037 |
+| Goal Timing MAE | 51.1s $\pm$ 9.8s |
+| F1@tIoU=0.1 | 0.912 |
+
+Out of 138 ground truth goals: 71 true positives, 18 false positives, 67 false negatives.
+
+### Baselines
+
+| Baseline | Mean F1 | vs. System |
+|----------|---------|------------|
+| Random Sampling | 0.000 | System significantly better ($p < 0.001$, large effect) |
+| Uniform Sampling | 0.000 | System significantly better ($p < 0.001$, large effect) |
+| Shot-Length Only | 0.000 | System significantly better ($p < 0.001$, large effect) |
+| Play-Only | 0.000 | System significantly better ($p < 0.001$, large effect) |
+| OCR-Only | 0.555 | Negligible difference |
+| Oracle Upper Bound | 1.000 | — |
+
+### Ablation Studies
+
+| Parameter | Range | Default | Finding |
+|-----------|-------|---------|---------|
+| Player count threshold | 3–7 | 5 | Stable across range |
+| Min shot duration | 3–7s | 4s | Negligible effect |
+| Smoothing window | 25–100 frames | 50 | Stable across range |
+| Tolerance window | 10–60s | 30s | Narrower windows reduce recall |
+| OCR on/off | — | on | OCR drives all goal detection |
 
 
 ## Configuration
@@ -258,14 +331,16 @@ highlight_assembler:
 Match metadata (video paths, GT paths, teams, scores) is defined in `config/matches.yaml`.
 
 
-## Planned Baselines
+## Baselines
 
 | Baseline | Description | Purpose |
 |----------|-------------|---------|
-| **Uniform sampling** | Random segments of equal total duration | Lower bound |
-| **Shot-length-only** | Keep shots > K seconds, no play/no-play filtering | Isolates YOLO contribution |
-| **Commentary keyword** | Search WhisperX transcriptions for "gol" | Text-only baseline |
-| **System ablations** | With/without OCR, varied thresholds | Component analysis |
+| **Random Sampling** | Random segments of equal total duration | Lower bound |
+| **Uniform Sampling** | Evenly spaced segments across the match | Lower bound |
+| **Shot-Length Only** | Keep shots > K seconds, no play/no-play filtering | Isolates YOLO contribution |
+| **Play-Only** | Play segments without OCR | Isolates visual analysis |
+| **OCR-Only** | Score change detection without highlight filtering | Isolates OCR contribution |
+| **Oracle Upper Bound** | Perfect goal detection from GT | Upper bound |
 
 
 ## Original Thesis

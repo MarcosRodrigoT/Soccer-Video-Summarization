@@ -40,8 +40,11 @@ def evaluate_match(
     # Load predicted goals from OCR
     score_path = match_dir / "score_events.csv"
     if score_path.exists():
-        score_df = pd.read_csv(score_path)
-        predicted_goals = score_df["timestamp"].tolist() if len(score_df) > 0 else []
+        try:
+            score_df = pd.read_csv(score_path)
+            predicted_goals = score_df["timestamp"].tolist() if len(score_df) > 0 else []
+        except (pd.errors.EmptyDataError, KeyError):
+            predicted_goals = []
     else:
         predicted_goals = []
         logger.warning("No score_events.csv for %s", match_id)
@@ -123,7 +126,8 @@ def main():
         results.append(result)
 
         print(f"{match_id}: P={result.precision:.2f} R={result.recall:.2f} F1={result.f1:.2f} "
-              f"| Comp={result.compression_ratio*100:.0f}% Cov={result.goal_coverage*100:.0f}%")
+              f"| Comp={result.compression_ratio*100:.0f}% Cov={result.goal_coverage*100:.0f}% "
+              f"| tIoU={result.mean_tiou:.3f} MAE={result.goal_timing_mae:.1f}s Segs={result.num_segments}")
 
     # Aggregate
     if results:
@@ -140,6 +144,18 @@ def main():
               f"+/- {aggregate['compression_std']*100:.1f}%")
         print(f"Goal Coverage: {aggregate['goal_coverage_mean']*100:.1f}% "
               f"+/- {aggregate['goal_coverage_std']*100:.1f}%")
+        print(f"Mean tIoU: {aggregate.get('mean_tiou_mean', 0):.3f} "
+              f"+/- {aggregate.get('mean_tiou_std', 0):.3f}")
+        print(f"Goal Timing MAE: {aggregate.get('goal_timing_mae_mean', 0):.1f}s "
+              f"+/- {aggregate.get('goal_timing_mae_std', 0):.1f}s")
+        print(f"Segments: {aggregate.get('num_segments_mean', 0):.1f} "
+              f"+/- {aggregate.get('num_segments_std', 0):.1f}")
+        if "bootstrap_ci" in aggregate:
+            ci = aggregate["bootstrap_ci"]
+            print(f"\n95% Bootstrap CIs:")
+            for metric in ["f1", "micro_f1", "compression_ratio", "goal_coverage", "mean_tiou"]:
+                if metric in ci:
+                    print(f"  {metric}: [{ci[metric]['lower']:.3f}, {ci[metric]['upper']:.3f}]")
 
         # Save
         agg_dir = Path(config.results_dir) / "aggregate"
