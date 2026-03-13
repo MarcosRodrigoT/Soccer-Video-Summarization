@@ -178,7 +178,10 @@ def run_pipeline(
         score_df = ScoreboardDetector.events_to_dataframe(score_events)
         score_df.to_csv(score_cache, index=False)
         if region:
-            region_info = {"x": region.x, "y": region.y, "w": region.w, "h": region.h}
+            # Save display bbox (edge-aware tightened) for diagnostics,
+            # falling back to the OCR bbox if display_bbox isn't set.
+            db = region.display_bbox or {"x": region.x, "y": region.y, "w": region.w, "h": region.h}
+            region_info = {"x": int(db["x"]), "y": int(db["y"]), "w": int(db["w"]), "h": int(db["h"])}
             with open(out / "scoreboard_region.json", "w") as f:
                 json.dump(region_info, f)
         logger.info("  %d score events (saved to %s)", len(score_events), score_cache)

@@ -33,10 +33,10 @@ class PlayClassifierConfig:
 
 @dataclass
 class OCRScoreboardConfig:
-    num_sample_frames: int = 80  # frames for variance map
-    variance_threshold_percentile: float = 15.0  # low variance = static overlay
-    min_region_area: int = 500  # min pixels for a candidate region
-    max_region_area: int = 50000  # max pixels for a candidate region
+    num_sample_frames: int = 200  # frames for variability map
+    std_percentile: float = 8.0  # bottom percentile of variability → static overlay pixels
+    min_region_area: int = 300  # min pixels for a candidate overlay region
+    closing_kernel: tuple = (51, 21)  # morphological closing kernel (w, h)
     score_sample_interval: float = 3.0  # seconds between OCR samples
     score_pattern: str = r"\d+\s*[-:]\s*\d+"
     majority_window: int = 5  # frames for temporal majority voting

@@ -18,11 +18,11 @@ play_classifier:
   min_shot_duration: 4.0   # seconds
 
 ocr_scoreboard:
-  num_sample_frames: 80
-  variance_threshold_percentile: 15.0
-  min_region_area: 500
-  max_region_area: 50000
-  score_sample_interval: 3.0   # seconds between OCR samples
+  num_sample_frames: 200        # frames for IQR variability map
+  std_percentile: 8.0           # bottom percentile of IQR → static overlay pixels
+  min_region_area: 300          # min pixels for a candidate overlay region
+  closing_kernel: [51, 21]      # morphological closing kernel (w, h)
+  score_sample_interval: 3.0    # seconds between OCR samples
   score_pattern: "\\d+\\s*[-:]\\s*\\d+"
   majority_window: 5
 

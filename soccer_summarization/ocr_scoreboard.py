@@ -32,12 +32,15 @@ from .utils import get_video_properties
 logger = logging.getLogger(__name__)
 
 # Known La Liga team abbreviations for scoreboard validation
+# Note: LALIGA/LA LIGA excluded — those appear on the league logo, not the scoreboard
 TEAM_PATTERNS = re.compile(
     r"\b(BAR|RMA|ATM|SEV|BET|VAL|VIL|CEL|SOC|ATH|GIR|ALM|CAD|GET|GRA|"
-    r"MAL|MAJ|OSA|RAY|ELC|ESP|LPA|VAL|FCB|RM|ATL|VCF|RCD|RCE|LEV|"
-    r"LALIGA|LA LIGA)\b",
+    r"MAL|MAJ|OSA|RAY|ELC|ESP|LPA|FCB|RM|ATL|VCF|RCD|RCE|LEV)\b",
     re.IGNORECASE,
 )
+
+# League branding — penalizes regions that are logos, not scoreboards
+LEAGUE_PATTERNS = re.compile(r"\b(LALIGA|LA\s*LIGA|EA\s*SPORTS)\b", re.IGNORECASE)
 
 # Clock pattern: MM:SS or MM.SS
 CLOCK_PATTERN = re.compile(r"\b(\d{1,3})[:.]\s*(\d{2})\b")
@@ -63,6 +66,7 @@ class ScoreboardRegion:
     y: int
     w: int
     h: int
+    display_bbox: dict = None  # edge-aware tightened bbox for visualization
 
 
 class ScoreboardDetector:
@@ -80,13 +84,19 @@ class ScoreboardDetector:
         return self._ocr
 
     def find_static_overlays(self, video_path: str) -> np.ndarray:
-        """Build a variance map to identify static overlay regions.
+        """Build a per-pixel variability map to identify static overlays.
 
-        Samples frames evenly across the video, computes per-pixel variance
-        in grayscale. Low-variance regions are static overlays.
+        Samples frames evenly across the video and computes a robust
+        variability measure for each pixel. Uses the interquartile range
+        (P75 - P25) instead of standard deviation, because std is sensitive
+        to outlier frames (halftime, replays, intros) where the scoreboard
+        isn't visible. Even 5% of such frames can make white scoreboard
+        pixels appear "high variance" with std, but IQR ignores those
+        outliers and correctly identifies them as static.
 
         Returns:
-            variance_map: 2D array of per-pixel variance values
+            variability_map: 2D array (same units as pixel intensity, 0-255).
+                Static overlays have values near 0.
         """
         props = get_video_properties(video_path)
         total_frames = props["total_frames"]
@@ -108,82 +118,126 @@ class ScoreboardDetector:
             raise ValueError(f"Could only read {len(frames_gray)} frames, need at least 10")
 
         stack = np.stack(frames_gray, axis=0)
-        variance_map = np.var(stack, axis=0)
+
+        # IQR (interquartile range) is robust to outlier frames where
+        # the scoreboard isn't present (halftime, replays, intros).
+        p75 = np.percentile(stack, 75, axis=0)
+        p25 = np.percentile(stack, 25, axis=0)
+        variability_map = p75 - p25
 
         logger.info(
-            "Variance map: shape=%s, range=[%.1f, %.1f], mean=%.1f",
-            variance_map.shape, variance_map.min(), variance_map.max(), variance_map.mean(),
+            "Variability map (IQR): shape=%s, range=[%.1f, %.1f], mean=%.1f, "
+            "%d samples",
+            variability_map.shape, variability_map.min(), variability_map.max(),
+            variability_map.mean(), len(frames_gray),
         )
-        return variance_map
+        return variability_map
+
+    def build_overlay_mask(self, std_map: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        """Build a binary mask of static broadcast overlay regions.
+
+        Uses a low percentile of the std map to find truly static pixels,
+        then applies morphological closing to bridge gaps at digit/clock
+        positions (which change occasionally). The result is a mask where
+        overlay regions (scoreboard, clock, logo) are white and game action
+        is black.
+
+        Returns:
+            overlay_mask: Binary mask after morphological ops (0 or 255)
+            raw_mask: Binary mask before closing (used for splitting wide regions)
+        """
+        threshold = np.percentile(std_map, self.config.std_percentile)
+        raw_mask = (std_map < threshold).astype(np.uint8) * 255
+
+        logger.info("Overlay mask: std threshold=%.1f (P%.0f), %d static pixels (%.1f%%)",
+                     threshold, self.config.std_percentile,
+                     np.sum(raw_mask > 0), np.sum(raw_mask > 0) / raw_mask.size * 100)
+
+        # Closing fills gaps at digit positions (which change value occasionally)
+        kw, kh = self.config.closing_kernel
+        kernel_close = cv2.getStructuringElement(cv2.MORPH_RECT, (kw, kh))
+        mask = cv2.morphologyEx(raw_mask, cv2.MORPH_CLOSE, kernel_close, iterations=2)
+
+        # Opening removes small noise specks
+        kernel_open = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 9))
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel_open, iterations=1)
+
+        return mask, raw_mask
 
     def find_scoreboard_region(
-        self, video_path: str, variance_map: np.ndarray
+        self, video_path: str, std_map: np.ndarray,
+        overlay_mask: np.ndarray = None,
+        raw_mask: np.ndarray = None,
     ) -> Optional[ScoreboardRegion]:
         """Find the scoreboard among static overlay regions.
 
-        Strategy:
-        1. Restrict to top 30% of frame (scoreboards are always at top)
-        2. Threshold variance map to get low-variance (static) regions
-        3. Merge nearby static regions into scoreboard candidates
-        4. Test OCR on multiple frames to find regions with text
-        5. Score candidates by presence of team names/digits
+        Broadcast overlays (scoreboard, logo, clock) appear as distinct
+        low-variance regions, typically at the top of the frame. The std map
+        makes them clearly visible. This method:
+
+        1. Extracts connected components from the overlay mask
+        2. Splits over-wide regions using column gaps in the raw mask
+        3. Tests each candidate with OCR, heavily favoring score patterns
+        4. Returns the region most likely to be the scoreboard
         """
-        h, w = variance_map.shape
-        top_fraction = 0.30
-        top_h = int(h * top_fraction)
+        h, w = std_map.shape
 
-        # Work only on top portion
-        var_top = variance_map[:top_h, :]
+        if overlay_mask is None:
+            overlay_mask, raw_mask = self.build_overlay_mask(std_map)
 
-        # Use adaptive thresholding — try increasing percentiles until we get candidates
-        for percentile in [10.0, 15.0, 20.0, 25.0]:
-            threshold = np.percentile(var_top, percentile)
-            binary = (var_top < threshold).astype(np.uint8) * 255
+        # Extract connected components from the overlay mask
+        num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(
+            overlay_mask, connectivity=8
+        )
 
-            # Gentle morphological operations to clean noise without over-merging
-            kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-            binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel, iterations=2)
-            binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=1)
+        min_area = self.config.min_region_area
+        max_width = w * 0.4  # scoreboard is never >40% of frame width
+        candidates = []
+        for i in range(1, num_labels):
+            area = stats[i, cv2.CC_STAT_AREA]
+            if area < min_area:
+                continue
+            x = stats[i, cv2.CC_STAT_LEFT]
+            y = stats[i, cv2.CC_STAT_TOP]
+            cw = stats[i, cv2.CC_STAT_WIDTH]
+            ch = stats[i, cv2.CC_STAT_HEIGHT]
 
-            # Find connected components
-            num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(
-                binary, connectivity=8
-            )
+            # Tighten bounding box to actual content in raw mask.
+            # Morphological closing expands regions by half the kernel size,
+            # which can push bounding boxes to frame edges.
+            if raw_mask is not None:
+                x, y, cw, ch = self._tighten_to_raw(raw_mask, x, y, cw, ch)
+                if cw * ch < min_area:
+                    continue
 
-            # Filter candidates by area
-            min_area = 100
-            max_area = top_h * w * 0.4
-            candidates = []
-            for i in range(1, num_labels):
-                area = stats[i, cv2.CC_STAT_AREA]
-                if min_area <= area <= max_area:
-                    x = stats[i, cv2.CC_STAT_LEFT]
-                    y = stats[i, cv2.CC_STAT_TOP]
-                    cw = stats[i, cv2.CC_STAT_WIDTH]
-                    ch = stats[i, cv2.CC_STAT_HEIGHT]
-                    candidates.append(ScoreboardRegion(x=x, y=y, w=cw, h=ch))
-
-            if len(candidates) >= 2:
-                logger.info(
-                    "Found %d candidate regions at percentile %.0f",
-                    len(candidates), percentile,
+            if cw > max_width:
+                # Region too wide — likely merged UI elements. Split by
+                # finding vertical gaps in the raw (pre-closing) mask.
+                split_mask = raw_mask if raw_mask is not None else overlay_mask
+                sub_regions = self._split_wide_region(
+                    split_mask, x, y, cw, ch, min_area
                 )
-                break
-        else:
-            logger.warning("No candidate regions found at any percentile")
+                candidates.extend(sub_regions)
+            else:
+                candidates.append(ScoreboardRegion(x=x, y=y, w=cw, h=ch))
+
+        if not candidates:
+            logger.warning("No candidate overlay regions found")
             return None
 
-        # Merge overlapping/nearby candidates into a single scoreboard region
-        merged = self._merge_regions(candidates)
-        logger.info("Merged into %d candidate regions", len(merged))
+        # Only merge components that truly overlap (gap=5px) — don't merge
+        # separate UI elements (scoreboard vs logo) into one huge region
+        merged = self._merge_regions(candidates, gap=5)
+        logger.info("Found %d overlay regions (merged from %d components)",
+                     len(merged), len(candidates))
+        for r in merged:
+            logger.info("  Region: (%d,%d) %dx%d", r.x, r.y, r.w, r.h)
 
-        # Test OCR on candidates using multiple frames
+        # Test OCR on candidates using a mid-match frame
         props = get_video_properties(video_path)
         cap = cv2.VideoCapture(video_path)
-
-        # Sample 3 frames from different parts of the match
         test_frames = []
-        for frac in [0.25, 0.5, 0.75]:
+        for frac in [0.3, 0.5, 0.7]:
             cap.set(cv2.CAP_PROP_POS_FRAMES, int(props["total_frames"] * frac))
             ret, frame = cap.read()
             if ret:
@@ -200,25 +254,36 @@ class ScoreboardDetector:
         for region in merged:
             region_score = 0
             for frame in test_frames:
-                crop = self._crop_region(frame, region, pad=15)
+                # Use plain crop (no masking) — masking can black out digits
+                crop = self._crop_region(frame, region, pad=5)
                 if crop.size == 0:
                     continue
 
-                # Upscale 3x for better OCR on small text
-                upscaled = cv2.resize(crop, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
+                upscaled = cv2.resize(crop, None, fx=4, fy=4,
+                                      interpolation=cv2.INTER_CUBIC)
                 results = ocr.readtext(upscaled)
 
                 for bbox, text, conf in results:
                     text_upper = text.upper().strip()
-                    # Score points for team names
+                    # League branding = logo, not scoreboard
+                    if LEAGUE_PATTERNS.search(text_upper):
+                        region_score -= 10
+                        continue
+                    # Score pattern is the strongest signal (e.g. "2-1", "0:0")
+                    if SCORE_WITH_SEP.search(text):
+                        region_score += 10
+                    # Team abbreviations are strong evidence
                     if TEAM_PATTERNS.search(text_upper):
+                        region_score += 5
+                    # Clock pattern (MM:SS) is good but less decisive
+                    if CLOCK_PATTERN.search(text):
                         region_score += 3
-                    # Score points for any digit (potential score)
+                    # Any digit is weak evidence
                     if re.search(r"\d", text):
                         region_score += 1
-                    # Score points for clock pattern (indicates broadcast overlay)
-                    if CLOCK_PATTERN.search(text):
-                        region_score += 2
+
+            logger.info("  Region (%d,%d,%d,%d): OCR score=%d",
+                        region.x, region.y, region.w, region.h, region_score)
 
             if region_score > best_score:
                 best_score = region_score
@@ -227,25 +292,17 @@ class ScoreboardDetector:
         if best_region and best_score >= 3:
             logger.info(
                 "Scoreboard at (%d,%d,%d,%d) score=%d",
-                best_region.x, best_region.y, best_region.w, best_region.h, best_score,
+                best_region.x, best_region.y, best_region.w, best_region.h,
+                best_score,
             )
             return best_region
 
-        # Fallback: if no region scored well, use the largest region in top-left
-        # quadrant (broadcast scoreboards are typically top-left)
-        top_left = [r for r in merged if r.x < w // 2]
-        if top_left:
-            largest = max(top_left, key=lambda r: r.w * r.h)
+        # Fallback: prefer the largest region in the top 30% of the frame
+        top_regions = [r for r in merged if r.y < h * 0.3]
+        if top_regions:
+            largest = max(top_regions, key=lambda r: r.w * r.h)
             logger.info(
-                "Fallback: using largest top-left region (%d,%d,%d,%d)",
-                largest.x, largest.y, largest.w, largest.h,
-            )
-            return largest
-
-        if merged:
-            largest = max(merged, key=lambda r: r.w * r.h)
-            logger.info(
-                "Fallback: using largest region (%d,%d,%d,%d)",
+                "Fallback: largest top region (%d,%d,%d,%d)",
                 largest.x, largest.y, largest.w, largest.h,
             )
             return largest
@@ -253,8 +310,13 @@ class ScoreboardDetector:
         logger.warning("No scoreboard region found")
         return None
 
-    def _merge_regions(self, regions: list[ScoreboardRegion]) -> list[ScoreboardRegion]:
-        """Merge overlapping or nearby regions into larger candidates."""
+    def _merge_regions(self, regions: list[ScoreboardRegion],
+                       gap: int = 5) -> list[ScoreboardRegion]:
+        """Merge only truly overlapping or adjacent regions.
+
+        Uses a small gap (default 5px) to avoid merging distinct UI elements
+        (e.g. scoreboard and channel logo) that are spatially separated.
+        """
         if not regions:
             return []
 
@@ -262,7 +324,6 @@ class ScoreboardDetector:
         boxes = [(r.x, r.y, r.x + r.w, r.y + r.h) for r in regions]
         merged = []
         used = [False] * len(boxes)
-        gap = 20  # merge regions within 20px of each other
 
         for i in range(len(boxes)):
             if used[i]:
@@ -289,6 +350,125 @@ class ScoreboardDetector:
 
         return merged
 
+    def _split_wide_region(
+        self, mask: np.ndarray, x: int, y: int, w: int, h: int,
+        min_area: int,
+    ) -> list[ScoreboardRegion]:
+        """Split a too-wide overlay region by finding significant vertical gaps.
+
+        When the morphological closing bridges the scoreboard and logo into
+        one wide band, this method finds major column gaps (30+ consecutive
+        low-density columns) in the raw mask to split it into separate regions.
+        Small gaps within the scoreboard (digit positions, etc.) are ignored.
+        """
+        region_mask = mask[y:y + h, x:x + w]
+        col_sums = np.sum(region_mask > 0, axis=0)
+
+        # Classify each column as "filled" or "empty"
+        gap_threshold = h * 0.15  # <15% of height filled = empty column
+        is_filled = col_sums > gap_threshold
+
+        # Find runs of empty columns that are wide enough to be real gaps
+        # between separate UI elements (not just digit gaps within scoreboard)
+        min_gap_width = 30  # minimum gap to split on
+        regions = []
+        start_col = None
+
+        col = 0
+        while col < len(is_filled):
+            if is_filled[col]:
+                if start_col is None:
+                    start_col = col
+                col += 1
+            else:
+                # Found an empty column — measure the gap width
+                gap_start = col
+                while col < len(is_filled) and not is_filled[col]:
+                    col += 1
+                gap_width = col - gap_start
+
+                if start_col is not None and gap_width >= min_gap_width:
+                    # Significant gap — end current region
+                    rw = gap_start - start_col
+                    if rw * h >= min_area:
+                        regions.append(ScoreboardRegion(
+                            x=int(x + start_col), y=int(y), w=int(rw), h=int(h)
+                        ))
+                    start_col = None
+                # If gap is small, keep scanning (don't split)
+
+        # Close last region
+        if start_col is not None:
+            rw = len(is_filled) - start_col
+            if rw * h >= min_area:
+                regions.append(ScoreboardRegion(
+                    x=int(x + start_col), y=int(y), w=int(rw), h=int(h)
+                ))
+
+        if len(regions) > 1:
+            logger.info("Split wide region (%d,%d,%d,%d) into %d sub-regions: %s",
+                        x, y, w, h, len(regions),
+                        [(r.x, r.y, r.w, r.h) for r in regions])
+        elif not regions:
+            # Can't split — return as-is
+            regions = [ScoreboardRegion(x=x, y=y, w=w, h=h)]
+
+        return regions
+
+    @staticmethod
+    def _tighten_to_raw(
+        raw_mask: np.ndarray, x: int, y: int, w: int, h: int,
+        ignore_edges: bool = False,
+    ) -> tuple[int, int, int, int]:
+        """Shrink a bounding box to the actual content in the raw mask.
+
+        Morphological closing expands regions by half the kernel width/height,
+        which can push bounding boxes to the frame edge even when the actual
+        static pixels don't extend that far. This trims the box to the
+        tightest fit around raw mask content.
+
+        When ignore_edges=True, two additional filters are applied:
+        1. Frame-edge pixels (first/last 2 rows and columns) are excluded.
+           Broadcasts often have a 1-pixel static black strip at the edges
+           that the IQR detects as "static".
+        2. A 5% density threshold replaces np.any — a column/row must have
+           at least 5% of its pixels active to count as content. This
+           filters out sparse stray static pixels (typically <2% density)
+           that morphological closing bridges to the scoreboard, inflating
+           the bbox well beyond the actual overlay.
+        """
+        region = raw_mask[y:y + h, x:x + w]
+
+        if ignore_edges:
+            min_density = 0.05
+            col_has_content = np.mean(region > 0, axis=0) >= min_density
+            row_has_content = np.mean(region > 0, axis=1) >= min_density
+            frame_h, frame_w = raw_mask.shape
+            border_px = 2
+            for dy in range(h):
+                abs_y = y + dy
+                if abs_y < border_px or abs_y >= frame_h - border_px:
+                    row_has_content[dy] = False
+            for dx in range(w):
+                abs_x = x + dx
+                if abs_x < border_px or abs_x >= frame_w - border_px:
+                    col_has_content[dx] = False
+        else:
+            col_has_content = np.any(region > 0, axis=0)
+            row_has_content = np.any(region > 0, axis=1)
+
+        cols = np.where(col_has_content)[0]
+        rows = np.where(row_has_content)[0]
+
+        if len(cols) == 0 or len(rows) == 0:
+            return x, y, w, h  # no content — keep original
+
+        new_x = x + int(cols[0])
+        new_y = y + int(rows[0])
+        new_w = int(cols[-1] - cols[0] + 1)
+        new_h = int(rows[-1] - rows[0] + 1)
+        return new_x, new_y, new_w, new_h
+
     def _crop_region(
         self, frame: np.ndarray, region: ScoreboardRegion, pad: int = 10
     ) -> np.ndarray:
@@ -299,10 +479,34 @@ class ScoreboardDetector:
         x2 = min(frame.shape[1], region.x + region.w + pad)
         return frame[y1:y2, x1:x2]
 
+    def _crop_and_mask(
+        self, frame: np.ndarray, region: ScoreboardRegion,
+        overlay_mask: np.ndarray, pad: int = 10,
+    ) -> np.ndarray:
+        """Crop a region and black out pixels outside the overlay mask.
+
+        The overlay mask (from build_overlay_mask) covers static broadcast
+        elements. Pixels outside this mask are game action that should not
+        be fed to OCR. Setting them to black prevents false digit detections
+        from jersey numbers, advertising boards, etc.
+        """
+        y1 = max(0, region.y - pad)
+        y2 = min(frame.shape[0], region.y + region.h + pad)
+        x1 = max(0, region.x - pad)
+        x2 = min(frame.shape[1], region.x + region.w + pad)
+
+        crop = frame[y1:y2, x1:x2].copy()
+        mask_crop = overlay_mask[y1:y2, x1:x2]
+
+        # Black out non-overlay pixels
+        crop[mask_crop == 0] = 0
+        return crop
+
     def track_scores(
         self,
         video_path: str,
         region: ScoreboardRegion,
+        overlay_mask: np.ndarray = None,
     ) -> list[ScoreEvent]:
         """Track score changes over time by sampling frames and running OCR.
 
@@ -310,6 +514,9 @@ class ScoreboardDetector:
         1. Collect all OCR readings with spatial information
         2. Separate clock readings from score readings using temporal stability
         3. Detect score changes from stable readings
+
+        If overlay_mask is provided, non-overlay pixels in the crop are blacked
+        out before OCR, preventing false readings from game action background.
 
         Returns list of ScoreEvent (goal detections).
         """
@@ -336,14 +543,16 @@ class ScoreboardDetector:
                 frame_idx += interval_frames
                 continue
 
-            # Upscale for better OCR
-            upscaled = cv2.resize(crop, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
+            # Upscale 4x for better OCR on small digits
+            scale = 4
+            upscaled = cv2.resize(crop, None, fx=scale, fy=scale,
+                                  interpolation=cv2.INTER_CUBIC)
             results = ocr.readtext(upscaled)
 
             for bbox, text, conf in results:
                 # Compute center of bbox (in upscaled coordinates, convert back)
-                cx = (bbox[0][0] + bbox[2][0]) / 2 / 3
-                cy = (bbox[0][1] + bbox[2][1]) / 2 / 3
+                cx = (bbox[0][0] + bbox[2][0]) / 2 / scale
+                cy = (bbox[0][1] + bbox[2][1]) / 2 / scale
                 all_readings.append((frame_idx, text.strip(), float(cx), float(cy), float(conf)))
 
             frame_idx += interval_frames
@@ -736,18 +945,33 @@ class ScoreboardDetector:
         """Full pipeline: find scoreboard, track scores, detect goals.
 
         Returns:
-            region: Detected scoreboard region (or None)
+            region: Detected scoreboard region (or None).
+                The region has a ``display_bbox`` attribute with edge-aware
+                tightened coordinates for visualization (excludes frame-edge
+                static pixels that inflate the bbox but don't affect OCR).
             events: List of score change events
         """
-        logger.info("Building variance map...")
-        variance_map = self.find_static_overlays(video_path)
+        logger.info("Building std map...")
+        std_map = self.find_static_overlays(video_path)
+
+        logger.info("Building overlay mask...")
+        overlay_mask, raw_mask = self.build_overlay_mask(std_map)
 
         logger.info("Finding scoreboard region...")
-        region = self.find_scoreboard_region(video_path, variance_map)
+        region = self.find_scoreboard_region(video_path, std_map, overlay_mask, raw_mask)
 
         if region is None:
             logger.warning("Could not locate scoreboard")
             return None, []
+
+        # Compute display bbox: edge-aware tightened version that excludes
+        # frame-edge static pixels (black broadcast borders) for cleaner
+        # visualization. The OCR uses the original (wider) region.
+        dx, dy, dw, dh = self._tighten_to_raw(
+            raw_mask, region.x, region.y, region.w, region.h,
+            ignore_edges=True,
+        )
+        region.display_bbox = {"x": dx, "y": dy, "w": dw, "h": dh}
 
         logger.info("Tracking scores...")
         events = self.track_scores(video_path, region)
