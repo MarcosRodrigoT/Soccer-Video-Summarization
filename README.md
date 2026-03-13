@@ -50,15 +50,16 @@ The intuition is simple: wide-angle game footage typically shows 15-22 players, 
 
 ![Scoreboard Detection](docs/figures/scoreboard_detection.png)
 
-Replaces hardcoded pixel coordinates with **automatic scoreboard localization via pixel variance analysis**:
+Replaces hardcoded pixel coordinates with **automatic scoreboard localization via IQR variability analysis**:
 
-1. **Build static overlay mask** — Sample ~80 frames spread evenly across the match and compute per-pixel variance in grayscale, restricted to the top 30% of the frame. Static overlays (scoreboard, channel logo, clock) have consistently low variance while the game action underneath changes constantly.
-2. **Extract candidates** — Threshold the variance map at the 15th percentile. Apply morphological operations (close + open) and extract connected components filtered by area.
-3. **Identify scoreboard** — Run EasyOCR on each candidate region (upscaled 3x for better digit recognition) from a mid-match frame. The region matching a score-like regex pattern (`\d+\s*[-:]\s*\d+`, e.g., "2 - 1", "0:0") is the scoreboard.
-4. **Track score changes** — Sample 1 frame every 3 seconds, crop only the cached scoreboard region, run OCR on the small crop. Two parsing strategies are used:
+1. **Build IQR variability map** — Sample ~200 frames spread evenly across the match and compute the per-pixel interquartile range (P75 − P25) in grayscale. Static overlays (scoreboard, channel logo, clock) have near-zero IQR while the game action underneath changes constantly. IQR is used instead of standard deviation because it is robust to outlier frames (halftime, replays, intros) where the scoreboard is absent — even 5% of such frames can make std misclassify static pixels as high-variance.
+2. **Build overlay mask** — Threshold the IQR map at the 8th percentile to produce a binary mask of static pixels. Apply morphological closing (51×21 kernel, 2 iterations) to bridge gaps at digit/clock positions, then opening (9×9) to remove noise. Extract connected components as candidate regions.
+3. **Split and tighten candidates** — Regions wider than 40% of the frame are split by finding significant vertical gaps (30+ empty columns) in the raw (pre-closing) mask. All candidate bounding boxes are tightened to the actual raw mask content, reversing the inflation from morphological closing.
+4. **Identify scoreboard** — Run EasyOCR on each candidate region (upscaled 4x for better digit recognition) from 3 mid-match frames. Regions are scored by OCR content: score patterns like "2-1" (+10), team abbreviations (+5), clock patterns (+3), any digit (+1), league branding like "LALIGA" (−10). The highest-scoring region is the scoreboard.
+5. **Track score changes** — Sample 1 frame every 3 seconds, crop only the cached scoreboard region, run OCR on the small crop. Two parsing strategies are used:
    - **"X-Y" pattern matching** for classic score formats (e.g., "2-1", common in 2013-2018 broadcasts)
    - **Position-cluster tracking** for modern formats where home and away scores appear as separate digits at fixed positions (common in 2020+ broadcasts)
-5. **Robustness filters** — Multiple filters prevent false detections:
+6. **Robustness filters** — Multiple filters prevent false detections:
    - **Layout detection**: Relative spatial spread (`dy > dx`) distinguishes vertical from horizontal scoreboard layouts
    - **Temporal median filter**: Per-cluster sliding window (15 readings) removes transient stat overlay spikes (e.g., when the scoreboard temporarily shows possession or throw counts instead of goals)
    - **Cluster concentration filter**: Rejects clusters with uniform digit distributions (clock positions) and static non-zero elements (channel branding)
@@ -110,6 +111,7 @@ scripts/                       # Entry points and analysis
     generate_figures.py        # Generate journal-quality figures
     generate_tables.py         # Generate LaTeX-ready result tables
     generate_debug_visuals.py  # Visual debug outputs for each pipeline stage
+    visualize_ocr_diagnostics.py  # Per-match OCR diagnostic images
 
 config/                        # Configuration files
     default.yaml               # Default hyperparameters and thresholds
@@ -119,6 +121,7 @@ docs/figures/                  # Generated figures for documentation
 results/                       # Auto-populated by the pipeline
     per_match/                 # One directory per match with all intermediates
     aggregate/                 # Summary tables, plots, aggregate metrics
+    ocr_diagnostics/           # Per-match OCR diagnostic images
     baselines/                 # Baseline comparison results
     ablation/                  # Parameter ablation results
     component_analysis/        # Component contribution analysis
@@ -219,6 +222,10 @@ python scripts/statistical_analysis.py
 # Generate figures and tables
 python scripts/generate_figures.py
 python scripts/generate_tables.py
+
+# OCR diagnostics (IQR map, overlay mask, annotated frames, score timeline)
+python scripts/visualize_ocr_diagnostics.py
+python scripts/visualize_ocr_diagnostics.py --matches Match1,Match5,Match10
 ```
 
 ### Pipeline outputs (per match)
@@ -265,17 +272,17 @@ A predicted goal (from OCR score change) matches a ground truth event if it fall
 
 | Metric | Value |
 |--------|-------|
-| Goal Detection F1 (macro) | 0.561 $\pm$ 0.378 |
-| Goal Detection F1 (micro) | 0.626 |
-| Precision (macro) | 0.639 |
-| Recall (macro) | 0.523 |
+| Goal Detection F1 (macro) | 0.869 $\pm$ 0.139 |
+| Goal Detection F1 (micro) | 0.850 |
+| Precision (macro) | 0.900 $\pm$ 0.131 |
+| Recall (macro) | 0.842 $\pm$ 0.153 |
 | Compression | 32.7% $\pm$ 3.6% |
 | Goal Coverage | 35.9% $\pm$ 9.6% |
 | Mean tIoU | 0.210 $\pm$ 0.037 |
 | Goal Timing MAE | 51.1s $\pm$ 9.8s |
-| F1@tIoU=0.1 | 0.912 |
+| F1@tIoU=0.1 | 0.911 |
 
-Out of 138 ground truth goals: 71 true positives, 18 false positives, 67 false negatives.
+Out of 138 ground truth goals: 113 true positives, 15 false positives, 25 false negatives.
 
 ### Baselines
 
@@ -319,8 +326,10 @@ play_classifier:
   smoothing_window: 50         # Rolling average window (frames)
 
 ocr_scoreboard:
-  num_sample_frames: 80        # Frames for variance map
-  variance_threshold_percentile: 15.0
+  num_sample_frames: 200       # Frames for IQR variability map
+  std_percentile: 8.0          # Bottom percentile of IQR → static overlay pixels
+  min_region_area: 300         # Min pixels for a candidate overlay region
+  closing_kernel: [51, 21]     # Morphological closing kernel (w, h)
   score_sample_interval: 3.0   # Seconds between OCR samples
 
 highlight_assembler:
