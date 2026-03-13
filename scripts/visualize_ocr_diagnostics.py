@@ -39,7 +39,15 @@ from soccer_summarization.ocr_scoreboard import (
 )
 from soccer_summarization.utils import get_video_properties
 
+from matplotlib.ticker import FuncFormatter
+
 logger = logging.getLogger(__name__)
+
+
+def _mmss_formatter(x_minutes, _pos):
+    """Format decimal minutes as M:SS for axis tick labels."""
+    total_sec = int(x_minutes * 60)
+    return f"{total_sec // 60}:{total_sec % 60:02d}"
 
 
 def load_match_info(match_id: str, config: PipelineConfig) -> dict:
@@ -291,16 +299,17 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
     # --- Build figure ---
     n_frame_panels = len(annotated_frames)
     # 1 std map row + frame rows + 3 chart rows
-    fig = plt.figure(figsize=(20, 6 + 2.5 * n_frame_panels + 9))
+    fig = plt.figure(figsize=(14, 4.5 + 2.2 * n_frame_panels + 7.5))
 
     # Title
     home_team = match_info.get("home_team", "Home")
     away_team = match_info.get("away_team", "Away")
     fig.suptitle(f"{match_id}: {home_team} {score} {away_team}",
-                 fontsize=16, fontweight="bold", y=0.99)
+                 fontsize=16, fontweight="bold")
 
     n_rows = 1 + n_frame_panels + 3  # std_map + frames + raw + filtered + timeline
-    gs = fig.add_gridspec(n_rows, 2, hspace=0.4, wspace=0.3,
+    gs = fig.add_gridspec(n_rows, 2, hspace=0.35, wspace=0.08,
+                          top=0.96, bottom=0.03,
                           height_ratios=[3] + [2.5]*n_frame_panels + [2, 2, 2])
 
     # --- Panel 0: Std map + overlay mask ---
@@ -332,7 +341,9 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
     for i, fdata in enumerate(annotated_frames):
         ax_full = fig.add_subplot(gs[1 + i, 0])
         ax_full.imshow(fdata["full_frame"])
-        ax_full.set_title(f"Frame {fdata['frame_idx']} ({fdata['timestamp']:.0f}s)",
+        ts = fdata["timestamp"]
+        ts_str = f"{int(ts // 60)}:{int(ts % 60):02d}"
+        ax_full.set_title(f"Frame {fdata['frame_idx']} ({ts_str})",
                           fontsize=10)
         ax_full.axis("off")
 
@@ -373,6 +384,7 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
         ax_raw.legend(loc="upper left", fontsize=8)
         ax_raw.set_ylim(-0.5, max(max(hr_v + [0]), max(ar_v + [0])) + 1)
         ax_raw.set_xlim(0, total_duration / 60)
+        ax_raw.xaxis.set_major_formatter(FuncFormatter(_mmss_formatter))
         ax_raw.grid(True, alpha=0.3)
 
         # --- Panel: Filtered readings ---
@@ -396,6 +408,7 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
         ax_filt.legend(loc="upper left", fontsize=8)
         ax_filt.set_ylim(-0.5, max(max(hf_v + [0]), max(af_v + [0])) + 1)
         ax_filt.set_xlim(0, total_duration / 60)
+        ax_filt.xaxis.set_major_formatter(FuncFormatter(_mmss_formatter))
         ax_filt.grid(True, alpha=0.3)
 
         # --- Panel: Final score timeline ---
@@ -406,12 +419,14 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
         event_labels = []
         for ev in detected_events:
             t_min = ev.timestamp / 60
+            t_sec = int(ev.timestamp)
+            t_str = f"{t_sec // 60}:{t_sec % 60:02d}"
             event_times.append(t_min)
             event_labels.append(f"{ev.home_score}-{ev.away_score}")
             ax_score.axvline(t_min, color="purple", linewidth=2, alpha=0.7)
-            ax_score.annotate(f"{ev.home_score}-{ev.away_score}",
+            ax_score.annotate(f"{ev.home_score}-{ev.away_score}\n({t_str})",
                               (t_min, 0.85), xycoords=("data", "axes fraction"),
-                              fontsize=9, color="purple", fontweight="bold",
+                              fontsize=8, color="purple", fontweight="bold",
                               ha="center", rotation=45)
 
         # GT events
@@ -423,7 +438,7 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
         ax_score.plot(hf_t, hf_v, linewidth=1.5, c="blue", alpha=0.5, label="Home")
         ax_score.plot(af_t, af_v, linewidth=1.5, c="red", alpha=0.5, label="Away")
 
-        ax_score.set_xlabel("Time (minutes)")
+        ax_score.set_xlabel("Time (m:ss)")
         ax_score.set_ylabel("Score")
         ax_score.set_title(
             f"Detected events (purple lines) vs GT goals (green shading) — "
@@ -433,6 +448,7 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
         ax_score.legend(loc="upper left", fontsize=8)
         ax_score.set_ylim(-0.5, max(max(hf_v + [0]), max(af_v + [0])) + 1)
         ax_score.set_xlim(0, total_duration / 60)
+        ax_score.xaxis.set_major_formatter(FuncFormatter(_mmss_formatter))
         ax_score.grid(True, alpha=0.3)
 
     out_path = output_dir / f"{match_id}_ocr_diagnostics.png"
