@@ -45,7 +45,7 @@ LEAGUE_PATTERNS = re.compile(r"\b(LALIGA|LA\s*LIGA|EA\s*SPORTS)\b", re.IGNORECAS
 # Clock pattern: MM:SS or MM.SS
 CLOCK_PATTERN = re.compile(r"\b(\d{1,3})[:.]\s*(\d{2})\b")
 
-# Score with separator: "X - Y" or "X : Y"
+# Score with separator: "X - Y" (dash only; colon matches clock text)
 SCORE_WITH_SEP = re.compile(r"\b(\d{1,2})\s*[-]\s*(\d{1,2})\b")
 
 
@@ -502,6 +502,32 @@ class ScoreboardDetector:
         crop[mask_crop == 0] = 0
         return crop
 
+    @staticmethod
+    def _preprocess_for_ocr(image: np.ndarray) -> np.ndarray:
+        """Preprocess an upscaled crop for better OCR accuracy.
+
+        Converts to grayscale, enhances local contrast with CLAHE,
+        removes compression artifacts with bilateral filtering, and
+        sharpens digit edges with an unsharp mask.
+        """
+        if len(image.shape) == 3:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        else:
+            gray = image
+
+        # CLAHE: normalize local contrast for semi-transparent overlays
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        enhanced = clahe.apply(gray)
+
+        # Bilateral filter: smooth compression artifacts, preserve edges
+        denoised = cv2.bilateralFilter(enhanced, d=5, sigmaColor=50, sigmaSpace=50)
+
+        # Unsharp mask: sharpen digit edges softened by upscale
+        blurred = cv2.GaussianBlur(denoised, (0, 0), 2.0)
+        sharpened = cv2.addWeighted(denoised, 1.5, blurred, -0.5, 0)
+
+        return sharpened
+
     def track_scores(
         self,
         video_path: str,
@@ -538,12 +564,15 @@ class ScoreboardDetector:
             if not ret:
                 break
 
-            crop = self._crop_region(frame, region, pad=15)
+            if overlay_mask is not None:
+                crop = self._crop_and_mask(frame, region, overlay_mask, pad=15)
+            else:
+                crop = self._crop_region(frame, region, pad=15)
             if crop.size == 0:
                 frame_idx += interval_frames
                 continue
 
-            # Upscale 4x for better OCR on small digits
+            # Upscale 4x and preprocess for better OCR on small digits
             scale = 4
             upscaled = cv2.resize(crop, None, fx=scale, fy=scale,
                                   interpolation=cv2.INTER_CUBIC)
@@ -600,7 +629,11 @@ class ScoreboardDetector:
         strategy1_scores = []
         for frame_idx, frame_readings in sorted(by_frame.items()):
             for text, cx, cy, conf in frame_readings:
-                m = SCORE_WITH_SEP.search(text)
+                # Normalize dots between single digits to dashes (OCR misreads
+                # tiny dashes as dots in classic broadcasts, e.g. "2.3" → "2-3")
+                # Only single-digit.single-digit to avoid normalizing clock "45.30"
+                text_norm = re.sub(r"(?<!\d)(\d)\s*\.\s*(\d)(?!\d)", r"\1-\2", text)
+                m = SCORE_WITH_SEP.search(text_norm)
                 if m:
                     home = int(m.group(1))
                     away = int(m.group(2))
