@@ -557,6 +557,13 @@ class ScoreboardDetector:
         # Phase 1: Collect all OCR readings with position info
         all_readings = []  # (frame_idx, text, bbox_center_x, bbox_center_y, conf)
         frame_idx = 0
+        pad = 15
+
+        # Scoreboard bounds within the padded crop (cx/cy are crop-relative)
+        sb_x_min = pad
+        sb_x_max = pad + region.w
+        sb_y_min = pad
+        sb_y_max = pad + region.h
 
         while frame_idx < total_frames:
             cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
@@ -565,9 +572,9 @@ class ScoreboardDetector:
                 break
 
             if overlay_mask is not None:
-                crop = self._crop_and_mask(frame, region, overlay_mask, pad=15)
+                crop = self._crop_and_mask(frame, region, overlay_mask, pad=pad)
             else:
-                crop = self._crop_region(frame, region, pad=15)
+                crop = self._crop_region(frame, region, pad=pad)
             if crop.size == 0:
                 frame_idx += interval_frames
                 continue
@@ -582,6 +589,10 @@ class ScoreboardDetector:
                 # Compute center of bbox (in upscaled coordinates, convert back)
                 cx = (bbox[0][0] + bbox[2][0]) / 2 / scale
                 cy = (bbox[0][1] + bbox[2][1]) / 2 / scale
+                # Discard readings whose center falls outside the scoreboard
+                # region (the padding area can contain jersey numbers, ads, etc.)
+                if cx < sb_x_min or cx > sb_x_max or cy < sb_y_min or cy > sb_y_max:
+                    continue
                 all_readings.append((frame_idx, text.strip(), float(cx), float(cy), float(conf)))
 
             frame_idx += interval_frames
@@ -805,6 +816,12 @@ class ScoreboardDetector:
         home_by_frame = self._temporal_median_filter(home_by_frame, window=15)
         away_by_frame = self._temporal_median_filter(away_by_frame, window=15)
 
+        # Enforce monotonic non-decreasing scores: goals can't be un-scored.
+        # After median filtering, any remaining dips are OCR errors (e.g., thin
+        # "1" digit missed → reads as "0"). Clamp each value to the running max.
+        home_by_frame = self._enforce_monotonic(home_by_frame)
+        away_by_frame = self._enforce_monotonic(away_by_frame)
+
         # Build combined timeline using last-known-value for missing frames
         all_frames = sorted(set(home_by_frame.keys()) | set(away_by_frame.keys()))
         if not all_frames:
@@ -855,6 +872,24 @@ class ScoreboardDetector:
             filtered[f] = int(np.median(values[start:end]))
 
         return filtered
+
+    @staticmethod
+    def _enforce_monotonic(readings_by_frame: dict[int, int]) -> dict[int, int]:
+        """Enforce monotonic non-decreasing values over time.
+
+        Goals cannot be un-scored, so the score at any point must be >= all
+        previous scores. This clamps transient dips (e.g., EasyOCR missing a
+        thin "1" digit and reading "0" instead) to the running maximum.
+        """
+        if not readings_by_frame:
+            return {}
+        result = {}
+        running_max = 0
+        for f in sorted(readings_by_frame.keys()):
+            val = readings_by_frame[f]
+            running_max = max(running_max, val)
+            result[f] = running_max
+        return result
 
     def _cluster_by_position(
         self, readings: list[tuple[int, int, float, float]], radius: float
@@ -953,19 +988,30 @@ class ScoreboardDetector:
                     # New score doesn't persist — likely stat overlay
                     continue
 
+            # Backtrack to find the first raw reading with the new score.
+            # Majority voting delays detection by ~half the window; the actual
+            # score change happened earlier in the raw data.
+            event_frame = frame_idx
+            for j in range(idx - 1, -1, -1):
+                _, rh, ra = raw_scores[j]
+                if rh == home and ra == away:
+                    event_frame = raw_scores[j][0]
+                else:
+                    break
+
             # Generate one event per goal in the transition
             for _ in range(home_diff):
                 events.append(ScoreEvent(
-                    timestamp=frame_idx / fps,
-                    frame=frame_idx,
+                    timestamp=event_frame / fps,
+                    frame=event_frame,
                     home_score=home,
                     away_score=away,
                     team="home",
                 ))
             for _ in range(away_diff):
                 events.append(ScoreEvent(
-                    timestamp=frame_idx / fps,
-                    frame=frame_idx,
+                    timestamp=event_frame / fps,
+                    frame=event_frame,
                     home_score=home,
                     away_score=away,
                     team="away",
