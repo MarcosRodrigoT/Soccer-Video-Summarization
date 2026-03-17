@@ -56,14 +56,15 @@ Replaces hardcoded pixel coordinates with **automatic scoreboard localization vi
 2. **Build overlay mask** — Threshold the IQR map at the 8th percentile to produce a binary mask of static pixels. Apply morphological closing (51×21 kernel, 2 iterations) to bridge gaps at digit/clock positions, then opening (9×9) to remove noise. Extract connected components as candidate regions.
 3. **Split and tighten candidates** — Regions wider than 40% of the frame are split by finding significant vertical gaps (30+ empty columns) in the raw (pre-closing) mask. All candidate bounding boxes are tightened to the actual raw mask content, reversing the inflation from morphological closing.
 4. **Identify scoreboard** — Run EasyOCR on each candidate region (upscaled 4x for better digit recognition) from 3 mid-match frames. Regions are scored by OCR content: score patterns like "2-1" (+10), team abbreviations (+5), clock patterns (+3), any digit (+1), league branding like "LALIGA" (−10). The highest-scoring region is the scoreboard.
-5. **Track score changes** — Sample 1 frame every 3 seconds, crop only the cached scoreboard region, run OCR on the small crop. Two parsing strategies are used:
-   - **"X-Y" pattern matching** for classic score formats (e.g., "2-1", common in 2013-2018 broadcasts)
+5. **Track score changes** — Sample 1 frame every 3 seconds, crop only the cached scoreboard region (with 15px padding), run OCR on the small crop. OCR readings whose center falls outside the scoreboard bounding box within the padded crop are discarded, filtering out jersey numbers and advertising text that leak into the padding area. Two parsing strategies are used:
+   - **"X-Y" pattern matching** for classic score formats (e.g., "2-1", common in 2013-2018 broadcasts). Includes dot-to-dash normalization (`"2.3"` → `"2-3"`) since OCR often misreads the tiny dash separator as a dot in older broadcasts
    - **Position-cluster tracking** for modern formats where home and away scores appear as separate digits at fixed positions (common in 2020+ broadcasts)
 6. **Robustness filters** — Multiple filters prevent false detections:
    - **Layout detection**: Relative spatial spread (`dy > dx`) distinguishes vertical from horizontal scoreboard layouts
    - **Temporal median filter**: Per-cluster sliding window (15 readings) removes transient stat overlay spikes (e.g., when the scoreboard temporarily shows possession or throw counts instead of goals)
+   - **Monotonic score enforcement**: After filtering, scores are clamped to a running maximum so they never decrease — real football scores only go up
    - **Cluster concentration filter**: Rejects clusters with uniform digit distributions (clock positions) and static non-zero elements (channel branding)
-   - **Forward persistence validation**: Score transitions must persist for 8+ future readings (~24 seconds) to be accepted
+   - **Forward persistence validation**: Score transitions must persist for 8+ future readings (~24 seconds) to be accepted, with event timestamps backtracked to the first raw OCR frame showing the new score for precise timing
    - **Max jump constraint**: Only accepts score transitions where total change is $\leq 2$, filtering large stat overlay jumps
 
 This approach works regardless of scoreboard position (top, bottom, corner), layout orientation (horizontal or vertical), and handles different broadcasters and seasons automatically.
@@ -272,17 +273,17 @@ A predicted goal (from OCR score change) matches a ground truth event if it fall
 
 | Metric | Value |
 |--------|-------|
-| Goal Detection F1 (macro) | 0.869 $\pm$ 0.139 |
-| Goal Detection F1 (micro) | 0.850 |
+| Goal Detection F1 (macro) | 0.873 $\pm$ 0.141 |
+| Goal Detection F1 (micro) | 0.854 |
 | Precision (macro) | 0.900 $\pm$ 0.131 |
-| Recall (macro) | 0.842 $\pm$ 0.153 |
+| Recall (macro) | 0.850 $\pm$ 0.156 |
 | Compression | 32.7% $\pm$ 3.6% |
 | Goal Coverage | 35.9% $\pm$ 9.6% |
 | Mean tIoU | 0.210 $\pm$ 0.037 |
 | Goal Timing MAE | 51.1s $\pm$ 9.8s |
-| F1@tIoU=0.1 | 0.911 |
+| F1@tIoU=0.1 | 0.914 |
 
-Out of 138 ground truth goals: 113 true positives, 15 false positives, 25 false negatives.
+Out of 138 ground truth goals: 114 true positives, 15 false positives, 24 false negatives.
 
 ### Baselines
 
