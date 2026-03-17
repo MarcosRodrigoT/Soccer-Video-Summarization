@@ -73,12 +73,17 @@ def collect_ocr_readings(video_path: str, region: ScoreboardRegion, config):
 
     all_readings = []
     frame_idx = 0
+    pad = 15
+    # Scoreboard bounds within the padded crop
+    sb_x_min, sb_x_max = pad, pad + region.w
+    sb_y_min, sb_y_max = pad, pad + region.h
+
     while frame_idx < total_frames:
         cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
         ret, frame = cap.read()
         if not ret:
             break
-        crop = detector._crop_region(frame, region, pad=15)
+        crop = detector._crop_region(frame, region, pad=pad)
         if crop.size == 0:
             frame_idx += interval_frames
             continue
@@ -88,6 +93,9 @@ def collect_ocr_readings(video_path: str, region: ScoreboardRegion, config):
         for bbox, text, conf in results:
             cx = (bbox[0][0] + bbox[2][0]) / 2 / scale
             cy = (bbox[0][1] + bbox[2][1]) / 2 / scale
+            # Skip readings outside the scoreboard region
+            if cx < sb_x_min or cx > sb_x_max or cy < sb_y_min or cy > sb_y_max:
+                continue
             all_readings.append((frame_idx, text.strip(), float(cx), float(cy), float(conf)))
         frame_idx += interval_frames
 
@@ -178,20 +186,70 @@ def extract_digit_clusters(readings, fps):
     home_raw = {f: d for f, d in home_cluster[2]}
     away_raw = {f: d for f, d in away_cluster[2]}
 
-    # Filtered readings
+    # Filtered readings (median filter + monotonic enforcement)
     home_filtered = detector._temporal_median_filter(home_raw, window=15)
     away_filtered = detector._temporal_median_filter(away_raw, window=15)
+    home_monotonic = detector._enforce_monotonic(home_filtered)
+    away_monotonic = detector._enforce_monotonic(away_filtered)
+
+    return {
+        "home_raw": home_raw,
+        "away_raw": away_raw,
+        "home_filtered": home_monotonic,
+        "away_filtered": away_monotonic,
+        "home_pos": (home_cluster[0], home_cluster[1]),
+        "away_pos": (away_cluster[0], away_cluster[1]),
+        "layout": layout,
+        "all_clusters": clusters,
+        "score_clusters": score_clusters,
+    }
+
+
+def extract_xy_pattern_scores(readings, fps):
+    """Extract Strategy 1 (X-Y pattern) score readings for visualization."""
+    scores = []  # (frame_idx, home, away)
+    for frame_idx, text, cx, cy, conf in readings:
+        # Apply same dot normalization as pipeline
+        text_norm = re.sub(r"(?<!\d)(\d)\s*\.\s*(\d)(?!\d)", r"\1-\2", text)
+        m = SCORE_WITH_SEP.search(text_norm)
+        if m:
+            home = int(m.group(1))
+            away = int(m.group(2))
+            if home <= 12 and away <= 12:
+                scores.append((frame_idx, home, away))
+
+    if len(scores) < 10:
+        return None
+
+    # Build per-frame home/away timelines
+    home_raw = {f: h for f, h, a in scores}
+    away_raw = {f: a for f, h, a in scores}
+
+    # Apply majority voting (same as pipeline _detect_score_changes)
+    window = 11
+    stable = []
+    sorted_scores = sorted(scores, key=lambda x: x[0])
+    for i in range(len(sorted_scores)):
+        start = max(0, i - window // 2)
+        end = min(len(sorted_scores), i + window // 2 + 1)
+        counts = Counter((h, a) for _, h, a in sorted_scores[start:end])
+        (h, a), _ = counts.most_common(1)[0]
+        stable.append((sorted_scores[i][0], h, a))
+
+    home_filtered = {f: h for f, h, a in stable}
+    away_filtered = {f: a for f, h, a in stable}
+
+    # Apply monotonic enforcement
+    detector = ScoreboardDetector()
+    home_filtered = detector._enforce_monotonic(home_filtered)
+    away_filtered = detector._enforce_monotonic(away_filtered)
 
     return {
         "home_raw": home_raw,
         "away_raw": away_raw,
         "home_filtered": home_filtered,
         "away_filtered": away_filtered,
-        "home_pos": (home_cluster[0], home_cluster[1]),
-        "away_pos": (away_cluster[0], away_cluster[1]),
-        "layout": layout,
-        "all_clusters": clusters,
-        "score_clusters": score_clusters,
+        "strategy": "X-Y pattern",
     }
 
 
@@ -219,19 +277,33 @@ def get_annotated_frames(video_path, region, n_frames=3):
         cv2.rectangle(annotated, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         # Crop and OCR the scoreboard
-        crop = detector._crop_region(frame, region, pad=15)
+        pad = 15
+        crop = detector._crop_region(frame, region, pad=pad)
         scale = 4
         upscaled = cv2.resize(crop, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
         results = ocr.readtext(upscaled)
 
-        # Draw OCR results on the crop (at upscaled size)
+        # Scoreboard bounds in upscaled crop coordinates
+        sb_x_min = pad * scale
+        sb_x_max = (pad + region.w) * scale
+        sb_y_min = pad * scale
+        sb_y_max = (pad + region.h) * scale
+
+        # Draw OCR results on the crop (at upscaled size), filtering outside bbox
         crop_annotated = upscaled.copy()
+        filtered_results = []
         for bbox, text, conf in results:
+            cx = (bbox[0][0] + bbox[2][0]) / 2
+            cy = (bbox[0][1] + bbox[2][1]) / 2
+            inside = sb_x_min <= cx <= sb_x_max and sb_y_min <= cy <= sb_y_max
             pts = np.array(bbox, dtype=np.int32)
-            cv2.polylines(crop_annotated, [pts], True, (0, 255, 0), 2)
+            color = (0, 255, 0) if inside else (128, 128, 128)
+            cv2.polylines(crop_annotated, [pts], True, color, 2)
             cv2.putText(crop_annotated, f"{text} ({conf:.2f})",
                         (int(pts[0][0]), int(pts[0][1]) - 5),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+            if inside:
+                filtered_results.append((text, conf))
 
         timestamp = frame_idx / props["fps"]
         frames_out.append({
@@ -239,7 +311,7 @@ def get_annotated_frames(video_path, region, n_frames=3):
             "timestamp": timestamp,
             "full_frame": cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB),
             "crop": cv2.cvtColor(crop_annotated, cv2.COLOR_BGR2RGB),
-            "ocr_results": [(text, conf) for _, text, conf in results],
+            "ocr_results": filtered_results,
         })
 
     cap.release()
@@ -292,6 +364,9 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
     print(f"  Collecting OCR readings for {match_id}...")
     readings, _ = collect_ocr_readings(video_path, region, config)
     cluster_data = extract_digit_clusters(readings, fps)
+    # Fallback to Strategy 1 (X-Y pattern) if no clusters found
+    if cluster_data is None:
+        cluster_data = extract_xy_pattern_scores(readings, fps)
 
     print(f"  Extracting {n_annotated_frames} annotated frames...")
     annotated_frames = get_annotated_frames(video_path, region, n_annotated_frames)
@@ -380,7 +455,8 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
             ax_raw.axvspan(start / 60, end / 60, alpha=0.15, color="green")
 
         ax_raw.set_ylabel("Digit value")
-        ax_raw.set_title("Raw OCR digit readings per cluster (before filtering)", fontsize=11)
+        strategy_name = cluster_data.get("strategy", "position clusters")
+        ax_raw.set_title(f"Raw OCR score readings — {strategy_name} (before filtering)", fontsize=11)
         ax_raw.legend(loc="upper left", fontsize=8)
         ax_raw.set_ylim(-0.5, max(max(hr_v + [0]), max(ar_v + [0])) + 1)
         ax_raw.set_xlim(0, total_duration / 60)
@@ -404,7 +480,7 @@ def generate_diagnostic_figure(match_id, match_info, config, output_dir,
             ax_filt.axvspan(start / 60, end / 60, alpha=0.15, color="green")
 
         ax_filt.set_ylabel("Score value")
-        ax_filt.set_title("After temporal median filter (window=15)", fontsize=11)
+        ax_filt.set_title("After temporal median filter + monotonic enforcement", fontsize=11)
         ax_filt.legend(loc="upper left", fontsize=8)
         ax_filt.set_ylim(-0.5, max(max(hf_v + [0]), max(af_v + [0])) + 1)
         ax_filt.set_xlim(0, total_duration / 60)
