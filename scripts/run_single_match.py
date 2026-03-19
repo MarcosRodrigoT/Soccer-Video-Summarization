@@ -209,6 +209,14 @@ def run_pipeline(
         (1 - total_highlight / total_duration) * 100 if total_duration > 0 else 0,
     )
 
+    # --- Stage 5b: Goal-refined highlights ---
+    goal_times = [e.timestamp for e in score_events]
+    goal_highlights = assembler.refine_with_goals(
+        highlights, goal_times, fps=props["fps"]
+    )
+    goal_hl_df = assembler.highlights_to_dataframe(goal_highlights)
+    goal_hl_df.to_csv(out / "goal_highlights.csv", index=False)
+
     # --- Stage 6: Export highlight video ---
     if not skip_video_export:
         highlight_video = out / "highlight_video.mp4"
@@ -238,6 +246,16 @@ def run_pipeline(
         total_video_duration=total_duration,
     )
 
+    # Evaluate goal-refined highlights separately
+    goal_highlight_segments = [(h.start_time, h.end_time) for h in goal_highlights]
+    goal_ref_result = evaluator.evaluate_match(
+        match_id=match_id + "_goal_refined",
+        highlight_segments=goal_highlight_segments,
+        predicted_goal_times=predicted_goal_times,
+        gt_events=gt_events,
+        total_video_duration=total_duration,
+    )
+
     # Save evaluation results
     eval_results = {
         "match_id": match_id,
@@ -262,6 +280,17 @@ def run_pipeline(
         "tiou_per_event": result.tiou_per_event,
         "f1_at_tiou": result.f1_at_tiou,
         "timings": timings,
+        # Goal-refined highlights metrics
+        "goal_refined": {
+            "f1": goal_ref_result.f1,
+            "num_segments": goal_ref_result.num_segments,
+            "mean_segment_duration": goal_ref_result.mean_segment_duration,
+            "compression_ratio": goal_ref_result.compression_ratio,
+            "highlight_duration": goal_ref_result.highlight_duration,
+            "mean_tiou": goal_ref_result.mean_tiou,
+            "goal_timing_mae": goal_ref_result.goal_timing_mae,
+            "goal_coverage": goal_ref_result.goal_coverage,
+        },
     }
     def _json_default(obj):
         if hasattr(obj, 'item'):  # numpy scalar

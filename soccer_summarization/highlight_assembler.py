@@ -131,6 +131,79 @@ class HighlightAssembler:
 
         return merged
 
+    def refine_with_goals(
+        self,
+        highlights: list[HighlightSegment],
+        goal_times: list[float],
+        fps: int = 25,
+    ) -> list[HighlightSegment]:
+        """Refine highlights by intersecting with goal context windows.
+
+        For each detected goal, creates a window [goal - context_before,
+        goal + context_after] and keeps only highlight content within these
+        windows.  Falls back to unrefined highlights if no goals detected.
+        """
+        if not goal_times:
+            logger.info("No goal times for refinement, returning original highlights")
+            return highlights
+
+        before = self.config.goal_context_before
+        after = self.config.goal_context_after
+
+        # Build goal windows
+        goal_windows = [(max(0, t - before), t + after) for t in goal_times]
+
+        # Merge overlapping goal windows
+        goal_windows.sort()
+        merged_windows = [goal_windows[0]]
+        for start, end in goal_windows[1:]:
+            if start <= merged_windows[-1][1]:
+                merged_windows[-1] = (merged_windows[-1][0], max(merged_windows[-1][1], end))
+            else:
+                merged_windows.append((start, end))
+
+        # Intersect highlights with goal windows
+        refined = []
+        for h in highlights:
+            for win_start, win_end in merged_windows:
+                overlap_start = max(h.start_time, win_start)
+                overlap_end = min(h.end_time, win_end)
+                if overlap_start < overlap_end:
+                    refined.append({
+                        "start_frame": int(overlap_start * fps),
+                        "end_frame": int(overlap_end * fps),
+                        "start_time": overlap_start,
+                        "end_time": overlap_end,
+                        "duration": overlap_end - overlap_start,
+                    })
+
+        if not refined:
+            logger.warning("Goal refinement produced no segments, returning originals")
+            return highlights
+
+        # Merge adjacent refined segments
+        refined.sort(key=lambda x: x["start_time"])
+        merged = self._merge_adjacent(refined, fps)
+
+        result = [
+            HighlightSegment(
+                segment_id=i + 1,
+                start_frame=seg["start_frame"],
+                end_frame=seg["end_frame"],
+                start_time=seg["start_time"],
+                end_time=seg["end_time"],
+                duration=seg["duration"],
+            )
+            for i, seg in enumerate(merged)
+        ]
+
+        total_dur = sum(h.duration for h in result)
+        logger.info(
+            "Goal-refined highlights: %d segments, total %.1fs (from %d original)",
+            len(result), total_dur, len(highlights),
+        )
+        return result
+
     @staticmethod
     def export_video(
         highlights: list[HighlightSegment],

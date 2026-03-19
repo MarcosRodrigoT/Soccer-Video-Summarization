@@ -77,6 +77,8 @@ Computes the intersection of long shots and play moments:
 2. **Intersect**: Keep only segments that are both a long shot AND classified as play
 3. **Merge**: Combine adjacent segments with gaps $\leq 0.5$ seconds
 
+An optional **goal-refined highlights** mode intersects the play-based highlights with OCR-detected goal context windows ($\pm 30$s before, $+15$s after each score change). This produces much tighter summaries (98% compression vs 33%) focused exclusively on goal moments, though temporal alignment is limited by OCR timestamp lag (~50s behind the actual goal due to replay/scoreboard update delays).
+
 ### Example Output
 
 The figure below shows the pipeline output for a 2-minute test clip from Match 1 (Valencia 2-3 FC Barcelona, 2013/14). From top to bottom: detected shot boundaries, player count with play/no-play classification, extracted highlights, and ground truth goal annotations.
@@ -112,6 +114,8 @@ scripts/                       # Entry points and analysis
     generate_figures.py        # Generate journal-quality figures
     generate_tables.py         # Generate LaTeX-ready result tables
     generate_debug_visuals.py  # Visual debug outputs for each pipeline stage
+    generate_match_dashboard.py   # Per-match evaluation dashboards (fast, CSV-only)
+    generate_ocr_paper_figure.py  # Publication-quality OCR event figures
     visualize_ocr_diagnostics.py  # Per-match OCR diagnostic images
 
 config/                        # Configuration files
@@ -122,7 +126,9 @@ docs/figures/                  # Generated figures for documentation
 results/                       # Auto-populated by the pipeline
     per_match/                 # One directory per match with all intermediates
     aggregate/                 # Summary tables, plots, aggregate metrics
+    dashboards/                # Per-match evaluation dashboard PNGs
     ocr_diagnostics/           # Per-match OCR diagnostic images
+    ocr_paper_figures/         # Per-match OCR event visualizations
     baselines/                 # Baseline comparison results
     ablation/                  # Parameter ablation results
     component_analysis/        # Component contribution analysis
@@ -227,6 +233,16 @@ python scripts/generate_tables.py
 # OCR diagnostics (IQR map, overlay mask, annotated frames, score timeline)
 python scripts/visualize_ocr_diagnostics.py
 python scripts/visualize_ocr_diagnostics.py --matches Match1,Match5,Match10
+
+# Per-match evaluation dashboards (fast, no video needed)
+python scripts/generate_match_dashboard.py
+python scripts/generate_match_dashboard.py --matches Match1,Match6,Match8
+
+# Per-match debug visuals (shot grids, YOLO clips, play timelines, etc.)
+python scripts/generate_debug_visuals.py --match-id Match1
+
+# OCR paper figures (before/at/after frames for each goal event)
+python scripts/generate_ocr_paper_figure.py
 ```
 
 ### Pipeline outputs (per match)
@@ -242,8 +258,10 @@ Each processed match produces the following files in `results/per_match/MatchN/`
 | `score_events.csv` | Detected score changes from OCR |
 | `scoreboard_region.json` | Detected scoreboard bounding box |
 | `highlights.csv` | Final highlight segments |
+| `goal_highlights.csv` | Goal-refined highlight segments (OCR context windows) |
 | `highlight_video.mp4` | Exported highlight video |
 | `evaluation.json` | All metrics (P/R/F1, compression, coverage, timings) |
+| `debug/` | 9 visual debug outputs (shot grids, YOLO clips, timelines, etc.) |
 
 All intermediate results are cached — re-running the pipeline on the same match will skip completed stages.
 
@@ -273,10 +291,10 @@ A predicted goal (from OCR score change) matches a ground truth event if it fall
 
 | Metric | Value |
 |--------|-------|
-| Goal Detection F1 (macro) | 0.979 $\pm$ 0.056 |
+| Goal Detection F1 (macro) | 0.979 $\pm$ 0.049 |
 | Goal Detection F1 (micro) | 0.975 |
-| Precision (macro) | 0.983 $\pm$ 0.051 |
-| Recall (macro) | 0.976 $\pm$ 0.063 |
+| Precision (macro) | 0.983 $\pm$ 0.047 |
+| Recall (macro) | 0.976 $\pm$ 0.056 |
 | Compression | 32.7% $\pm$ 3.6% |
 | Goal Coverage | 35.9% $\pm$ 9.6% |
 | Mean tIoU | 0.210 $\pm$ 0.037 |
@@ -293,7 +311,7 @@ Out of 138 ground truth goals: 134 true positives, 3 false positives, 4 false ne
 | Uniform Sampling | 0.000 | System significantly better ($p < 0.001$, large effect) |
 | Shot-Length Only | 0.000 | System significantly better ($p < 0.001$, large effect) |
 | Play-Only | 0.000 | System significantly better ($p < 0.001$, large effect) |
-| OCR-Only | 0.555 | Negligible difference |
+| OCR-Only | 0.979 | Negligible difference — OCR is the dominant component |
 | Oracle Upper Bound | 1.000 | — |
 
 ### Ablation Studies
@@ -336,6 +354,8 @@ ocr_scoreboard:
 highlight_assembler:
   min_shot_duration: 4.0       # Seconds
   merge_gap_threshold: 0.5     # Seconds
+  goal_context_before: 30.0    # Seconds before goal for refined highlights
+  goal_context_after: 15.0     # Seconds after goal for refined highlights
 ```
 
 Match metadata (video paths, GT paths, teams, scores) is defined in `config/matches.yaml`.
