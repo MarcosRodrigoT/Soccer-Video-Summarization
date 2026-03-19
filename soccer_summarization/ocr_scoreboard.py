@@ -16,6 +16,7 @@ Uses temporal stability to distinguish score digits from clock digits:
 the clock changes every sample while scores change only at goal events.
 """
 
+import bisect
 import logging
 import re
 from collections import Counter
@@ -47,6 +48,22 @@ CLOCK_PATTERN = re.compile(r"\b(\d{1,3})[:.]\s*(\d{2})\b")
 
 # Score with separator: "X - Y" (dash only; colon matches clock text)
 SCORE_WITH_SEP = re.compile(r"\b(\d{1,2})\s*[-]\s*(\d{1,2})\b")
+
+# Common OCR confusions: letter → digit mapping for scoreboard text.
+# EasyOCR often misreads thin "1" as "l"/"I"/"|", round "0" as "O", etc.
+_CHAR_TO_DIGIT = {
+    'l': '1', 'I': '1', '|': '1', 'i': '1',
+    'O': '0', 'o': '0', 'D': '0',
+    'S': '5', 's': '5',
+    'B': '8', 'b': '6',
+    'g': '9', 'q': '9',
+    'Z': '2', 'z': '2',
+}
+
+
+def _normalize_ocr_digits(text: str) -> str:
+    """Replace common OCR letter-digit confusions with digit equivalents."""
+    return ''.join(_CHAR_TO_DIGIT.get(c, c) for c in text)
 
 
 @dataclass
@@ -583,7 +600,9 @@ class ScoreboardDetector:
             scale = 4
             upscaled = cv2.resize(crop, None, fx=scale, fy=scale,
                                   interpolation=cv2.INTER_CUBIC)
-            results = ocr.readtext(upscaled)
+            # Lower detection thresholds to catch thin "1" strokes that
+            # EasyOCR's CRAFT detector misses at default sensitivity
+            results = ocr.readtext(upscaled, text_threshold=0.5, low_text=0.3)
 
             for bbox, text, conf in results:
                 # Compute center of bbox (in upscaled coordinates, convert back)
@@ -643,7 +662,8 @@ class ScoreboardDetector:
                 # Normalize dots between single digits to dashes (OCR misreads
                 # tiny dashes as dots in classic broadcasts, e.g. "2.3" → "2-3")
                 # Only single-digit.single-digit to avoid normalizing clock "45.30"
-                text_norm = re.sub(r"(?<!\d)(\d)\s*\.\s*(\d)(?!\d)", r"\1-\2", text)
+                text_norm = _normalize_ocr_digits(text)
+                text_norm = re.sub(r"(?<!\d)(\d)\s*\.\s*(\d)(?!\d)", r"\1-\2", text_norm)
                 m = SCORE_WITH_SEP.search(text_norm)
                 if m:
                     home = int(m.group(1))
@@ -695,8 +715,9 @@ class ScoreboardDetector:
                     continue
                 if TEAM_PATTERNS.search(text_clean.upper()):
                     continue
-                if re.fullmatch(r"\d", text_clean) and conf >= 0.3:
-                    digit_readings.append((frame_idx, int(text_clean), cx, cy))
+                text_normalized = _normalize_ocr_digits(text_clean)
+                if re.fullmatch(r"\d", text_normalized) and conf >= 0.15:
+                    digit_readings.append((frame_idx, int(text_normalized), cx, cy))
 
         if len(digit_readings) < 20:
             logger.info("Too few digit readings for position clustering: %d", len(digit_readings))
@@ -797,17 +818,31 @@ class ScoreboardDetector:
             logger.info("Horizontal layout: home@x=%.0f, away@x=%.0f",
                         home_cluster[0], away_cluster[0])
 
-        # Build per-frame readings for each cluster
+        # Ghost digit inference: infer "1" when one position detected but other missing
+        ghost_home, ghost_away = self._infer_ghost_ones(
+            home_cluster, away_cluster, by_frame)
+        logger.info("Ghost inference: %d home, %d away ghost '1' readings",
+                    len(ghost_home), len(ghost_away))
+
+        # Build per-frame readings for each cluster (including ghost readings)
         home_by_frame = {}
         for f, d in home_cluster[2]:
             home_by_frame[f] = d
+        for f, d in ghost_home:
+            if f not in home_by_frame:
+                home_by_frame[f] = d
+
         away_by_frame = {}
         for f, d in away_cluster[2]:
             away_by_frame[f] = d
+        for f, d in ghost_away:
+            if f not in away_by_frame:
+                away_by_frame[f] = d
 
         logger.info(
-            "Home cluster: %d readings, Away cluster: %d readings",
-            len(home_by_frame), len(away_by_frame),
+            "Home cluster: %d readings (%d ghost), Away cluster: %d readings (%d ghost)",
+            len(home_by_frame), len(ghost_home),
+            len(away_by_frame), len(ghost_away),
         )
 
         # Apply temporal median filter to each cluster independently.
@@ -890,6 +925,81 @@ class ScoreboardDetector:
             running_max = max(running_max, val)
             result[f] = running_max
         return result
+
+    @staticmethod
+    def _infer_ghost_ones(
+        home_cluster: tuple,
+        away_cluster: tuple,
+        by_frame: dict[int, list[tuple]],
+        nearby_window: int = 10,
+    ) -> tuple[list[tuple[int, int]], list[tuple[int, int]]]:
+        """Infer '1' at score positions where OCR detected nothing.
+
+        The digit '1' is thin enough that EasyOCR's CRAFT detector often
+        produces no bounding box at all.  When one score position has a
+        detection but the other doesn't, and the missing position's
+        nearby readings are predominantly '1', the gap is filled with a
+        ghost '1' reading.
+
+        The nearby-context requirement prevents false ghosts: at score 0
+        (nearby readings are 0) or score 3 (nearby readings are 3), no
+        ghost is added.  Only when nearby readings confirm the score is
+        currently '1' does the ghost fire.
+
+        Args:
+            nearby_window: number of nearest real readings (before and
+                after) to consult when deciding the local score value.
+
+        Returns (ghost_home, ghost_away) lists of (frame_idx, 1) tuples.
+        """
+        home_frames = {f for f, d in home_cluster[2]}
+        away_frames = {f for f, d in away_cluster[2]}
+        visible_frames = set(by_frame.keys())
+
+        # Sort cluster members for binary-search of nearby readings
+        home_sorted = sorted(home_cluster[2])
+        away_sorted = sorted(away_cluster[2])
+
+        def _local_mode(sorted_members, frame_idx, k):
+            """Most common digit among the k nearest readings to frame_idx."""
+            if not sorted_members:
+                return None
+            # Binary search for insertion point
+            frames = [f for f, d in sorted_members]
+            pos = bisect.bisect_left(frames, frame_idx)
+            # Gather up to k nearest readings
+            neighbors = []
+            lo, hi = pos - 1, pos
+            while len(neighbors) < k and (lo >= 0 or hi < len(sorted_members)):
+                if lo >= 0 and hi < len(sorted_members):
+                    if frame_idx - sorted_members[lo][0] <= sorted_members[hi][0] - frame_idx:
+                        neighbors.append(sorted_members[lo][1])
+                        lo -= 1
+                    else:
+                        neighbors.append(sorted_members[hi][1])
+                        hi += 1
+                elif lo >= 0:
+                    neighbors.append(sorted_members[lo][1])
+                    lo -= 1
+                else:
+                    neighbors.append(sorted_members[hi][1])
+                    hi += 1
+            if not neighbors:
+                return None
+            return Counter(neighbors).most_common(1)[0][0]
+
+        ghost_home: list[tuple[int, int]] = []
+        ghost_away: list[tuple[int, int]] = []
+        for frame_idx in visible_frames:
+            has_home = frame_idx in home_frames
+            has_away = frame_idx in away_frames
+            if has_home and not has_away:
+                if _local_mode(away_sorted, frame_idx, nearby_window) == 1:
+                    ghost_away.append((frame_idx, 1))
+            elif has_away and not has_home:
+                if _local_mode(home_sorted, frame_idx, nearby_window) == 1:
+                    ghost_home.append((frame_idx, 1))
+        return ghost_home, ghost_away
 
     def _cluster_by_position(
         self, readings: list[tuple[int, int, float, float]], radius: float

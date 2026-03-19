@@ -273,17 +273,17 @@ A predicted goal (from OCR score change) matches a ground truth event if it fall
 
 | Metric | Value |
 |--------|-------|
-| Goal Detection F1 (macro) | 0.873 $\pm$ 0.141 |
-| Goal Detection F1 (micro) | 0.854 |
-| Precision (macro) | 0.900 $\pm$ 0.131 |
-| Recall (macro) | 0.850 $\pm$ 0.156 |
+| Goal Detection F1 (macro) | 0.979 $\pm$ 0.056 |
+| Goal Detection F1 (micro) | 0.975 |
+| Precision (macro) | 0.983 $\pm$ 0.051 |
+| Recall (macro) | 0.976 $\pm$ 0.063 |
 | Compression | 32.7% $\pm$ 3.6% |
 | Goal Coverage | 35.9% $\pm$ 9.6% |
 | Mean tIoU | 0.210 $\pm$ 0.037 |
 | Goal Timing MAE | 51.1s $\pm$ 9.8s |
 | F1@tIoU=0.1 | 0.914 |
 
-Out of 138 ground truth goals: 114 true positives, 15 false positives, 24 false negatives.
+Out of 138 ground truth goals: 134 true positives, 3 false positives, 4 false negatives. 22 of 25 matches achieve perfect F1=1.00.
 
 ### Baselines
 
