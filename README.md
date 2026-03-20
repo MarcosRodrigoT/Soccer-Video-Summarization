@@ -87,6 +87,71 @@ The figure below shows the pipeline output for a 2-minute test clip from Match 1
 
 The pipeline correctly identifies play moments (green) where 5+ players are visible, distinguishing them from replays and close-ups (pink). The 4 highlight segments total 44 seconds (35% of the clip), achieving 65% compression while covering the active play periods.
 
+### Per-Match Evaluation Dashboard
+
+For each of the 25 matches, the pipeline generates a comprehensive diagnostic dashboard that visualizes every pipeline stage and its output in a single image. These dashboards are generated from cached CSV/JSON results without requiring video access.
+
+![Match Dashboard](results/dashboards/Match1_dashboard.png)
+
+Each dashboard contains 7 panels stacked vertically:
+
+**Panel 1 — Header.** Displays the match title (teams, final score, season) and a row of key metrics: goal detection F1, true/false positives/negatives, number of GT vs predicted goals, compression ratio, mean tIoU, goal timing MAE, and total video duration. The metrics text is color-coded: green when F1 = 1.0, orange when F1 ≥ 0.8, red when F1 < 0.8.
+
+**Panel 2 — Full Match Timeline.** A horizontal multi-lane timeline spanning the entire match, with four lanes from top to bottom:
+
+- **Shots**: Each detected shot is a horizontal block whose width represents its duration. Light blue (`#90CAF9`) blocks are long shots (≥ 4s, the `min_shot_duration` threshold) that pass the shot filter. Light gray (`#E0E0E0`) blocks are short shots that get filtered out.
+- **Play/No-Play**: Blue (`#2196F3`) blocks are segments classified as active play (≥ 5 players detected). Light pink (`#FFCDD2`) blocks are no-play segments (replays, close-ups, crowd shots, halftime).
+- **Goals (GT + Pred)**: Semi-transparent red (`#F44336`, 40% opacity) horizontal bars mark the temporal extent of each ground-truth goal event (as defined by consecutive commentary segments flagged as goal). Blue (`#2196F3`) downward-pointing triangle markers indicate OCR-predicted goal timestamps. When a blue triangle falls within or near a red bar, the goal was correctly detected.
+- **Highlights**: Green (`#4CAF50`, 60% opacity) blocks in the upper half of the lane show standard highlight segments (the intersection of long shots and play segments). Orange (`#FF9800`, 80% opacity) blocks in the lower half show goal-refined highlights — these are the portions of standard highlights that overlap with OCR goal context windows. Goal-refined segments are narrower because they are the *intersection* of two things: (1) the standard highlight that was already there, and (2) a time window of [−30s, +15s] around each OCR-detected score change. If a standard highlight partially overlaps a goal window, only the overlapping portion becomes a goal-refined segment. If two goals are close together, their windows merge before intersecting. If a standard highlight falls entirely outside all goal windows, it produces no goal-refined segment at all. This is why some parts of the match have green blocks but no orange blocks beneath them.
+
+**Panel 3 — Player Count & Play Classification.** A time-series plot showing:
+
+- Light blue line (`#BBDEFB`, 40% opacity): raw player count per sampled frame (from YOLO, every 5th frame). This is very noisy, ranging from 0 to ~22.
+- Dark blue line (`#1565C0`): smoothed player count (rolling average, window = 50 frames). Shows the underlying trend clearly.
+- Red dashed horizontal line (`#F44336`): the play threshold (5 players). Frames above this line are classified as play.
+- Background shading: light blue tint for play regions, light pink tint for no-play regions (both at 15% opacity).
+- Red dotted vertical lines: ground-truth goal timestamps, so you can see what the player count looks like around goal moments.
+
+During active gameplay, the smoothed count stays around 10–15. During replays, close-ups, or halftime, it drops to 0–3. The halftime break is visible as a sustained dip to zero near the middle.
+
+**Panel 4 — Score Tracking (OCR Events vs GT Goals).** A step plot showing the detected score progression over time:
+
+- Dark blue step line (`#1565C0`): home team's cumulative score as detected by OCR. Steps up when a home goal is detected.
+- Dark red step line (`#C62828`): away team's cumulative score.
+- Colored circle markers on each step transition, with timestamps annotated in MM:SS format.
+- Light red vertical shading and dotted lines mark ground-truth goal timestamps.
+
+This panel reveals: whether OCR correctly reconstructed the final score, the timing lag between GT goals (red shading) and OCR detections (step transitions), and whether any spurious score changes occurred (e.g., from stat overlays being misread).
+
+**Panel 5 — Highlight Coverage.** Two horizontal strip charts comparing standard vs goal-refined highlights:
+
+- **Top strip ("Standard Highlights")**: Green (`#4CAF50`, 50% opacity) blocks showing where standard highlights fall across the match. Semi-transparent red (`#F44336`, 20% opacity) vertical bands mark ground-truth goal event windows.
+- **Bottom strip ("Goal-Refined Highlights")**: Orange (`#FF9800`, 70% opacity) blocks showing goal-refined highlights. The same red GT bands are overlaid.
+
+Standard highlights cover a large portion of the match (typically ~67% of the video), while goal-refined highlights are concentrated in narrow clusters around detected goals (~2% of the video). Comparing the two strips shows how much the goal refinement focuses the output.
+
+**Panel 6 — Per-Minute Highlight Density.** A bar chart with one bar per match minute (x-axis = minute number, y-axis = fraction of that minute covered by standard highlights, 0–100%):
+
+- Dark green bars (`#4CAF50`): minutes with > 80% coverage.
+- Medium green bars (`#81C784`): 30–80% coverage.
+- Light green bars (`#C8E6C9`): 1–30% coverage.
+- Light gray bars (`#F5F5F5`): 0% coverage (no highlights in that minute).
+- Red vertical lines (`#F44336`): minutes containing ground-truth goals.
+
+This gives a bird's-eye view of highlight distribution. Ideally, the red goal-minute lines should coincide with tall green bars. Since highlights are based on play classification rather than goal detection, they are distributed fairly evenly across active play, with gaps during halftime and pre/post-match.
+
+**Panel 7 — Goal Event Comparison Table.** A table with one row per ground-truth goal event plus any false positive detections:
+
+| Column | Description |
+|--------|-------------|
+| Event | "Goal 1", "Goal 2", etc. for GT events; "FP 1", etc. for false positives |
+| GT Window | Start and end times of the ground-truth event in MM:SS format |
+| GT Mid | Midpoint of the GT event window |
+| Predicted | OCR-predicted timestamp of the matched score change (or "-" if missed) |
+| Error | Absolute timing error in seconds between prediction and GT midpoint |
+| tIoU | Temporal IoU between the predicted highlight segment and the GT event window |
+| Status | **TP** (green background `#C8E6C9`): correctly detected goal. **FN** (red background `#FFCDD2`): missed goal. **FP** (orange background `#FFE0B2`): spurious detection with no matching GT event |
+
 
 ## Project Structure
 
