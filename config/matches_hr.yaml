@@ -1,0 +1,201 @@
+matches:
+  Match1:
+    away_team: FC Barcelona
+    gt_path: Laliga/csvfiles/Match1_GT.csv
+    home_team: Valencia CF
+    score: 2-3
+    season: 2013/14
+    video_path: Laliga_HR/Match1/Valencia CF - FC Barcelona (2-3) LALIGA 2013⧸2014
+      FULL MATCH [Qzrg3QDmQ4k].mp4
+  Match10:
+    away_team: Real Betis
+    gt_path: Laliga/csvfiles/Match10_GT.csv
+    home_team: FC Barcelona
+    score: 5-0
+    season: 2023/24
+    video_path: Laliga_HR/Match10/FC Barcelona 5-0 Real Betis ｜ PARTIDO COMPLETO ｜
+      LALIGA EA SPORTS 2023⧸24 [JaDHm8QNKMg].mp4
+  Match11:
+    away_team: Deportivo Alavés
+    gt_path: Laliga/csvfiles/Match11_GT.csv
+    home_team: Real Madrid
+    score: 5-0
+    season: 2023/24
+    video_path: Laliga_HR/Match11/Real Madrid 5 - 0 Deportivo Alavés ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [TLwpe2_4cUI].mp4
+  Match12:
+    away_team: FC Barcelona
+    gt_path: Laliga/csvfiles/Match12_GT.csv
+    home_team: Real Betis
+    score: 2-4
+    season: 2023/24
+    video_path: Laliga_HR/Match12/Real Betis 2 - 4 FC Barcelona ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [IpugzkfSYsc].mp4
+  Match13:
+    away_team: Atlético de Madrid
+    gt_path: Laliga/csvfiles/Match13_GT.csv
+    home_team: Girona FC
+    score: 4-3
+    season: 2023/24
+    video_path: Laliga_HR/Match13/Girona FC 4 - 3 Atlético de Madrid ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [kxT0iUxBY1c].mp4
+  Match14:
+    away_team: CA Osasuna
+    gt_path: Laliga/csvfiles/Match14_GT.csv
+    home_team: Atlético de Madrid
+    score: 1-4
+    season: 2023/24
+    video_path: Laliga_HR/Match14/Atlético de Madrid 1 - 4 CA Osasuna ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [pqTZdlpj908].mp4
+  Match15:
+    away_team: Sevilla FC
+    gt_path: Laliga/csvfiles/Match15_GT.csv
+    home_team: Girona FC
+    score: 5-1
+    season: 2023/24
+    video_path: Laliga_HR/Match15/Girona FC 5 - 1 Sevilla FC ｜ PARTIDO COMPLETO ｜
+      LALIGA EA SPORTS 2023⧸24 [vpnL4epp6lM].mp4
+  Match16:
+    away_team: UD Almería
+    gt_path: Laliga/csvfiles/Match16_GT.csv
+    home_team: Real Betis
+    score: 3-2
+    season: 2023/24
+    video_path: Laliga_HR/Match16/Real Betis 3-2 UD Almería ｜ PARTIDO COMPLETO ｜ LALIGA
+      EA SPORTS 2023⧸24 [19XdF8EfQaM].mp4
+  Match17:
+    away_team: Real Sociedad
+    gt_path: Laliga/csvfiles/Match17_GT.csv
+    home_team: Athletic Club
+    score: 2-1
+    season: 2023/24
+    video_path: Laliga_HR/Match17/Athletic Club 2 - 1 Real Sociedad ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [e1C8F5ewNa8].mp4
+  Match18:
+    away_team: UD Las Palmas
+    gt_path: Laliga/csvfiles/Match18_GT.csv
+    home_team: RC Celta
+    score: 4-1
+    season: 2023/24
+    video_path: Laliga_HR/Match18/RC Celta 4 - 1 UD Las Palmas ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [x2_vPfFriLk].mp4
+  Match19:
+    away_team: RCD Mallorca
+    gt_path: Laliga/csvfiles/Match19_GT.csv
+    home_team: Girona FC
+    score: 5-3
+    season: 2023/24
+    video_path: Laliga_HR/Match19/Girona FC 5 - 3 RCD Mallorca ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [CU5zSygQvBU].mp4
+  Match2:
+    away_team: Real Madrid
+    gt_path: Laliga/csvfiles/Match2_GT.csv
+    home_team: Real Betis
+    score: 2-3
+    season: 2020/21
+    video_path: Laliga_HR/Match2/Real Betis  2-3 Real Madrid ｜ PARTIDO COMPLETO ｜
+      LALIGA EA SPORTS 2020⧸21 [ZM4g2XlRsu0].mp4
+  Match20:
+    away_team: Real Betis
+    gt_path: Laliga/csvfiles/Match20_GT.csv
+    home_team: Rayo Vallecano
+    score: 2-0
+    season: 2023/24
+    video_path: Laliga_HR/Match20/Rayo Vallecano 2 - 0 Real Betis ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [pJU_OjS-uh0].mp4
+  Match21:
+    away_team: CA Osasuna
+    gt_path: Laliga/csvfiles/Match21_GT.csv
+    home_team: RCD Mallorca
+    score: 3-2
+    season: 2023/24
+    video_path: Laliga_HR/Match21/RCD Mallorca 3- 2 CA Osasuna ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [ocBfGGWGIxM].mp4
+  Match22:
+    away_team: Atlético de Madrid
+    gt_path: Laliga/csvfiles/Match22_GT.csv
+    home_team: Rayo Vallecano
+    score: 0-7
+    season: 2023/24
+    video_path: Laliga_HR/Match22/Rayo Vallecano 0 - 7 Atlético de Madrid ｜ PARTIDO
+      COMPLETO ｜ LALIGA EA SPORTS 2023⧸24 [xjdzdZlgITo].mp4
+  Match23:
+    away_team: Real Madrid
+    gt_path: Laliga/csvfiles/Match23_GT.csv
+    home_team: Villarreal CF
+    score: 4-4
+    season: 2023/24
+    video_path: Laliga_HR/Match23/Villarreal CF 4-4 Real Madrid ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [WdZFu3Rfn8M].mp4
+  Match24:
+    away_team: Real Madrid
+    gt_path: Laliga/csvfiles/Match24_GT.csv
+    home_team: CA Osasuna
+    score: 2-4
+    season: 2023/24
+    video_path: Laliga_HR/Match24/CA Osasuna 2 - 4 Real Madrid ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [vKJy1Zny19s].mp4
+  Match25:
+    away_team: Granada CF
+    gt_path: Laliga/csvfiles/Match25_GT.csv
+    home_team: Real Sociedad
+    score: 5-3
+    season: 2023/24
+    video_path: Laliga_HR/Match25/Real Sociedad 5 - 3 Granada CF ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [DUQkPb05UFs].mp4
+  Match3:
+    away_team: FC Barcelona
+    gt_path: Laliga/csvfiles/Match3_GT.csv
+    home_team: Real Madrid
+    score: 2-1
+    season: 2020/21
+    video_path: Laliga_HR/Match3/Real Madrid vs FC Barcelona (2-1) J30 2020⧸2021 -
+      FULL MATCH [EhodpjwTtag].mp4
+  Match4:
+    away_team: FC Barcelona
+    gt_path: Laliga/csvfiles/Match4_GT.csv
+    home_team: Rayo Vallecano
+    score: 2-3
+    season: 2018/19
+    video_path: Laliga_HR/Match4/Rayo Vallecano - FC Barcelona (2-3) LALIGA 2018⧸2019
+      FULL MATCH [0-hMkXHO8eo].mp4
+  Match5:
+    away_team: Real Madrid
+    gt_path: Laliga/csvfiles/Match5_GT.csv
+    home_team: FC Barcelona
+    score: 1-3
+    season: 2020/21
+    video_path: Laliga_HR/Match5/FC Barcelona 1 - 3 Real Madrid ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2020⧸21 [J6HGKSJi448].mp4
+  Match6:
+    away_team: FC Barcelona
+    gt_path: Laliga/csvfiles/Match6_GT.csv
+    home_team: Real Madrid
+    score: 3-2
+    season: 2023/24
+    video_path: Laliga_HR/Match6/Real Madrid 3-2 FC Barcelona ｜ PARTIDO COMPLETO ｜
+      LALIGA EA SPORTS 2023⧸24 [lPRW7d0B3BE].mp4
+  Match7:
+    away_team: FC Barcelona
+    gt_path: Laliga/csvfiles/Match7_GT.csv
+    home_team: Villarreal CF
+    score: 3-4
+    season: 2023/24
+    video_path: Laliga_HR/Match7/Villarreal CF 3 - 4 FC Barcelona ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [pqSCO4G4LW4].mp4
+  Match8:
+    away_team: Girona FC
+    gt_path: Laliga/csvfiles/Match8_GT.csv
+    home_team: FC Barcelona
+    score: 2-4
+    season: 2023/24
+    video_path: Laliga_HR/Match8/FC Barcelona 2-4 Girona FC ｜ PARTIDO COMPLETO ｜ LALIGA
+      EA SPORTS 2023⧸24 [HJ8UF-706iw].mp4
+  Match9:
+    away_team: Villarreal CF
+    gt_path: Laliga/csvfiles/Match9_GT.csv
+    home_team: FC Barcelona
+    score: 3-5
+    season: 2023/24
+    video_path: Laliga_HR/Match9/FC Barcelona 3 - 5 Villarreal CF ｜ PARTIDO COMPLETO
+      ｜ LALIGA EA SPORTS 2023⧸24 [9dC5EvrhOEc].mp4

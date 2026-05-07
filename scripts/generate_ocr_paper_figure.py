@@ -138,7 +138,8 @@ def classify_events(detected_events, gt_events, tolerance=30.0):
     return events, original_count
 
 
-def extract_event_frames(video_path, region, events, fps, total_frames, offset=30):
+def extract_event_frames(video_path, region, events, fps, total_frames, offset=30,
+                         text_scale=1.0):
     """Extract before/at/after frames for each event with scoreboard crops.
 
     Args:
@@ -148,6 +149,7 @@ def extract_event_frames(video_path, region, events, fps, total_frames, offset=3
         fps: Video FPS
         total_frames: Total video frames
         offset: Seconds before/after event center
+        text_scale: Multiplier for OCR annotation text/line sizes (default 1.0)
 
     Returns:
         List of event dicts augmented with "frames" key containing 3 frame dicts.
@@ -162,6 +164,12 @@ def extract_event_frames(video_path, region, events, fps, total_frames, offset=3
     sb_x_max = (pad + region.w) * scale
     sb_y_min = pad * scale
     sb_y_max = (pad + region.h) * scale
+
+    font_scale = 0.5 * text_scale
+    line_thickness = max(1, round(1 * text_scale))
+    poly_thickness = max(1, round(2 * text_scale))
+    text_offset = round(5 * text_scale)
+    bbox_thickness = max(2, round(2 * text_scale))
 
     for event in events:
         center_sec = event["time"]
@@ -187,7 +195,7 @@ def extract_event_frames(video_path, region, events, fps, total_frames, offset=3
             annotated = frame.copy()
             evt_color_bgr = _event_color_bgr(event["type"])
             x, y, w, h = int(region.x), int(region.y), int(region.w), int(region.h)
-            cv2.rectangle(annotated, (x, y), (x + w, y + h), evt_color_bgr, 2)
+            cv2.rectangle(annotated, (x, y), (x + w, y + h), evt_color_bgr, bbox_thickness)
 
             # Scoreboard crop with OCR annotations
             crop = detector._crop_region(frame, region, pad=pad)
@@ -202,10 +210,10 @@ def extract_event_frames(video_path, region, events, fps, total_frames, offset=3
                 inside = sb_x_min <= cx <= sb_x_max and sb_y_min <= cy <= sb_y_max
                 pts = np.array(bbox, dtype=np.int32)
                 color = (0, 255, 0) if inside else (128, 128, 128)
-                cv2.polylines(crop_annotated, [pts], True, color, 2)
+                cv2.polylines(crop_annotated, [pts], True, color, poly_thickness)
                 cv2.putText(crop_annotated, f"{text} ({conf:.2f})",
-                            (int(pts[0][0]), int(pts[0][1]) - 5),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+                            (int(pts[0][0]), int(pts[0][1]) - text_offset),
+                            cv2.FONT_HERSHEY_SIMPLEX, font_scale, color, line_thickness)
 
             ts_str = f"{int(t_sec // 60)}:{int(t_sec % 60):02d}"
             title = f"{label} ({ts_str})"
@@ -243,7 +251,8 @@ def _event_color_hex(event_type):
         return COLOR_FP
 
 
-def generate_paper_figure(match_id, match_info, config, output_dir, offset=30):
+def generate_paper_figure(match_id, match_info, config, output_dir, offset=30,
+                          text_scale=1.0, output_suffix=""):
     """Generate the paper-quality OCR figure for one match."""
     video_path = match_info["video_path"]
     gt_path = match_info["gt_path"]
@@ -295,7 +304,8 @@ def generate_paper_figure(match_id, match_info, config, output_dir, offset=30):
     if has_events:
         print(f"  Extracting frames for {n_events} events...")
         events = extract_event_frames(video_path, region, events, fps,
-                                      total_frames, offset=offset)
+                                      total_frames, offset=offset,
+                                      text_scale=text_scale)
 
     # Compute IQR map and overlay mask
     print(f"  Computing IQR map...")
@@ -540,7 +550,7 @@ def generate_paper_figure(match_id, match_info, config, output_dir, offset=30):
         fig.add_artist(con)
 
     # Save
-    out_path = output_dir / f"{match_id}_ocr_paper_figure.png"
+    out_path = output_dir / f"{match_id}_ocr_paper_figure{output_suffix}.png"
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"  Saved: {out_path}")
