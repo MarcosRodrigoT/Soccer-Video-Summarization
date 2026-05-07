@@ -26,6 +26,7 @@ def main():
     parser = argparse.ArgumentParser(description="Process all matches")
     parser.add_argument("--config", default="config/default.yaml", help="Pipeline config YAML")
     parser.add_argument("--matches", help="Comma-separated match IDs to process (default: all)")
+    parser.add_argument("--matches-yaml", default=None, help="Path to matches YAML (default: config/matches.yaml)")
     parser.add_argument("--skip-ocr", action="store_true", help="Skip OCR for all matches")
     parser.add_argument("--skip-video-export", action="store_true", help="Skip video export")
     parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING"])
@@ -37,7 +38,7 @@ def main():
     config = PipelineConfig.from_yaml(args.config)
 
     # Load match list
-    matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
+    matches_yaml = args.matches_yaml or (Path(__file__).parent.parent / "config" / "matches.yaml")
     with open(matches_yaml) as f:
         all_matches = yaml.safe_load(f)["matches"]
 
@@ -57,7 +58,7 @@ def main():
         logger.info("=" * 60)
 
         try:
-            info = load_match_info(match_id, config)
+            info = load_match_info(match_id, config, matches_yaml=matches_yaml)
             output_dir = f"{config.results_dir}/per_match/{match_id}"
 
             result = run_pipeline(

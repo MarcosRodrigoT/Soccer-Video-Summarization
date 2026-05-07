@@ -29,9 +29,10 @@ from soccer_summarization.shot_segmentation import ShotSegmenter
 from soccer_summarization.utils import get_video_properties, setup_logging
 
 
-def load_match_info(match_id: str, config: PipelineConfig) -> dict:
+def load_match_info(match_id: str, config: PipelineConfig, matches_yaml: str = None) -> dict:
     """Load match video/GT paths from matches.yaml."""
-    matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
+    if matches_yaml is None:
+        matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
     with open(matches_yaml) as f:
         data = yaml.safe_load(f)
 
