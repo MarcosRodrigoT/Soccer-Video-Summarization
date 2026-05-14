@@ -23,10 +23,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import matplotlib.transforms as mtransforms
 from matplotlib.patches import ConnectionPatch, Rectangle
 from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
+import pickle
 import yaml
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -252,14 +254,18 @@ def _event_color_hex(event_type):
 
 
 def generate_paper_figure(match_id, match_info, config, output_dir, offset=30,
-                          text_scale=1.0, output_suffix=""):
+                          text_scale=1.0, output_suffix="", results_dir=None):
     """Generate the paper-quality OCR figure for one match."""
     video_path = match_info["video_path"]
     gt_path = match_info["gt_path"]
+    goals_path = match_info.get("goals_path")
     score = match_info["score"]
     home_team = match_info.get("home_team", "Home")
     away_team = match_info.get("away_team", "Away")
-    results_dir = Path(f"results/per_match/{match_id}")
+    if results_dir is None:
+        results_dir = Path(f"results/per_match/{match_id}")
+    else:
+        results_dir = Path(results_dir) / match_id
 
     # Load scoreboard region
     region_path = results_dir / "scoreboard_region.json"
@@ -270,10 +276,19 @@ def generate_paper_figure(match_id, match_info, config, output_dir, offset=30,
         rj = json.load(f)
     region = ScoreboardRegion(x=rj["x"], y=rj["y"], w=rj["w"], h=rj["h"])
 
-    # Load GT events
+    # Video properties (needed for frame→time conversion before GT loading)
+    props = get_video_properties(video_path)
+    fps = props["fps"]
+    total_frames = props["total_frames"]
+    total_duration = props["duration"]
+
+    # Load GT events — prefer frame-level annotations when available
     evaluator = Evaluator(config.evaluation)
-    gt_df = evaluator.load_ground_truth(gt_path)
-    gt_events = evaluator.extract_goal_events(gt_df)
+    if goals_path:
+        gt_events = evaluator.load_ground_truth_frame_level(goals_path, fps)
+    else:
+        gt_df = evaluator.load_ground_truth(gt_path)
+        gt_events = evaluator.extract_goal_events(gt_df)
     gt_times = [(e.start_time, e.end_time) for e in gt_events]
 
     # Load detected events
@@ -285,12 +300,6 @@ def generate_paper_figure(match_id, match_info, config, output_dir, offset=30,
             detected_events = list(se_df.itertuples(index=False))
         except (pd.errors.EmptyDataError, KeyError):
             pass
-
-    # Video properties
-    props = get_video_properties(video_path)
-    fps = props["fps"]
-    total_frames = props["total_frames"]
-    total_duration = props["duration"]
 
     # Classify events
     events, original_event_count = classify_events(
@@ -307,10 +316,16 @@ def generate_paper_figure(match_id, match_info, config, output_dir, offset=30,
                                       total_frames, offset=offset,
                                       text_scale=text_scale)
 
-    # Compute IQR map and overlay mask
-    print(f"  Computing IQR map...")
+    # Compute IQR map and overlay mask — cached per match
     detector = ScoreboardDetector(config.ocr_scoreboard)
-    std_map = detector.find_static_overlays(video_path)
+    iqr_cache = results_dir / "iqr_map.npy"
+    if iqr_cache.exists():
+        print(f"  Loading cached IQR map...")
+        std_map = np.load(str(iqr_cache))
+    else:
+        print(f"  Computing IQR map...")
+        std_map = detector.find_static_overlays(video_path)
+        np.save(str(iqr_cache), std_map)
     overlay_mask, raw_mask = detector.build_overlay_mask(std_map)
 
     # Get sample frame near a GT event (more relevant than mid-video)
@@ -333,9 +348,17 @@ def generate_paper_figure(match_id, match_info, config, output_dir, offset=30,
     else:
         sample_frame_rgb = np.zeros((480, 854, 3), dtype=np.uint8)
 
-    # Collect OCR readings for timeline
-    print(f"  Collecting OCR readings...")
-    readings, _ = collect_ocr_readings(video_path, region, config)
+    # Collect OCR readings for timeline — cached per match
+    readings_cache = results_dir / "ocr_readings_figure.pkl"
+    if readings_cache.exists():
+        print(f"  Loading cached OCR readings...")
+        with open(readings_cache, "rb") as f:
+            readings = pickle.load(f)
+    else:
+        print(f"  Collecting OCR readings...")
+        readings, _ = collect_ocr_readings(video_path, region, config)
+        with open(readings_cache, "wb") as f:
+            pickle.dump(readings, f)
     cluster_data = extract_digit_clusters(readings, fps)
     if cluster_data is None:
         cluster_data = extract_xy_pattern_scores(readings, fps)
@@ -484,15 +507,44 @@ def generate_paper_figure(match_id, match_info, config, output_dir, offset=30,
                          label="Away")
         y_max = max(max(hf_v + [0]), max(af_v + [0])) + 1
 
-    # GT event shading
+    # GT events: tolerance band + dashed reference line + inverted-triangle marker.
+    # For point events (start==end, from frame-level GT) the axvspan has zero width,
+    # so we always use the explicit marker approach regardless of event type.
+    tolerance_min = config.evaluation.tolerance_window / 60
+    # Blended transform: data x, axes y — so marker sits just above the top border.
+    top_trans_tl = mtransforms.blended_transform_factory(
+        ax_timeline.transData, ax_timeline.transAxes)
     for i_gt, (start, end) in enumerate(gt_times):
-        ax_timeline.axvspan(start / 60, end / 60, alpha=0.25, color="green",
-                            label="GT goal" if i_gt == 0 else None)
+        t_min = start / 60
+        is_point = abs(end - start) < 1.0
+        if is_point:
+            ax_timeline.axvspan(
+                t_min - tolerance_min, t_min + tolerance_min,
+                alpha=0.12, color="#4caf50", zorder=1,
+                label="GT ±tolerance" if i_gt == 0 else None)
+            ax_timeline.axvline(
+                t_min, color="#1b5e20", linewidth=1.6,
+                linestyle="--", alpha=0.9, zorder=2,
+                label="GT scoreboard update" if i_gt == 0 else None)
+        else:
+            ax_timeline.axvspan(
+                t_min, end / 60, alpha=0.25, color="#4caf50", zorder=1,
+                label="GT goal" if i_gt == 0 else None)
+            ax_timeline.axvline(
+                t_min, color="#1b5e20", linewidth=1.6,
+                linestyle="--", alpha=0.9, zorder=2,
+                label=None)
+        # Triangle marker just above top border (never obscured by detection lines)
+        ax_timeline.plot(
+            t_min, 1.04, marker="v", color="#1b5e20", markersize=9,
+            transform=top_trans_tl, clip_on=False, zorder=6,
+            label=None)
 
-    # Detected event lines
+    # Detected event lines (drawn above GT layers)
     for i_det, ev in enumerate(detected_events):
-        ax_timeline.axvline(ev.timestamp / 60, color="purple", linewidth=2,
-                            alpha=0.7, label="Detected" if i_det == 0 else None)
+        ax_timeline.axvline(ev.timestamp / 60, color="#7b1fa2", linewidth=1.8,
+                            alpha=0.85, zorder=3,
+                            label="Detected" if i_det == 0 else None)
 
     ax_timeline.set_title("Filtered scores (median + monotonic)", fontsize=10)
     ax_timeline.set_ylabel("Score")
@@ -519,8 +571,22 @@ def generate_paper_figure(match_id, match_info, config, output_dir, offset=30,
         ax_raw.scatter(ar_t, ar_v, s=3, alpha=0.4, c="red", label="Away raw")
         y_max_raw = max(max(hr_v + [0]), max(ar_v + [0])) + 1
 
+    top_trans_raw = mtransforms.blended_transform_factory(
+        ax_raw.transData, ax_raw.transAxes)
     for i_gt, (start, end) in enumerate(gt_times):
-        ax_raw.axvspan(start / 60, end / 60, alpha=0.15, color="green")
+        t_min = start / 60
+        is_point = abs(end - start) < 1.0
+        if is_point:
+            ax_raw.axvspan(t_min - tolerance_min, t_min + tolerance_min,
+                           alpha=0.10, color="#4caf50", zorder=1)
+            ax_raw.axvline(t_min, color="#1b5e20", linewidth=1.4,
+                           linestyle="--", alpha=0.85, zorder=2)
+        else:
+            ax_raw.axvspan(t_min, end / 60, alpha=0.15, color="#4caf50", zorder=1)
+            ax_raw.axvline(t_min, color="#1b5e20", linewidth=1.4,
+                           linestyle="--", alpha=0.85, zorder=2)
+        ax_raw.plot(t_min, 1.04, marker="v", color="#1b5e20", markersize=8,
+                    transform=top_trans_raw, clip_on=False, zorder=6)
 
     strategy_name = cluster_data.get("strategy", "position clusters") if cluster_data else "N/A"
     ax_raw.set_title(f"Raw OCR readings — {strategy_name}", fontsize=10)
@@ -561,7 +627,14 @@ def main():
         description="Generate paper-quality OCR scoreboard figures")
     parser.add_argument("--matches", help="Comma-separated match IDs (default: all)")
     parser.add_argument("--config", default="config/default.yaml")
+    parser.add_argument("--matches-yaml", default=None,
+                        help="Path to matches YAML (default: config/matches.yaml)")
+    parser.add_argument("--results-dir", default=None,
+                        help="Base dir containing per_match/<id>/ results "
+                             "(default: results/per_match)")
     parser.add_argument("--output-dir", default="results/ocr_paper_figures")
+    parser.add_argument("--output-suffix", default="",
+                        help="Suffix appended to output filenames before .png")
     parser.add_argument("--offset", type=int, default=30,
                         help="Seconds before/after event for frame extraction")
     args = parser.parse_args()
@@ -572,9 +645,11 @@ def main():
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
-    with open(matches_yaml) as f:
-        all_matches = list(yaml.safe_load(f)["matches"].keys())
+    matches_yaml_path = Path(args.matches_yaml) if args.matches_yaml else \
+        Path(__file__).parent.parent / "config" / "matches.yaml"
+    with open(matches_yaml_path) as f:
+        matches_data = yaml.safe_load(f)
+    all_matches = list(matches_data["matches"].keys())
 
     if args.matches:
         match_ids = [m.strip() for m in args.matches.split(",")]
@@ -585,10 +660,12 @@ def main():
         print(f"\n{'=' * 60}")
         print(f"Processing {match_id}")
         print(f"{'=' * 60}")
-        info = load_match_info(match_id, config)
+        info = load_match_info(match_id, config, matches_yaml=str(matches_yaml_path))
         try:
             generate_paper_figure(match_id, info, config, output_dir,
-                                  offset=args.offset)
+                                  offset=args.offset,
+                                  output_suffix=args.output_suffix,
+                                  results_dir=args.results_dir)
         except Exception as e:
             print(f"  ERROR: {e}")
             import traceback

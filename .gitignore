@@ -17,6 +17,10 @@ venv/
 results/
 data/models/*.pt
 
+# Figure generation caches (derived, per-match binary files)
+results_hr/**/iqr_map.npy
+results_hr/**/ocr_readings_figure.pkl
+
 # OS
 .DS_Store
 Thumbs.db

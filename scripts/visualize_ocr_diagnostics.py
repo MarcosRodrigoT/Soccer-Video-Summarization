@@ -50,13 +50,16 @@ def _mmss_formatter(x_minutes, _pos):
     return f"{total_sec // 60}:{total_sec % 60:02d}"
 
 
-def load_match_info(match_id: str, config: PipelineConfig) -> dict:
-    matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
+def load_match_info(match_id: str, config: PipelineConfig, matches_yaml=None) -> dict:
+    if matches_yaml is None:
+        matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
     with open(matches_yaml) as f:
         data = yaml.safe_load(f)
     info = data["matches"][match_id]
     info["video_path"] = str(Path(config.data_dir) / info["video_path"])
     info["gt_path"] = str(Path(config.data_dir) / info["gt_path"])
+    if "goals_path" in info:
+        info["goals_path"] = str(Path(config.data_dir) / info["goals_path"])
     return info
 
 

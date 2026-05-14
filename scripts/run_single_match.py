@@ -42,6 +42,8 @@ def load_match_info(match_id: str, config: PipelineConfig, matches_yaml: str = N
     info = data["matches"][match_id]
     info["video_path"] = str(Path(config.data_dir) / info["video_path"])
     info["gt_path"] = str(Path(config.data_dir) / info["gt_path"])
+    if "goals_path" in info:
+        info["goals_path"] = str(Path(config.data_dir) / info["goals_path"])
     return info
 
 
@@ -53,6 +55,7 @@ def run_pipeline(
     match_id: str = "unknown",
     skip_ocr: bool = False,
     skip_video_export: bool = False,
+    goals_path: str = None,
 ):
     """Run the full pipeline on a single match."""
     logger = logging.getLogger(__name__)
@@ -233,8 +236,12 @@ def run_pipeline(
     # --- Stage 7: Evaluation ---
     logger.info("Stage 7: Evaluation against ground truth...")
     evaluator = Evaluator(config.evaluation)
-    gt_df = evaluator.load_ground_truth(gt_path)
-    gt_events = evaluator.extract_goal_events(gt_df)
+    if goals_path:
+        gt_events = evaluator.load_ground_truth_frame_level(goals_path, props["fps"])
+        logger.info("  Using frame-level GT from %s", goals_path)
+    else:
+        gt_df = evaluator.load_ground_truth(gt_path)
+        gt_events = evaluator.extract_goal_events(gt_df)
 
     predicted_goal_times = [e.timestamp for e in score_events]
     highlight_segments = [(h.start_time, h.end_time) for h in highlights]
@@ -326,6 +333,7 @@ def main():
         info = load_match_info(args.match_id, config)
         video_path = info["video_path"]
         gt_path = info["gt_path"]
+        goals_path = info.get("goals_path")
         match_id = args.match_id
         output_dir = args.output_dir or f"{config.results_dir}/per_match/{match_id}"
     else:
@@ -333,6 +341,7 @@ def main():
             parser.error("--gt is required when using --video")
         video_path = args.video
         gt_path = args.gt
+        goals_path = None
         match_id = Path(video_path).stem[:20]
         output_dir = args.output_dir or f"{config.results_dir}/per_match/{match_id}"
 
@@ -344,6 +353,7 @@ def main():
         match_id=match_id,
         skip_ocr=args.skip_ocr,
         skip_video_export=args.skip_video_export,
+        goals_path=goals_path,
     )
 
 

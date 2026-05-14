@@ -122,6 +122,28 @@ class Evaluator:
                 continue
         raise ValueError(f"Cannot read GT file: {gt_path}")
 
+    def load_ground_truth_frame_level(self, goals_path: str, fps: float) -> list[GoalEvent]:
+        """Load frame-level ground truth from goals.csv.
+
+        Each row is one goal. Uses end_frame_scoreboard as the reference timestamp —
+        the moment the broadcast scoreboard first reflects the new score.
+        """
+        for encoding in ("utf-8-sig", "utf-8", "latin-1"):
+            try:
+                df = pd.read_csv(goals_path, encoding=encoding)
+                break
+            except (UnicodeDecodeError, pd.errors.ParserError):
+                continue
+        else:
+            raise ValueError(f"Cannot read goals file: {goals_path}")
+        events = []
+        for _, row in df.iterrows():
+            t = float(row["end_frame_scoreboard"]) / fps
+            events.append(GoalEvent(start_time=t, end_time=t, team="any"))
+        events.sort(key=lambda e: e.start_time)
+        logger.info("Loaded %d frame-level GT events from %s", len(events), goals_path)
+        return events
+
     def extract_goal_events(self, gt_df: pd.DataFrame) -> list[GoalEvent]:
         """Group consecutive GoalGT=1 segments into discrete goal events.
 
