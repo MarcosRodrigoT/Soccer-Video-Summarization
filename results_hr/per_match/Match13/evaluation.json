@@ -9,44 +9,53 @@
   "total_video_duration": 6390.36,
   "highlight_duration": 4326.920000000001,
   "compression_ratio": 0.3228988664175413,
-  "goal_coverage": 0.3812208757514145,
+  "goal_coverage": 0.0,
   "num_gt_events": 7,
   "num_predicted_goals": 7,
   "num_highlights": 185,
   "num_segments": 185,
   "mean_segment_duration": 23.388756756756763,
-  "mean_tiou": 0.20504560456397952,
-  "goal_timing_mae": 56.47228571428564,
+  "mean_tiou": 0.3083392516011765,
+  "goal_timing_mae": 22.3085714285714,
   "tiou_per_event": [
-    0.24140207710235648,
-    0.17931188137194648,
-    0.2354203252092272,
-    0.12549400758967166,
-    0.2625814156244745,
-    0.2144592443662554,
-    0.17665028068392497
+    0.326583592938733,
+    0.25200000000000006,
+    0.38865419432709586,
+    0.29266666666666574,
+    0.3468240584598137,
+    0.3689440993788778,
+    0.1827021494370493
   ],
   "f1_at_tiou": {
     "0.1": 0.9333333333333333,
-    "0.3": 0.0,
+    "0.3": 0.5333333333333333,
     "0.5": 0.0,
     "0.7": 0.0
   },
   "timings": {
-    "shot_segmentation": 139.4695098400116,
-    "object_detection": 1842.5004694461823,
-    "play_classifier": 1.7171590328216553,
-    "ocr_scoreboard": 230.5237774848938,
-    "highlight_assembly": 0.0066661834716796875
+    "highlight_assembly": 0.006437778472900391
   },
+  "clip_iou_mean": 0.6098890050811234,
+  "clip_coverage_mean": 0.6426474631206275,
+  "clip_precision_mean": 0.7950715942425989,
+  "clip_start_mae": 7.663999999999862,
+  "clip_end_mae": 0.5119999999999493,
+  "clip_iou_per_goal": [
+    0.5886255924170618,
+    0.0,
+    0.7750952986022897,
+    0.8403547671840291,
+    0.6759156492785836,
+    0.7793427230047765
+  ],
   "goal_refined": {
     "f1": 0.8571428571428571,
     "num_segments": 13,
-    "mean_segment_duration": 12.82153846153842,
-    "compression_ratio": 0.9739169624246522,
-    "highlight_duration": 166.67999999999947,
-    "mean_tiou": 0.11630228787771103,
-    "goal_timing_mae": 39.948416666666624,
-    "goal_coverage": 0.1103311000758585
+    "mean_segment_duration": 12.889230769230728,
+    "compression_ratio": 0.9737792550028481,
+    "highlight_duration": 167.55999999999946,
+    "mean_tiou": 0.28676190476190483,
+    "goal_timing_mae": 18.07666666666667,
+    "goal_coverage": 0.0
   }
 }

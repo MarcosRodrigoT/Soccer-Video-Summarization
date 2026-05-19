@@ -29,6 +29,14 @@ class GoalEvent:
 
 
 @dataclass
+class GoalClip:
+    """Frame-level GT clip for one goal (from goals.csv)."""
+    start_time: float       # start_frame / fps  — start of the play action
+    end_time: float         # end_frame_shot / fps — end of the goal celebration
+    scoreboard_time: float  # end_frame_scoreboard / fps — scoreboard update
+
+
+@dataclass
 class EvaluationResult:
     """Evaluation metrics for a single match."""
     match_id: str
@@ -51,6 +59,13 @@ class EvaluationResult:
     goal_timing_mae: float = 0.0  # mean abs error in seconds for TPs
     tiou_per_event: list = field(default_factory=list)
     f1_at_tiou: dict = field(default_factory=dict)
+    # Clip-quality metrics (require frame-level GT from goals.csv)
+    clip_iou_mean: float = 0.0        # tIoU between predicted highlight and GT clip
+    clip_coverage_mean: float = 0.0   # recall: fraction of GT clip covered
+    clip_precision_mean: float = 0.0  # precision: fraction of highlight that is GT clip
+    clip_start_mae: float = 0.0       # MAE between predicted start and GT start_frame
+    clip_end_mae: float = 0.0         # MAE between predicted end and GT end_frame_shot
+    clip_iou_per_goal: list = field(default_factory=list)
 
 
 def _compute_temporal_iou(seg_start: float, seg_end: float,
@@ -143,6 +158,110 @@ class Evaluator:
         events.sort(key=lambda e: e.start_time)
         logger.info("Loaded %d frame-level GT events from %s", len(events), goals_path)
         return events
+
+    @staticmethod
+    def load_goal_clips(goals_path: str, fps: float) -> list[GoalClip]:
+        """Load per-goal clip boundaries from goals.csv.
+
+        Returns one GoalClip per goal with:
+          start_time       = start_frame / fps  (first frame of the play action)
+          end_time         = end_frame_shot / fps (last frame of the celebration)
+          scoreboard_time  = end_frame_scoreboard / fps (scoreboard update)
+        """
+        for encoding in ("utf-8-sig", "utf-8", "latin-1"):
+            try:
+                df = pd.read_csv(goals_path, encoding=encoding)
+                break
+            except (UnicodeDecodeError, pd.errors.ParserError):
+                continue
+        else:
+            raise ValueError(f"Cannot read goals file: {goals_path}")
+        clips = []
+        for _, row in df.iterrows():
+            clips.append(GoalClip(
+                start_time=float(row["start_frame"]) / fps,
+                end_time=float(row["end_frame_shot"]) / fps,
+                scoreboard_time=float(row["end_frame_scoreboard"]) / fps,
+            ))
+        clips.sort(key=lambda c: c.scoreboard_time)
+        return clips
+
+    def evaluate_clip_quality(
+        self,
+        goal_clips: list[GoalClip],
+        goal_highlight_segments: list[tuple[float, float]],
+        predicted_goal_times: list[float],
+    ) -> dict:
+        """Compare predicted goal-highlight clips against GT clip boundaries.
+
+        For each GT goal clip, finds the best-matching predicted highlight
+        (the one with highest tIoU) and computes:
+          - clip_iou:        temporal IoU between predicted highlight and GT clip
+          - clip_coverage:   fraction of GT clip duration covered by prediction
+          - clip_precision:  fraction of predicted clip that overlaps GT clip
+          - clip_start_mae:  |predicted start - GT start_frame/fps|
+          - clip_end_mae:    |predicted end   - GT end_frame_shot/fps|
+
+        Only evaluates GT clips for which a predicted goal exists within
+        the tolerance window (TPs only — undetected goals are skipped).
+        """
+        tolerance = self.config.tolerance_window
+        iou_list, coverage_list, precision_list = [], [], []
+        start_mae_list, end_mae_list = [], []
+
+        for clip in goal_clips:
+            # Check if this goal was detected (TP)
+            matched = any(
+                abs(t - clip.scoreboard_time) <= tolerance
+                for t in predicted_goal_times
+            )
+            if not matched:
+                continue  # FN — no predicted highlight to compare
+
+            # Find the best-matching highlight segment for this clip
+            gt_start, gt_end = clip.start_time, clip.end_time
+            gt_dur = max(gt_end - gt_start, 1e-6)
+
+            best_iou = 0.0
+            best_cov = 0.0
+            best_prec = 0.0
+            best_start_err = float("inf")
+            best_end_err = float("inf")
+
+            for seg_start, seg_end in goal_highlight_segments:
+                seg_dur = max(seg_end - seg_start, 1e-6)
+                inter_s = max(seg_start, gt_start)
+                inter_e = min(seg_end, gt_end)
+                inter = max(0.0, inter_e - inter_s)
+                if inter == 0:
+                    continue
+                union = seg_dur + gt_dur - inter
+                iou = inter / union if union > 0 else 0.0
+                if iou > best_iou:
+                    best_iou = iou
+                    best_cov = inter / gt_dur
+                    best_prec = inter / seg_dur
+                    best_start_err = abs(seg_start - gt_start)
+                    best_end_err = abs(seg_end - gt_end)
+
+            iou_list.append(best_iou)
+            coverage_list.append(best_cov)
+            precision_list.append(best_prec)
+            if best_start_err < float("inf"):
+                start_mae_list.append(best_start_err)
+                end_mae_list.append(best_end_err)
+
+        def safe_mean(lst):
+            return float(np.mean(lst)) if lst else 0.0
+
+        return {
+            "clip_iou_mean": safe_mean(iou_list),
+            "clip_coverage_mean": safe_mean(coverage_list),
+            "clip_precision_mean": safe_mean(precision_list),
+            "clip_start_mae": safe_mean(start_mae_list),
+            "clip_end_mae": safe_mean(end_mae_list),
+            "clip_iou_per_goal": iou_list,
+        }
 
     def extract_goal_events(self, gt_df: pd.DataFrame) -> list[GoalEvent]:
         """Group consecutive GoalGT=1 segments into discrete goal events.

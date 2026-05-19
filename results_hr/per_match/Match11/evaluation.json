@@ -9,42 +9,50 @@
   "total_video_duration": 6434.48,
   "highlight_duration": 4507.319999999996,
   "compression_ratio": 0.299505165918614,
-  "goal_coverage": 0.38630422856405205,
+  "goal_coverage": 0.0,
   "num_gt_events": 5,
   "num_predicted_goals": 5,
   "num_highlights": 204,
   "num_segments": 204,
   "mean_segment_duration": 22.094705882352923,
-  "mean_tiou": 0.22466068377948392,
-  "goal_timing_mae": 50.896799999999715,
+  "mean_tiou": 0.21589194282631582,
+  "goal_timing_mae": 30.331999999999745,
   "tiou_per_event": [
-    0.09539539059341184,
-    0.28294674433118283,
-    0.2949914594953416,
-    0.24268357912432256,
-    0.20728624535316068
+    0.2146666666666647,
+    0.23599999999999757,
+    0.2636268343815569,
+    0.20066666666666605,
+    0.16449954641669384
   ],
   "f1_at_tiou": {
-    "0.1": 0.8000000000000002,
+    "0.1": 1.0,
     "0.3": 0.0,
     "0.5": 0.0,
     "0.7": 0.0
   },
   "timings": {
-    "shot_segmentation": 132.72421050071716,
-    "object_detection": 1608.2842671871185,
-    "play_classifier": 1.5937271118164062,
-    "ocr_scoreboard": 192.68145418167114,
-    "highlight_assembly": 0.0064697265625
+    "highlight_assembly": 0.0060443878173828125
   },
+  "clip_iou_mean": 0.4661511742427763,
+  "clip_coverage_mean": 0.46772856835293875,
+  "clip_precision_mean": 0.9910625404826346,
+  "clip_start_mae": 22.400000000000045,
+  "clip_end_mae": 2.711999999999989,
+  "clip_iou_per_goal": [
+    0.5277777777777788,
+    0.40410958904109995,
+    0.47797356828193965,
+    0.681742043551075,
+    0.23915289256198755
+  ],
   "goal_refined": {
     "f1": 1.0,
-    "num_segments": 13,
-    "mean_segment_duration": 7.7476923076921524,
-    "compression_ratio": 0.9843468314455872,
-    "highlight_duration": 100.71999999999798,
-    "mean_tiou": 0.1237637782559198,
-    "goal_timing_mae": 34.99920000000011,
-    "goal_coverage": 0.17176188376020043
+    "num_segments": 11,
+    "mean_segment_duration": 9.818181818181653,
+    "compression_ratio": 0.9832154268876431,
+    "highlight_duration": 107.99999999999818,
+    "mean_tiou": 0.27480000000000016,
+    "goal_timing_mae": 18.812000000000126,
+    "goal_coverage": 0.0
   }
 }

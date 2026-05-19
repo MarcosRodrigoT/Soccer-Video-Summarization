@@ -20,7 +20,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from soccer_summarization.config import PipelineConfig
-from soccer_summarization.evaluation import Evaluator
+from soccer_summarization.evaluation import Evaluator, GoalClip
 from soccer_summarization.highlight_assembler import HighlightAssembler
 from soccer_summarization.object_detection import PlayerDetector
 from soccer_summarization.ocr_scoreboard import ScoreboardDetector
@@ -159,9 +159,7 @@ def run_pipeline(
     # --- Stage 4: OCR scoreboard ---
     score_cache = out / "score_events.csv"
     score_events = []
-    if skip_ocr:
-        logger.info("Stage 4: OCR skipped")
-    elif score_cache.exists():
+    if score_cache.exists():
         logger.info("Loading cached score events")
         try:
             score_df = pd.read_csv(score_cache)
@@ -172,7 +170,7 @@ def run_pipeline(
         except (pd.errors.EmptyDataError, KeyError):
             logger.info("  Empty or invalid score_events.csv, treating as no detections")
             score_events = []
-    else:
+    elif not skip_ocr:
         logger.info("Stage 4: OCR scoreboard detection...")
         t0 = time.time()
         ocr_detector = ScoreboardDetector(config.ocr_scoreboard)
@@ -236,9 +234,11 @@ def run_pipeline(
     # --- Stage 7: Evaluation ---
     logger.info("Stage 7: Evaluation against ground truth...")
     evaluator = Evaluator(config.evaluation)
+    goal_clips: list[GoalClip] = []
     if goals_path:
         gt_events = evaluator.load_ground_truth_frame_level(goals_path, props["fps"])
-        logger.info("  Using frame-level GT from %s", goals_path)
+        goal_clips = Evaluator.load_goal_clips(goals_path, props["fps"])
+        logger.info("  Using frame-level GT from %s (%d clips)", goals_path, len(goal_clips))
     else:
         gt_df = evaluator.load_ground_truth(gt_path)
         gt_events = evaluator.extract_goal_events(gt_df)
@@ -264,6 +264,22 @@ def run_pipeline(
         total_video_duration=total_duration,
     )
 
+    # Clip-quality metrics (only when frame-level GT is available)
+    clip_metrics = {}
+    if goal_clips:
+        clip_metrics = evaluator.evaluate_clip_quality(
+            goal_clips=goal_clips,
+            goal_highlight_segments=goal_highlight_segments,
+            predicted_goal_times=predicted_goal_times,
+        )
+        logger.info(
+            "Clip quality: IoU=%.3f Cov=%.3f StartMAE=%.1fs EndMAE=%.1fs",
+            clip_metrics["clip_iou_mean"],
+            clip_metrics["clip_coverage_mean"],
+            clip_metrics["clip_start_mae"],
+            clip_metrics["clip_end_mae"],
+        )
+
     # Save evaluation results
     eval_results = {
         "match_id": match_id,
@@ -288,6 +304,8 @@ def run_pipeline(
         "tiou_per_event": result.tiou_per_event,
         "f1_at_tiou": result.f1_at_tiou,
         "timings": timings,
+        # Clip-quality metrics (frame-level GT only)
+        **clip_metrics,
         # Goal-refined highlights metrics
         "goal_refined": {
             "f1": goal_ref_result.f1,

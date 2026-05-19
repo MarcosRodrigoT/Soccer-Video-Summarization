@@ -214,6 +214,8 @@ def categorize_events(
 def main():
     parser = argparse.ArgumentParser(description="Run error analysis")
     parser.add_argument("--config", default="config/default.yaml")
+    parser.add_argument("--matches-yaml", default=None,
+                        help="Path to matches YAML (default: config/matches.yaml)")
     parser.add_argument("--results-dir", default="results/per_match")
     parser.add_argument("--output-dir", default="results/error_analysis")
     parser.add_argument("--matches", help="Comma-separated match IDs")
@@ -230,7 +232,8 @@ def main():
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
+    matches_yaml = Path(args.matches_yaml) if args.matches_yaml else \
+        Path(__file__).parent.parent / "config" / "matches.yaml"
     with open(matches_yaml) as f:
         all_matches = yaml.safe_load(f)["matches"]
 
@@ -251,10 +254,15 @@ def main():
 
         info = all_matches[match_id]
         gt_path = str(Path(config.data_dir) / info["gt_path"])
+        goals_path = str(Path(config.data_dir) / info["goals_path"]) \
+            if "goals_path" in info else None
 
-        # Load GT
-        gt_df = evaluator.load_ground_truth(gt_path)
-        gt_events = evaluator.extract_goal_events(gt_df)
+        # Load GT — prefer frame-level goals.csv when available
+        if goals_path and Path(goals_path).exists():
+            gt_events = evaluator.load_ground_truth_frame_level(goals_path, 25.0)
+        else:
+            gt_df = evaluator.load_ground_truth(gt_path)
+            gt_events = evaluator.extract_goal_events(gt_df)
 
         # Load predictions
         score_path = match_dir / "score_events.csv"

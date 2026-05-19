@@ -69,6 +69,7 @@ def main():
                 match_id=match_id,
                 skip_ocr=args.skip_ocr,
                 skip_video_export=args.skip_video_export,
+                goals_path=info.get("goals_path"),
             )
             results.append(result)
 

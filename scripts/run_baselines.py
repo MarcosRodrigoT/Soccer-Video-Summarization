@@ -31,12 +31,25 @@ from soccer_summarization.config import PipelineConfig
 from soccer_summarization.evaluation import Evaluator, EvaluationResult
 from soccer_summarization.utils import setup_logging
 
+FPS_DEFAULT = 25.0
+
+
+def _load_gt(match_data: dict, evaluator: Evaluator, fps: float = FPS_DEFAULT):
+    """Load GT events — prefer frame-level goals.csv when available."""
+    goals_path = match_data.get("goals_path")
+    if goals_path and Path(goals_path).exists():
+        return evaluator.load_ground_truth_frame_level(goals_path, fps)
+    gt_df = evaluator.load_ground_truth(match_data["gt_path"])
+    return evaluator.extract_goal_events(gt_df)
+
 
 def load_match_data(match_id: str, results_dir: Path, config: PipelineConfig, matches: dict) -> dict:
     """Load cached pipeline outputs for a match."""
     match_dir = results_dir / match_id
     info = matches[match_id]
     gt_path = str(Path(config.data_dir) / info["gt_path"])
+    goals_path = str(Path(config.data_dir) / info["goals_path"]) \
+        if "goals_path" in info else None
 
     # Load evaluation.json for video duration
     eval_json = match_dir / "evaluation.json"
@@ -49,7 +62,12 @@ def load_match_data(match_id: str, results_dir: Path, config: PipelineConfig, ma
         video_path = str(Path(config.data_dir) / info["video_path"])
         total_duration = get_video_properties(video_path)["duration"]
 
-    data = {"match_id": match_id, "total_duration": total_duration, "gt_path": gt_path}
+    data = {
+        "match_id": match_id,
+        "total_duration": total_duration,
+        "gt_path": gt_path,
+        "goals_path": goals_path,
+    }
 
     # Load shot boundaries
     shot_path = match_dir / "shot_boundaries.csv"
@@ -90,8 +108,7 @@ def baseline_random(match_data: dict, evaluator: Evaluator, n_seeds: int = 10) -
     target_duration = system_hl["duration"].sum()
     segment_dur = 30.0  # fixed segment duration
 
-    gt_df = evaluator.load_ground_truth(match_data["gt_path"])
-    gt_events = evaluator.extract_goal_events(gt_df)
+    gt_events = _load_gt(match_data, evaluator)
 
     results = []
     for seed in range(n_seeds):
@@ -134,8 +151,7 @@ def baseline_uniform(match_data: dict, evaluator: Evaluator) -> list[EvaluationR
         end = min(total_dur, start + segment_dur)
         segments.append((start, end))
 
-    gt_df = evaluator.load_ground_truth(match_data["gt_path"])
-    gt_events = evaluator.extract_goal_events(gt_df)
+    gt_events = _load_gt(match_data, evaluator)
 
     result = evaluator.evaluate_match(
         match_id=match_data["match_id"],
@@ -175,8 +191,7 @@ def baseline_shot_only(match_data: dict, evaluator: Evaluator) -> list[Evaluatio
     long_shots = shots_df[shots_df["duration"] >= best_T]
     segments = list(zip(long_shots["start_time"], long_shots["end_time"]))
 
-    gt_df = evaluator.load_ground_truth(match_data["gt_path"])
-    gt_events = evaluator.extract_goal_events(gt_df)
+    gt_events = _load_gt(match_data, evaluator)
 
     result = evaluator.evaluate_match(
         match_id=match_data["match_id"],
@@ -197,8 +212,7 @@ def baseline_play_only(match_data: dict, evaluator: Evaluator) -> list[Evaluatio
     play_segs = play_df[play_df["is_play"] == True]
     segments = list(zip(play_segs["start_time"], play_segs["end_time"]))
 
-    gt_df = evaluator.load_ground_truth(match_data["gt_path"])
-    gt_events = evaluator.extract_goal_events(gt_df)
+    gt_events = _load_gt(match_data, evaluator)
 
     result = evaluator.evaluate_match(
         match_id=match_data["match_id"],
@@ -244,8 +258,7 @@ def baseline_ocr_only(match_data: dict, evaluator: Evaluator, context: float = 3
         else:
             merged.append((s, e))
 
-    gt_df = evaluator.load_ground_truth(match_data["gt_path"])
-    gt_events = evaluator.extract_goal_events(gt_df)
+    gt_events = _load_gt(match_data, evaluator)
 
     result = evaluator.evaluate_match(
         match_id=match_data["match_id"],
@@ -261,8 +274,7 @@ def baseline_oracle(match_data: dict, evaluator: Evaluator, context: float = 30.
     """Baseline 6: Oracle — ±context seconds around each GT goal."""
     total_dur = match_data["total_duration"]
 
-    gt_df = evaluator.load_ground_truth(match_data["gt_path"])
-    gt_events = evaluator.extract_goal_events(gt_df)
+    gt_events = _load_gt(match_data, evaluator)
 
     segments = []
     for event in gt_events:
@@ -334,6 +346,8 @@ BASELINES = {
 def main():
     parser = argparse.ArgumentParser(description="Run internal baselines")
     parser.add_argument("--config", default="config/default.yaml")
+    parser.add_argument("--matches-yaml", default=None,
+                        help="Path to matches YAML (default: config/matches.yaml)")
     parser.add_argument("--results-dir", default="results/per_match")
     parser.add_argument("--output-dir", default="results/baselines")
     parser.add_argument("--matches", help="Comma-separated match IDs (default: all available)")
@@ -352,7 +366,8 @@ def main():
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
+    matches_yaml = Path(args.matches_yaml) if args.matches_yaml else \
+        Path(__file__).parent.parent / "config" / "matches.yaml"
     with open(matches_yaml) as f:
         all_matches = yaml.safe_load(f)["matches"]
 

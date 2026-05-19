@@ -100,6 +100,7 @@ def generate_dashboard(
     gt_events: list,
     output_path: Path,
     config: PipelineConfig,
+    goal_clips: list = None,
 ):
     """Generate a comprehensive dashboard PNG for one match."""
     data = load_match_data(match_dir)
@@ -109,6 +110,13 @@ def generate_dashboard(
 
     ev = data["eval"]
     total_dur = ev["total_video_duration"]
+
+    # Inject goal clips for timeline visualization if provided
+    if goal_clips:
+        data["goal_clips"] = [
+            {"start_time": c.start_time, "end_time": c.end_time}
+            for c in goal_clips
+        ]
 
     # --- Figure layout ---
     fig = plt.figure(figsize=(24, 20), dpi=150)
@@ -172,6 +180,13 @@ def generate_dashboard(
         f"MAE={mae:.1f}s   |   "
         f"Duration={format_mm_ss(total_dur)}"
     )
+    if "clip_iou_mean" in ev:
+        metrics_text += (
+            f"\nClip IoU={ev['clip_iou_mean']:.3f}   |   "
+            f"Clip Coverage={ev['clip_coverage_mean']:.3f}   |   "
+            f"StartMAE={ev['clip_start_mae']:.1f}s   |   "
+            f"EndMAE={ev['clip_end_mae']:.1f}s"
+        )
     ax_header.text(
         0.5, 0.25, metrics_text,
         transform=ax_header.transAxes, fontsize=11, ha="center", va="center",
@@ -248,13 +263,21 @@ def _draw_timeline(ax, data, gt_events, total_dur, colors, config):
                 height=bar_h, color=color, edgecolor="none", linewidth=0,
             )
 
-    # Lane 2: GT goals + predicted goals
+    # Lane 2: GT goals (scoreboard events) + clip windows + predicted goals
     for evt in gt_events:
-        ax.barh(
-            lane_y["Goals (GT + Pred)"], evt.end_time - evt.start_time,
-            left=evt.start_time, height=bar_h, color=colors["gt_goal"],
-            alpha=0.4, edgecolor=colors["gt_goal"], linewidth=1,
-        )
+        # Scoreboard update marker (vertical tick)
+        ax.axvline(evt.start_time, ymin=lane_y["Goals (GT + Pred)"] / len(lanes),
+                   ymax=(lane_y["Goals (GT + Pred)"] + 1) / len(lanes),
+                   color=colors["gt_goal"], linewidth=2, alpha=0.8, zorder=4)
+    # GT clip windows [start_frame→end_frame_shot] if available
+    if "goal_clips" in data:
+        for clip in data["goal_clips"]:
+            dur = clip["end_time"] - clip["start_time"]
+            ax.barh(
+                lane_y["Goals (GT + Pred)"], dur, left=clip["start_time"],
+                height=bar_h, color="#E91E63", alpha=0.3,
+                edgecolor="#E91E63", linewidth=1, label="_nolegend_",
+            )
     if "score_events" in data:
         for _, row in data["score_events"].iterrows():
             ax.plot(
@@ -573,6 +596,8 @@ def main():
     parser = argparse.ArgumentParser(description="Generate per-match evaluation dashboards")
     parser.add_argument("--matches", help="Comma-separated match IDs (default: all)")
     parser.add_argument("--config", default="config/default.yaml")
+    parser.add_argument("--matches-yaml", default=None,
+                        help="Path to matches YAML (default: config/matches.yaml)")
     parser.add_argument("--results-dir", default="results/per_match")
     parser.add_argument("--output-dir", default="results/dashboards")
     parser.add_argument("--log-level", default="INFO")
@@ -583,8 +608,9 @@ def main():
     config = PipelineConfig.from_yaml(args.config)
     evaluator = Evaluator(config.evaluation)
 
-    matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
-    with open(matches_yaml) as f:
+    matches_yaml_path = Path(args.matches_yaml) if args.matches_yaml else \
+        Path(__file__).parent.parent / "config" / "matches.yaml"
+    with open(matches_yaml_path) as f:
         all_matches = yaml.safe_load(f)["matches"]
 
     if args.matches:
@@ -607,11 +633,18 @@ def main():
             logger.warning("No results for %s", match_id)
             continue
 
-        # Load GT events
+        # Load GT events — prefer frame-level goals.csv when available
         gt_path = str(Path(config.data_dir) / info["gt_path"])
+        goals_path = str(Path(config.data_dir) / info["goals_path"]) \
+            if "goals_path" in info else None
+        goal_clips = []
         try:
-            gt_df = evaluator.load_ground_truth(gt_path)
-            gt_events = evaluator.extract_goal_events(gt_df)
+            if goals_path and Path(goals_path).exists():
+                gt_events = evaluator.load_ground_truth_frame_level(goals_path, 25.0)
+                goal_clips = Evaluator.load_goal_clips(goals_path, 25.0)
+            else:
+                gt_df = evaluator.load_ground_truth(gt_path)
+                gt_events = evaluator.extract_goal_events(gt_df)
         except Exception as e:
             logger.warning("Cannot load GT for %s: %s", match_id, e)
             gt_events = []
@@ -627,6 +660,7 @@ def main():
                 gt_events=gt_events,
                 output_path=output_path,
                 config=config,
+                goal_clips=goal_clips,
             )
         except Exception as e:
             logger.error("Failed for %s: %s", match_id, e, exc_info=True)
