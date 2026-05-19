@@ -681,7 +681,7 @@ class ScoreboardDetector:
         # position, then use the two most prominent clusters as home/away scores.
         # This works even when only 1 digit is detected per frame (common in
         # modern broadcast formats where EasyOCR misses the second digit).
-        strategy2_scores = self._parse_by_position_clusters(by_frame)
+        strategy2_scores = self._parse_by_position_clusters(by_frame, fps)
         if len(strategy2_scores) >= 10:
             logger.info("Strategy 2 (position clusters): %d readings", len(strategy2_scores))
             return strategy2_scores
@@ -689,7 +689,7 @@ class ScoreboardDetector:
         return strategy1_scores or strategy2_scores or []
 
     def _parse_by_position_clusters(
-        self, by_frame: dict[int, list[tuple]]
+        self, by_frame: dict[int, list[tuple]], fps: int = 25
     ) -> list[tuple[int, int, int]]:
         """Track score digits by clustering OCR readings at consistent positions.
 
@@ -857,6 +857,19 @@ class ScoreboardDetector:
         home_by_frame = self._enforce_monotonic(home_by_frame)
         away_by_frame = self._enforce_monotonic(away_by_frame)
 
+        # Refine transition timing using the last raw V reading.
+        # The ghost-inferred timeline shows V→V+1 at the frame where enough
+        # ghost "1" readings accumulated — which lags the actual score change.
+        # The score truly changed at the last frame OCR still read V, so
+        # inserting V+1 one sample after that gives a far more accurate timestamp.
+        interval_frames = int(self.config.score_sample_interval * fps)
+        home_by_frame = self._refine_transition_timing(
+            home_cluster[2], home_by_frame, interval_frames)
+        away_by_frame = self._refine_transition_timing(
+            away_cluster[2], away_by_frame, interval_frames)
+        home_by_frame = self._enforce_monotonic(home_by_frame)
+        away_by_frame = self._enforce_monotonic(away_by_frame)
+
         # Build combined timeline using last-known-value for missing frames
         all_frames = sorted(set(home_by_frame.keys()) | set(away_by_frame.keys()))
         if not all_frames:
@@ -924,6 +937,86 @@ class ScoreboardDetector:
             val = readings_by_frame[f]
             running_max = max(running_max, val)
             result[f] = running_max
+        return result
+
+    @staticmethod
+    def _refine_transition_timing(
+        raw_cluster: list[tuple[int, int]],
+        filtered: dict[int, int],
+        interval_frames: int,
+        max_lookback_frames: int = None,
+    ) -> dict[int, int]:
+        """Improve V→V+1 transition timing using the last raw V reading.
+
+        After ghost inference and temporal filtering, the filtered per-cluster
+        timeline shows V→V+1 at a frame that may lag the actual score change by
+        tens to hundreds of seconds. The true change happened at the last frame
+        where OCR still confirmed the digit was V — right after that the digit
+        became invisible (score is now 1, which OCR can't read).
+
+        This method finds the last raw V reading in the cluster before each
+        V→V+1 transition and inserts a synthetic V+1 reading one sample later,
+        anchoring the event timestamp to when OCR last saw V rather than when
+        the ghost inference finally accumulated enough evidence to fire.
+
+        Args:
+            raw_cluster:      Raw (frame, digit) readings for this cluster.
+            filtered:         Post-median, post-monotonic {frame: value} dict.
+            interval_frames:  Frames between consecutive OCR samples.
+            max_lookback_frames: How far back to search for the last V reading
+                              (default: 100 samples ≈ 5 min at 3 s interval).
+        """
+        if not raw_cluster or not filtered:
+            return filtered
+
+        if max_lookback_frames is None:
+            max_lookback_frames = interval_frames * 100
+
+        # Build sorted arrays for efficient binary search
+        sorted_raw = sorted(raw_cluster, key=lambda x: x[0])
+        raw_frames_arr = [f for f, d in sorted_raw]
+        raw_digits_arr = [d for f, d in sorted_raw]
+
+        result = dict(filtered)
+        f_sorted = sorted(filtered.keys())
+        prev_val = filtered[f_sorted[0]]
+        prev_f = f_sorted[0]
+
+        for f in f_sorted[1:]:
+            curr_val = filtered[f]
+
+            if curr_val == 1 and prev_val == 0:
+                # Ghost inference only injects "1" (for 0→1 transitions), so
+                # only those transitions suffer from ghost-related timing lag.
+                # Higher transitions (1→2, 2→3, …) are detected directly by
+                # OCR and are already well-timed — don't alter them.
+                # Find the last occurrence of digit 0 within
+                # [max(prev_f, f - max_lookback), f)
+                search_start = max(prev_f, f - max_lookback_frames)
+                lo = bisect.bisect_left(raw_frames_arr, search_start)
+                hi = bisect.bisect_left(raw_frames_arr, f)
+
+                last_v_frame = None
+                for i in range(hi - 1, lo - 1, -1):
+                    if raw_digits_arr[i] == prev_val:
+                        last_v_frame = raw_frames_arr[i]
+                        break
+
+                if last_v_frame is not None:
+                    proposed = last_v_frame + interval_frames
+                    if proposed < f:
+                        if proposed not in result or result[proposed] < curr_val:
+                            result[proposed] = curr_val
+                            logger.info(
+                                "Transition refined: score %d at %.1fs "
+                                "(last raw %d at %.1fs, was %.1fs)",
+                                curr_val, proposed / 25.0,
+                                prev_val, last_v_frame / 25.0, f / 25.0,
+                            )
+
+            prev_val = curr_val
+            prev_f = f
+
         return result
 
     @staticmethod
