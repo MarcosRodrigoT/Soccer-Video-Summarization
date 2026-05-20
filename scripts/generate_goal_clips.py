@@ -47,64 +47,76 @@ logger = logging.getLogger(__name__)
 def _find_moment_of_play(
     goal_time: float,
     highlights_df: pd.DataFrame,
-    shots_df: pd.DataFrame,
     context_before: float = 40.0,
-    context_after: float = 5.0,
-    min_clip_duration: float = 5.0,
+    context_after: float = 10.0,
 ) -> tuple[float, float]:
-    """Return (start, end) of the single best play shot for this goal.
+    """Return (start, end) of the best highlight clip for this goal.
 
-    Selects the individual shot — not the merged highlight segment — whose
-    end is closest to goal_time and that overlaps with a play (highlight)
-    segment.  Using individual shots instead of merged segments eliminates
-    internal shot-boundary cuts (bleeding) entirely.
-
-    Falls back to a raw context window if no suitable shot is found.
+    Searches for the last highlight segment whose end_time falls within
+    [goal_time - context_before, goal_time + context_after].  If multiple
+    segments qualify, returns the one whose end_time is closest to goal_time.
+    Falls back to a raw context window if no highlight segment is found.
     """
-    fallback = (max(0.0, goal_time - context_before), goal_time + context_after)
-
-    if shots_df is None or shots_df.empty:
-        return fallback
+    if highlights_df is None or highlights_df.empty:
+        return (max(0.0, goal_time - context_before), goal_time + context_after)
 
     window_start = goal_time - context_before
     window_end   = goal_time + context_after
 
-    # Candidate shots: those that end within the context window
-    candidates = shots_df[
-        (shots_df["end_time"] >= window_start) &
-        (shots_df["start_time"] <= window_end) &
-        (shots_df["end_time"] <= goal_time + context_after)
+    candidates = highlights_df[
+        (highlights_df["end_time"] >= window_start) &
+        (highlights_df["start_time"] <= window_end)
     ].copy()
 
     if candidates.empty:
-        return fallback
+        return (max(0.0, goal_time - context_before), goal_time + context_after)
 
-    # Filter to shots that are "play" shots — overlap with a highlight segment
-    if highlights_df is not None and not highlights_df.empty:
-        def _is_play(row):
-            return not highlights_df[
-                (highlights_df["end_time"] > row["start_time"]) &
-                (highlights_df["start_time"] < row["end_time"])
-            ].empty
-        play_mask = candidates.apply(_is_play, axis=1)
-        play_candidates = candidates[play_mask]
-        if not play_candidates.empty:
-            candidates = play_candidates
-
-    # Pick the shot whose end_time is nearest to goal_time
-    candidates = candidates.copy()
+    # Pick the segment whose end_time is nearest to goal_time
     candidates["dist"] = abs(candidates["end_time"] - goal_time)
     best = candidates.sort_values("dist").iloc[0]
+    return (float(best["start_time"]), float(best["end_time"]))
 
-    clip_start = float(best["start_time"])
-    clip_end   = float(best["end_time"])
 
-    # If the selected shot is very short, extend backward to the previous shot
-    if clip_end - clip_start < min_clip_duration:
-        prev_shots = shots_df[shots_df["end_time"] <= clip_start + 0.1].copy()
-        if not prev_shots.empty:
-            prev = prev_shots.iloc[-1]
-            clip_start = float(prev["start_time"])
+def _trim_trailing_short_shot(
+    clip_start: float,
+    clip_end: float,
+    shots_df: pd.DataFrame,
+    max_trailing_shot: float = 4.0,
+    min_main_fraction: float = 0.20,
+) -> tuple[float, float]:
+    """Remove a brief trailing shot that bleeds in at the clip end.
+
+    The highlight assembler merges adjacent play segments with up to a 0.5 s
+    gap, which can attach a brief shot (camera cut to net/keeper/crowd) right
+    after the main play action.  We trim the trailing shot only when it is
+    clearly incidental — i.e. it is short in absolute terms AND it makes up
+    less than min_main_fraction of the total clip duration.  This prevents
+    trimming legitimate short goal shots that happen to appear at the end.
+    """
+    if shots_df is None or shots_df.empty:
+        return clip_start, clip_end
+
+    clip_shots = shots_df[
+        (shots_df["end_time"] > clip_start) &
+        (shots_df["start_time"] < clip_end)
+    ].copy()
+
+    if len(clip_shots) < 2:
+        return clip_start, clip_end  # single shot — nothing to trim
+
+    last = clip_shots.iloc[-1]
+    last_start = float(last["start_time"])
+    last_dur = clip_end - max(last_start, clip_start)  # duration within clip
+    clip_dur = clip_end - clip_start
+
+    # Only trim when:
+    #  1. The trailing shot is short in absolute terms, AND
+    #  2. It makes up less than min_main_fraction of the clip
+    #     (so we don't remove a 5 s goal shot from a 6 s clip)
+    if last_dur < max_trailing_shot and last_dur < min_main_fraction * clip_dur:
+        new_end = max(last_start, clip_start + 1.0)
+        if new_end > clip_start:
+            return clip_start, new_end
 
     return clip_start, clip_end
 
@@ -301,12 +313,20 @@ def main():
             away_score = int(row.get("away_score", 0))
             total_goals += 1
 
-            # Find the moment-of-play clip (single best play shot)
+            # Find the moment-of-play clip (best highlight segment)
             clip_start, clip_end = _find_moment_of_play(
-                goal_time, highlights_df, shots_df,
+                goal_time, highlights_df,
                 context_before=args.context_before,
                 context_after=args.context_after,
             )
+
+            # Trim any trailing shot that bleeds in at the end.
+            # The highlight assembler merges adjacent shots with <=0.5 s gap;
+            # this can attach a short trailing shot (camera cut to net/keeper)
+            # to the end of the main play shot.  Trim shots shorter than 6 s
+            # at the clip end — visible as "1-2 seconds of the next shot".
+            clip_start, clip_end = _trim_trailing_short_shot(
+                clip_start, clip_end, shots_df)
 
             # Clamp to video duration if we know it
             try:
