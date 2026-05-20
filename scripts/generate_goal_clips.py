@@ -24,6 +24,7 @@ Usage:
 import argparse
 import json
 import logging
+import re
 import subprocess
 import sys
 import tempfile
@@ -46,70 +47,64 @@ logger = logging.getLogger(__name__)
 def _find_moment_of_play(
     goal_time: float,
     highlights_df: pd.DataFrame,
+    shots_df: pd.DataFrame,
     context_before: float = 40.0,
-    context_after: float = 10.0,
-) -> tuple[float, float] | None:
-    """Return (start, end) of the best highlight clip for this goal.
+    context_after: float = 5.0,
+    min_clip_duration: float = 5.0,
+) -> tuple[float, float]:
+    """Return (start, end) of the single best play shot for this goal.
 
-    Searches for the last highlight segment whose end_time falls within
-    [goal_time - context_before, goal_time + context_after].  If multiple
-    segments qualify, returns the one whose end_time is closest to goal_time.
-    Falls back to a raw context window if no highlight segment is found.
+    Selects the individual shot — not the merged highlight segment — whose
+    end is closest to goal_time and that overlaps with a play (highlight)
+    segment.  Using individual shots instead of merged segments eliminates
+    internal shot-boundary cuts (bleeding) entirely.
+
+    Falls back to a raw context window if no suitable shot is found.
     """
-    if highlights_df is None or highlights_df.empty:
-        return (max(0.0, goal_time - context_before), goal_time + context_after)
+    fallback = (max(0.0, goal_time - context_before), goal_time + context_after)
+
+    if shots_df is None or shots_df.empty:
+        return fallback
 
     window_start = goal_time - context_before
-    window_end = goal_time + context_after
+    window_end   = goal_time + context_after
 
-    candidates = highlights_df[
-        (highlights_df["end_time"] >= window_start) &
-        (highlights_df["start_time"] <= window_end)
+    # Candidate shots: those that end within the context window
+    candidates = shots_df[
+        (shots_df["end_time"] >= window_start) &
+        (shots_df["start_time"] <= window_end) &
+        (shots_df["end_time"] <= goal_time + context_after)
     ].copy()
 
     if candidates.empty:
-        return (max(0.0, goal_time - context_before), goal_time + context_after)
+        return fallback
 
-    # Pick the segment whose end_time is nearest to goal_time
+    # Filter to shots that are "play" shots — overlap with a highlight segment
+    if highlights_df is not None and not highlights_df.empty:
+        def _is_play(row):
+            return not highlights_df[
+                (highlights_df["end_time"] > row["start_time"]) &
+                (highlights_df["start_time"] < row["end_time"])
+            ].empty
+        play_mask = candidates.apply(_is_play, axis=1)
+        play_candidates = candidates[play_mask]
+        if not play_candidates.empty:
+            candidates = play_candidates
+
+    # Pick the shot whose end_time is nearest to goal_time
+    candidates = candidates.copy()
     candidates["dist"] = abs(candidates["end_time"] - goal_time)
     best = candidates.sort_values("dist").iloc[0]
-    return (float(best["start_time"]), float(best["end_time"]))
 
+    clip_start = float(best["start_time"])
+    clip_end   = float(best["end_time"])
 
-def _trim_trailing_short_shot(
-    clip_start: float,
-    clip_end: float,
-    shots_df: pd.DataFrame,
-    min_trailing_shot: float = 3.0,
-) -> tuple[float, float]:
-    """Remove a short trailing shot at the clip end.
-
-    The highlight assembler merges consecutive play segments with a small gap
-    (0.5 s).  This can attach a brief shot (0.5–2 s, e.g. a quick camera cut
-    to the net or keeper) to the end of the main play shot.  The user perceives
-    this as 'the next shot leaking into the clip'.
-
-    If the last shot inside the clip is shorter than min_trailing_shot seconds,
-    trim the clip to end at that shot's start, keeping only the main action.
-    """
-    if shots_df is None or shots_df.empty:
-        return clip_start, clip_end
-
-    clip_shots = shots_df[
-        (shots_df["end_time"] > clip_start) &
-        (shots_df["start_time"] < clip_end)
-    ].copy()
-
-    if len(clip_shots) < 2:
-        return clip_start, clip_end  # single shot — nothing to trim
-
-    last = clip_shots.iloc[-1]
-    last_dur = min(float(last["end_time"]), clip_end) - float(last["start_time"])
-
-    if last_dur < min_trailing_shot:
-        new_end = float(last["start_time"])
-        if new_end > clip_start:
-            return clip_start, new_end
+    # If the selected shot is very short, extend backward to the previous shot
+    if clip_end - clip_start < min_clip_duration:
+        prev_shots = shots_df[shots_df["end_time"] <= clip_start + 0.1].copy()
+        if not prev_shots.empty:
+            prev = prev_shots.iloc[-1]
+            clip_start = float(prev["start_time"])
 
     return clip_start, clip_end
 
@@ -186,7 +181,7 @@ def _concatenate_clips(clip_paths: list[str], output_path: str) -> bool:
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
         for p in clip_paths:
-            f.write(f"file '{p}'\n")
+            f.write(f"file '{Path(p).resolve()}'\n")
         list_file = f.name
 
     cmd = [
@@ -238,7 +233,8 @@ def main():
     if args.matches:
         match_ids = [m.strip() for m in args.matches.split(",")]
     else:
-        match_ids = sorted(all_matches.keys())
+        match_ids = sorted(all_matches.keys(),
+                           key=lambda mid: int(re.search(r'\d+', mid).group()))
 
     results_dir = Path(args.results_dir)
     output_path = Path(args.output)
@@ -305,16 +301,12 @@ def main():
             away_score = int(row.get("away_score", 0))
             total_goals += 1
 
-            # Find the moment-of-play clip
+            # Find the moment-of-play clip (single best play shot)
             clip_start, clip_end = _find_moment_of_play(
-                goal_time, highlights_df,
+                goal_time, highlights_df, shots_df,
                 context_before=args.context_before,
                 context_after=args.context_after,
             )
-
-            # Remove any short trailing shot that got merged in by the assembler
-            clip_start, clip_end = _trim_trailing_short_shot(
-                clip_start, clip_end, shots_df, min_trailing_shot=3.0)
 
             # Clamp to video duration if we know it
             try:
@@ -353,10 +345,16 @@ def main():
                 all_clip_paths.append(raw_clip)
                 matched_goals += 1
 
-    # ── Concatenate all clips ────────────────────────────────────────────────
+    # ── Concatenate all clips (already in match/goal order from the loop) ───
     if not all_clip_paths:
         logger.error("No clips extracted — nothing to concatenate")
         return
+
+    # Sort numerically Match1→Match25, goal01→goalN to guarantee order
+    def _clip_sort_key(p):
+        m = re.search(r'Match(\d+)_goal(\d+)', Path(p).stem)
+        return (int(m.group(1)), int(m.group(2))) if m else (9999, 9999)
+    all_clip_paths.sort(key=_clip_sort_key)
 
     logger.info("Concatenating %d clips → %s", len(all_clip_paths), output_path)
     if not _concatenate_clips([str(p) for p in all_clip_paths], str(output_path)):
