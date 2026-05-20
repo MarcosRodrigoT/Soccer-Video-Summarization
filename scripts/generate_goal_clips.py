@@ -68,13 +68,50 @@ def _find_moment_of_play(
     ].copy()
 
     if candidates.empty:
-        # Nothing in the window — use the raw context
         return (max(0.0, goal_time - context_before), goal_time + context_after)
 
     # Pick the segment whose end_time is nearest to goal_time
     candidates["dist"] = abs(candidates["end_time"] - goal_time)
     best = candidates.sort_values("dist").iloc[0]
     return (float(best["start_time"]), float(best["end_time"]))
+
+
+def _trim_trailing_short_shot(
+    clip_start: float,
+    clip_end: float,
+    shots_df: pd.DataFrame,
+    min_trailing_shot: float = 3.0,
+) -> tuple[float, float]:
+    """Remove a short trailing shot at the clip end.
+
+    The highlight assembler merges consecutive play segments with a small gap
+    (0.5 s).  This can attach a brief shot (0.5–2 s, e.g. a quick camera cut
+    to the net or keeper) to the end of the main play shot.  The user perceives
+    this as 'the next shot leaking into the clip'.
+
+    If the last shot inside the clip is shorter than min_trailing_shot seconds,
+    trim the clip to end at that shot's start, keeping only the main action.
+    """
+    if shots_df is None or shots_df.empty:
+        return clip_start, clip_end
+
+    clip_shots = shots_df[
+        (shots_df["end_time"] > clip_start) &
+        (shots_df["start_time"] < clip_end)
+    ].copy()
+
+    if len(clip_shots) < 2:
+        return clip_start, clip_end  # single shot — nothing to trim
+
+    last = clip_shots.iloc[-1]
+    last_dur = min(float(last["end_time"]), clip_end) - float(last["start_time"])
+
+    if last_dur < min_trailing_shot:
+        new_end = float(last["start_time"])
+        if new_end > clip_start:
+            return clip_start, new_end
+
+    return clip_start, clip_end
 
 
 def _extract_clip(
@@ -239,9 +276,12 @@ def main():
         except Exception:
             continue
 
-        # ── Load highlights for moment-of-play selection ────────────────────
+        # ── Load highlights and shot boundaries ─────────────────────────────
         hl_path = match_dir / "highlights.csv"
         highlights_df = pd.read_csv(hl_path) if hl_path.exists() else None
+
+        shots_path = match_dir / "shot_boundaries.csv"
+        shots_df = pd.read_csv(shots_path) if shots_path.exists() else None
 
         # ── Load GT goal clips for overlay info ─────────────────────────────
         gt_clips = []
@@ -271,6 +311,10 @@ def main():
                 context_before=args.context_before,
                 context_after=args.context_after,
             )
+
+            # Remove any short trailing shot that got merged in by the assembler
+            clip_start, clip_end = _trim_trailing_short_shot(
+                clip_start, clip_end, shots_df, min_trailing_shot=3.0)
 
             # Clamp to video duration if we know it
             try:
