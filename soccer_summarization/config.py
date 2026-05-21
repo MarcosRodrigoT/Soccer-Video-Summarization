@@ -9,10 +9,27 @@ import yaml
 
 @dataclass
 class ShotSegmentationConfig:
-    threshold: float = 30.0
-    min_shot_length_frames: int = 10
-    adaptive_k: float = 2.0
+    """Matlab-equivalent shot segmentation parameters.
+
+    Histogram-based abrupt + gradual transition detection. See
+    soccer_summarization/shot_segmentation.py for the algorithm.
+    """
     num_processes: Optional[int] = None  # None = use all CPUs
+
+    # Abrupt transition detection
+    abrupt_threshold: float = 0.3
+    abrupt_window_size: int = 15
+    abrupt_neighborhood_factor: float = 0.5
+
+    # Gradual transition detection
+    gradual_filter_window: int = 15
+    gradual_min_peak_height: float = 0.03
+    gradual_min_peak_prominence: float = 0.02
+    gradual_local_threshold_factor: float = 1.2
+    gradual_local_window_ratio: int = 3
+    gradual_min_duration: int = 15
+    gradual_min_distance_from_abrupt: int = 25
+    gradual_min_contrast_factor: float = 1.0
 
 
 @dataclass

@@ -1,0 +1,63 @@
+{
+  "match_id": "Match22",
+  "true_positives": 7,
+  "false_positives": 0,
+  "false_negatives": 0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "total_video_duration": 6266.0,
+  "highlight_duration": 4038.3600000000024,
+  "compression_ratio": 0.35551228854133377,
+  "goal_coverage": 0.0,
+  "num_gt_events": 7,
+  "num_predicted_goals": 7,
+  "num_highlights": 255,
+  "num_segments": 255,
+  "mean_segment_duration": 15.83670588235295,
+  "mean_tiou": 0.3206447901969973,
+  "goal_timing_mae": 18.882857142857127,
+  "tiou_per_event": [
+    0.2621475704859033,
+    0.3206666666666668,
+    0.3250152160681709,
+    0.361333333333323,
+    0.39001741149158564,
+    0.20066666666666605,
+    0.38466666666666544
+  ],
+  "f1_at_tiou": {
+    "0.1": 1.0,
+    "0.3": 0.7142857142857143,
+    "0.5": 0.0,
+    "0.7": 0.0
+  },
+  "timings": {
+    "shot_segmentation": 257.13848090171814,
+    "highlight_assembly": 0.008332014083862305
+  },
+  "clip_iou_mean": 0.8436732610595258,
+  "clip_coverage_mean": 0.8511834290659113,
+  "clip_precision_mean": 0.990799515286583,
+  "clip_start_mae": 3.4742857142857133,
+  "clip_end_mae": 0.6628571428569947,
+  "clip_iou_per_goal": [
+    0.7289256198347105,
+    0.9834024896265593,
+    0.7791225416036258,
+    0.9907918968692531,
+    0.6603773584905718,
+    0.7838541666666811,
+    0.9792387543252783
+  ],
+  "goal_refined": {
+    "f1": 1.0,
+    "num_segments": 10,
+    "mean_segment_duration": 15.307999999999959,
+    "compression_ratio": 0.9755697414618577,
+    "highlight_duration": 153.0799999999996,
+    "mean_tiou": 0.32867675812046476,
+    "goal_timing_mae": 17.13142857142838,
+    "goal_coverage": 0.0
+  }
+}

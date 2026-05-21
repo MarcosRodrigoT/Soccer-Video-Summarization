@@ -18,8 +18,14 @@ results/
 data/models/*.pt
 
 # Figure generation caches (derived, per-match binary files)
-results_hr/**/iqr_map.npy
-results_hr/**/ocr_readings_figure.pkl
+results_hr*/**/iqr_map.npy
+results_hr*/**/ocr_readings_figure.pkl
+
+# Goal clip compilation videos (too large for git)
+results_hr*/goal_clips/*.mp4
+
+# Pipeline run log (regenerated per run)
+results_hr*/pipeline.log
 
 # OS
 .DS_Store
