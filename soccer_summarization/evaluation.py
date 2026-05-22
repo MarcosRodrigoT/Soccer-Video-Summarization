@@ -209,6 +209,14 @@ class Evaluator:
         iou_list, coverage_list, precision_list = [], [], []
         start_mae_list, end_mae_list = [], []
 
+        # Per-GT-clip parallel lists (None for undetected goals, so that callers
+        # can align with the GT goal index in dashboards / tables).
+        iou_per_gt:       list = []
+        coverage_per_gt:  list = []
+        precision_per_gt: list = []
+        start_mae_per_gt: list = []
+        end_mae_per_gt:   list = []
+
         for clip in goal_clips:
             # Check if this goal was detected (TP)
             matched = any(
@@ -216,6 +224,11 @@ class Evaluator:
                 for t in predicted_goal_times
             )
             if not matched:
+                iou_per_gt.append(None)
+                coverage_per_gt.append(None)
+                precision_per_gt.append(None)
+                start_mae_per_gt.append(None)
+                end_mae_per_gt.append(None)
                 continue  # FN — no predicted highlight to compare
 
             # Find the best-matching highlight segment for this clip
@@ -247,9 +260,17 @@ class Evaluator:
             iou_list.append(best_iou)
             coverage_list.append(best_cov)
             precision_list.append(best_prec)
+            iou_per_gt.append(best_iou)
+            coverage_per_gt.append(best_cov)
+            precision_per_gt.append(best_prec)
             if best_start_err < float("inf"):
                 start_mae_list.append(best_start_err)
                 end_mae_list.append(best_end_err)
+                start_mae_per_gt.append(best_start_err)
+                end_mae_per_gt.append(best_end_err)
+            else:
+                start_mae_per_gt.append(None)
+                end_mae_per_gt.append(None)
 
         def safe_mean(lst):
             return float(np.mean(lst)) if lst else 0.0
@@ -260,7 +281,86 @@ class Evaluator:
             "clip_precision_mean": safe_mean(precision_list),
             "clip_start_mae": safe_mean(start_mae_list),
             "clip_end_mae": safe_mean(end_mae_list),
-            "clip_iou_per_goal": iou_list,
+            # Per-GT-clip values (length == len(goal_clips); None for FN)
+            "clip_iou_per_gt":       iou_per_gt,
+            "clip_coverage_per_gt":  coverage_per_gt,
+            "clip_precision_per_gt": precision_per_gt,
+            "clip_start_mae_per_gt": start_mae_per_gt,
+            "clip_end_mae_per_gt":   end_mae_per_gt,
+        }
+
+    def evaluate_clip_aware_f1(
+        self,
+        goal_clips: list[GoalClip],
+        predicted_goal_times: list[float],
+        goal_highlight_segments: list[tuple[float, float]],
+        iou_threshold: float = 0.5,
+    ) -> dict:
+        """End-to-end precision / recall / F1 requiring BOTH detection AND a good clip.
+
+        A GT goal counts as TP iff:
+          (a) some predicted goal time falls within +-tolerance of its scoreboard time, AND
+          (b) the best-matching highlight segment has IoU >= iou_threshold against
+              the GT clip [start_frame/fps, end_frame_shot/fps].
+
+        Predictions that don't match any GT goal in time are FPs.  Predictions that
+        match in time but produce a poor clip do NOT count as TPs (they're FN on the
+        GT side, FP on the prediction side).
+        """
+        tolerance = self.config.tolerance_window
+        tp = 0
+        fn = 0
+        matched_pred_idx: set[int] = set()
+
+        for clip in goal_clips:
+            # (a) detection check: any prediction within tolerance of scoreboard_time
+            best_match_idx = None
+            best_match_dist = float("inf")
+            for i, pt in enumerate(predicted_goal_times):
+                d = abs(pt - clip.scoreboard_time)
+                if d <= tolerance and d < best_match_dist:
+                    best_match_idx = i
+                    best_match_dist = d
+
+            if best_match_idx is None:
+                fn += 1
+                continue
+
+            # (b) boundary check: best clip IoU against GT clip
+            gt_start, gt_end = clip.start_time, clip.end_time
+            gt_dur = max(gt_end - gt_start, 1e-6)
+            best_iou = 0.0
+            for seg_start, seg_end in goal_highlight_segments:
+                seg_dur = max(seg_end - seg_start, 1e-6)
+                inter_s = max(seg_start, gt_start)
+                inter_e = min(seg_end, gt_end)
+                inter = max(0.0, inter_e - inter_s)
+                if inter == 0:
+                    continue
+                union = seg_dur + gt_dur - inter
+                iou = inter / union if union > 0 else 0.0
+                if iou > best_iou:
+                    best_iou = iou
+
+            if best_iou >= iou_threshold:
+                tp += 1
+                matched_pred_idx.add(best_match_idx)
+            else:
+                fn += 1  # detection succeeded but clip boundaries are too off
+
+        fp = len(predicted_goal_times) - len(matched_pred_idx)
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+        recall    = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+        f1        = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+
+        return {
+            "clip_aware_tp": tp,
+            "clip_aware_fp": fp,
+            "clip_aware_fn": fn,
+            "clip_aware_precision": precision,
+            "clip_aware_recall": recall,
+            "clip_aware_f1": f1,
+            "clip_aware_iou_threshold": iou_threshold,
         }
 
     def extract_goal_events(self, gt_df: pd.DataFrame) -> list[GoalEvent]:

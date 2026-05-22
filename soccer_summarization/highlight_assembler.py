@@ -1,8 +1,12 @@
-"""Highlight assembly: intersection of long shots and play moments.
+"""Highlight selection from shot boundaries and per-shot player counts.
 
-Takes shot boundaries and play/no-play segments, filters short shots,
-computes the intersection (long shot AND play moment), merges adjacent
-segments, and exports the final highlight video.
+A "highlight" is a long shot (duration >= min_shot_duration) whose average
+per-frame player count is at least play_threshold.  Each highlight is one
+full, unmodified shot — no intersection with frame-level play classification,
+no merging across shot boundaries.
+
+For goal moments, the dedicated select_goal_shots() picks one full play shot
+per detected goal: the one whose end aligns with the OCR-detected goal time.
 """
 
 import logging
@@ -14,7 +18,6 @@ import numpy as np
 import pandas as pd
 
 from .config import HighlightAssemblerConfig
-from .play_classifier import PlaySegment
 from .shot_segmentation import ShotBoundary
 from .utils import format_time
 
@@ -32,175 +35,139 @@ class HighlightSegment:
 
 
 class HighlightAssembler:
-    """Combine shot boundaries and play classification into highlight segments."""
+    """Select highlight segments from shot boundaries and per-shot player counts."""
 
     def __init__(self, config: Optional[HighlightAssemblerConfig] = None):
         self.config = config or HighlightAssemblerConfig()
 
-    def assemble(
+    def select_play_long_shots(
         self,
         shots: list[ShotBoundary],
-        play_segments: list[PlaySegment],
-        fps: int = 25,
+        player_counts: pd.DataFrame,
+        player_threshold: float = 5.0,
     ) -> list[HighlightSegment]:
-        """Compute intersection of long shots and play moments.
+        """Return long shots whose average per-frame player count >= threshold.
 
-        1. Filter shots by minimum duration
-        2. Compute intersection with play segments
-        3. Merge adjacent segments
-
-        Returns list of HighlightSegment.
+        A "long shot" is one with duration >= config.min_shot_duration.
+        Each returned HighlightSegment matches one full shot exactly — no
+        intersection, no merging.
         """
-        # Step 1: Filter short shots
         min_dur = self.config.min_shot_duration
-        long_shots = [s for s in shots if s.duration >= min_dur]
+        out: list[HighlightSegment] = []
+        n_long = 0
+
+        for s in shots:
+            if s.duration < min_dur:
+                continue
+            n_long += 1
+            mask = (player_counts["frame"] >= s.start_frame) & \
+                   (player_counts["frame"] <= s.end_frame)
+            vals = player_counts.loc[mask, "player_count"]
+            avg = float(vals.mean()) if len(vals) else 0.0
+            if avg >= player_threshold:
+                out.append(HighlightSegment(
+                    segment_id=len(out) + 1,
+                    start_frame=s.start_frame,
+                    end_frame=s.end_frame,
+                    start_time=s.start_time,
+                    end_time=s.end_time,
+                    duration=s.duration,
+                ))
+
+        total_dur = sum(h.duration for h in out)
         logger.info(
-            "Shot filtering: %d/%d shots >= %.1fs",
-            len(long_shots), len(shots), min_dur,
+            "Play long shots: %d / %d long shots (>=%.1fs), total %.1fs (%s)",
+            len(out), n_long, min_dur, total_dur, format_time(total_dur),
         )
+        return out
 
-        # Step 2: Get play-only segments
-        play_only = [s for s in play_segments if s.is_play]
-        logger.info("Play segments: %d", len(play_only))
-
-        # Step 3: Compute intersection
-        intersections = []
-        for shot in long_shots:
-            for play in play_only:
-                overlap_start = max(shot.start_frame, play.start_frame)
-                overlap_end = min(shot.end_frame, play.end_frame)
-
-                if overlap_start < overlap_end:
-                    intersections.append({
-                        "start_frame": overlap_start,
-                        "end_frame": overlap_end,
-                        "start_time": overlap_start / fps,
-                        "end_time": overlap_end / fps,
-                        "duration": (overlap_end - overlap_start) / fps,
-                    })
-
-        if not intersections:
-            logger.warning("No intersection segments found!")
-            return []
-
-        # Sort by start frame
-        intersections.sort(key=lambda x: x["start_frame"])
-
-        # Step 4: Merge adjacent segments
-        merged = self._merge_adjacent(intersections, fps)
-
-        highlights = [
-            HighlightSegment(
-                segment_id=i + 1,
-                start_frame=seg["start_frame"],
-                end_frame=seg["end_frame"],
-                start_time=seg["start_time"],
-                end_time=seg["end_time"],
-                duration=seg["duration"],
-            )
-            for i, seg in enumerate(merged)
-        ]
-
-        total_dur = sum(h.duration for h in highlights)
-        logger.info(
-            "Highlights: %d segments, total %.1fs (%s)",
-            len(highlights), total_dur, format_time(total_dur),
-        )
-
-        return highlights
-
-    def _merge_adjacent(self, segments: list[dict], fps: int) -> list[dict]:
-        """Merge segments with gap <= threshold."""
-        if not segments:
-            return []
-
-        gap_threshold = self.config.merge_gap_threshold
-        merged = [segments[0].copy()]
-
-        for seg in segments[1:]:
-            gap = (seg["start_frame"] - merged[-1]["end_frame"]) / fps
-            if gap <= gap_threshold:
-                merged[-1]["end_frame"] = seg["end_frame"]
-                merged[-1]["end_time"] = seg["end_time"]
-                merged[-1]["duration"] = merged[-1]["end_time"] - merged[-1]["start_time"]
-            else:
-                merged.append(seg.copy())
-
-        if len(merged) < len(segments):
-            logger.info("Merged %d -> %d segments", len(segments), len(merged))
-
-        return merged
-
-    def refine_with_goals(
+    def select_goal_shots(
         self,
-        highlights: list[HighlightSegment],
+        shots: list[ShotBoundary],
+        player_counts: pd.DataFrame,
         goal_times: list[float],
         fps: int = 25,
+        player_threshold: float = 5.0,
+        max_lookback: float = 30.0,
+        max_lookahead: float = 5.0,
     ) -> list[HighlightSegment]:
-        """Refine highlights by intersecting with goal context windows.
+        """Select one full play shot per goal — the shot whose end aligns with the goal.
 
-        For each detected goal, creates a window [goal - context_before,
-        goal + context_after] and keeps only highlight content within these
-        windows.  Falls back to unrefined highlights if no goals detected.
+        For each goal time T, search for the play shot whose end_time is closest to T
+        within the window [T - max_lookback, T + max_lookahead].  A "play shot" is one
+        whose average per-frame player count is >= player_threshold (using the
+        player_counts dataframe with 'frame' and 'player_count' columns).
+
+        Falls back progressively if no clear match: containing-shot → nearest play
+        shot → nearest shot of any kind.  Always returns one segment per goal.
+
+        Returns a list of HighlightSegment with start/end equal to the chosen shot's
+        full boundaries (no clipping, no merging).
         """
-        if not goal_times:
-            logger.info("No goal times for refinement, returning original highlights")
-            return highlights
+        if not goal_times or not shots:
+            return []
 
-        before = self.config.goal_context_before
-        after = self.config.goal_context_after
+        # Compute avg player count per shot
+        pc = player_counts.copy()
+        shot_avg: list[float] = []
+        for s in shots:
+            mask = (pc["frame"] >= s.start_frame) & (pc["frame"] <= s.end_frame)
+            vals = pc.loc[mask, "player_count"]
+            shot_avg.append(float(vals.mean()) if len(vals) else 0.0)
 
-        # Build goal windows
-        goal_windows = [(max(0, t - before), t + after) for t in goal_times]
+        is_play = [a >= player_threshold for a in shot_avg]
+        play_shot_indices = [i for i, p in enumerate(is_play) if p]
 
-        # Merge overlapping goal windows
-        goal_windows.sort()
-        merged_windows = [goal_windows[0]]
-        for start, end in goal_windows[1:]:
-            if start <= merged_windows[-1][1]:
-                merged_windows[-1] = (merged_windows[-1][0], max(merged_windows[-1][1], end))
+        result: list[HighlightSegment] = []
+
+        for g_idx, T in enumerate(goal_times):
+            chosen: Optional[ShotBoundary] = None
+
+            # Pass 1: play shot ending near T
+            candidates = [
+                i for i in play_shot_indices
+                if (T - max_lookback) <= shots[i].end_time <= (T + max_lookahead)
+            ]
+            if candidates:
+                chosen_i = min(candidates, key=lambda i: abs(shots[i].end_time - T))
+                chosen = shots[chosen_i]
             else:
-                merged_windows.append((start, end))
+                # Pass 2: play shot CONTAINING T (goal mid-action)
+                containing = [
+                    i for i in play_shot_indices
+                    if shots[i].start_time <= T <= shots[i].end_time
+                ]
+                if containing:
+                    chosen = shots[containing[0]]
+                else:
+                    # Pass 3: nearest play shot in either direction (no window limit)
+                    if play_shot_indices:
+                        chosen_i = min(
+                            play_shot_indices,
+                            key=lambda i: abs(shots[i].end_time - T),
+                        )
+                        chosen = shots[chosen_i]
+                    else:
+                        # Pass 4 (degenerate): nearest shot of any kind
+                        chosen_i = min(
+                            range(len(shots)),
+                            key=lambda i: abs(shots[i].end_time - T),
+                        )
+                        chosen = shots[chosen_i]
 
-        # Intersect highlights with goal windows
-        refined = []
-        for h in highlights:
-            for win_start, win_end in merged_windows:
-                overlap_start = max(h.start_time, win_start)
-                overlap_end = min(h.end_time, win_end)
-                if overlap_start < overlap_end:
-                    refined.append({
-                        "start_frame": int(overlap_start * fps),
-                        "end_frame": int(overlap_end * fps),
-                        "start_time": overlap_start,
-                        "end_time": overlap_end,
-                        "duration": overlap_end - overlap_start,
-                    })
+            assert chosen is not None
+            result.append(HighlightSegment(
+                segment_id=g_idx + 1,
+                start_frame=chosen.start_frame,
+                end_frame=chosen.end_frame,
+                start_time=chosen.start_time,
+                end_time=chosen.end_time,
+                duration=chosen.duration,
+            ))
 
-        if not refined:
-            logger.warning("Goal refinement produced no segments, returning originals")
-            return highlights
-
-        # Merge adjacent refined segments
-        refined.sort(key=lambda x: x["start_time"])
-        merged = self._merge_adjacent(refined, fps)
-
-        result = [
-            HighlightSegment(
-                segment_id=i + 1,
-                start_frame=seg["start_frame"],
-                end_frame=seg["end_frame"],
-                start_time=seg["start_time"],
-                end_time=seg["end_time"],
-                duration=seg["duration"],
-            )
-            for i, seg in enumerate(merged)
-        ]
-
-        total_dur = sum(h.duration for h in result)
         logger.info(
-            "Goal-refined highlights: %d segments, total %.1fs (from %d original)",
-            len(result), total_dur, len(highlights),
+            "Selected %d goal shots from %d shots (%d play shots, threshold %.1f)",
+            len(result), len(shots), len(play_shot_indices), player_threshold,
         )
         return result
 

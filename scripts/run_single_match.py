@@ -119,42 +119,20 @@ def run_pipeline(
         player_df.to_csv(player_cache, index=False)
         logger.info("  %d frames processed (saved to %s)", len(player_df), player_cache)
 
-    # --- Stage 3: Play classification ---
-    play_cache = out / "play_segments.csv"
+    # --- Stage 3: Frame-level play classification (for player-count plots) ---
+    # Produces frame_classification.csv only.  No play_segments — highlight
+    # selection now uses per-shot avg player count directly from player_counts.
     frame_cache = out / "frame_classification.csv"
-    if play_cache.exists():
-        logger.info("Loading cached play segments")
-        play_df = pd.read_csv(play_cache)
-        from soccer_summarization.play_classifier import PlaySegment
-        play_segments = [
-            PlaySegment(
-                start_frame=int(row["start_frame"]),
-                end_frame=int(row["end_frame"]),
-                start_time=row["start_time"],
-                end_time=row["end_time"],
-                duration=row["duration"],
-                is_play=bool(row["is_play"]),
-                avg_player_count=row["avg_player_count"],
-            )
-            for _, row in play_df.iterrows()
-        ]
-    else:
-        logger.info("Stage 3: Play/no-play classification...")
+    if not frame_cache.exists():
+        logger.info("Stage 3: Frame-level play classification...")
         t0 = time.time()
         classifier = PlayClassifier(config.play_classifier)
-        play_segments, frame_df = classifier.classify(player_df, props["fps"])
+        _, frame_df = classifier.classify(player_df, props["fps"])
         timings["play_classifier"] = time.time() - t0
-
-        play_seg_df = pd.DataFrame([
-            {"start_frame": s.start_frame, "end_frame": s.end_frame,
-             "start_time": s.start_time, "end_time": s.end_time,
-             "duration": s.duration, "is_play": s.is_play,
-             "avg_player_count": s.avg_player_count}
-            for s in play_segments
-        ])
-        play_seg_df.to_csv(play_cache, index=False)
         frame_df.to_csv(frame_cache, index=False)
-        logger.info("  %d segments (saved to %s)", len(play_segments), play_cache)
+        logger.info("  Frame classification saved to %s", frame_cache)
+    else:
+        logger.info("Loading cached frame classification")
 
     # --- Stage 4: OCR scoreboard ---
     score_cache = out / "score_events.csv"
@@ -188,16 +166,19 @@ def run_pipeline(
                 json.dump(region_info, f)
         logger.info("  %d score events (saved to %s)", len(score_events), score_cache)
 
-    # --- Stage 5: Highlight assembly ---
+    # --- Stage 5: Select play long shots as highlights ---
+    # Highlights = long shots (>= min_shot_duration) whose avg per-frame
+    # player count is >= play_threshold.  Each highlight is one full shot,
+    # no intersection with frame-level play classification, no merging.
     highlight_cache = out / "highlights.csv"
-    logger.info("Stage 5: Highlight assembly...")
+    logger.info("Stage 5: Selecting play long shots...")
     t0 = time.time()
     assembler = HighlightAssembler(config.highlight_assembler)
 
-    highlights = assembler.assemble(
+    highlights = assembler.select_play_long_shots(
         shots=shots,
-        play_segments=play_segments,
-        fps=props["fps"],
+        player_counts=player_df,
+        player_threshold=float(config.play_classifier.play_threshold),
     )
     timings["highlight_assembly"] = time.time() - t0
 
@@ -206,15 +187,22 @@ def run_pipeline(
 
     total_highlight = sum(h.duration for h in highlights)
     logger.info(
-        "  %d highlight segments, %.1fs total (%.1f%% compression)",
+        "  %d play long shots, %.1fs total (%.1f%% compression)",
         len(highlights), total_highlight,
         (1 - total_highlight / total_duration) * 100 if total_duration > 0 else 0,
     )
 
-    # --- Stage 5b: Goal-refined highlights ---
+    # --- Stage 5b: Goal-shot selection ---
+    # For each detected goal, pick the full play shot whose end aligns with the
+    # goal moment.  Whole shots, no clipping/merging — the "moment of play
+    # leading to the goal".
     goal_times = [e.timestamp for e in score_events]
-    goal_highlights = assembler.refine_with_goals(
-        highlights, goal_times, fps=props["fps"]
+    goal_highlights = assembler.select_goal_shots(
+        shots=shots,
+        player_counts=player_df,
+        goal_times=goal_times,
+        fps=props["fps"],
+        player_threshold=float(config.play_classifier.play_threshold),
     )
     goal_hl_df = assembler.highlights_to_dataframe(goal_highlights)
     goal_hl_df.to_csv(out / "goal_highlights.csv", index=False)
@@ -244,79 +232,75 @@ def run_pipeline(
         gt_events = evaluator.extract_goal_events(gt_df)
 
     predicted_goal_times = [e.timestamp for e in score_events]
-    highlight_segments = [(h.start_time, h.end_time) for h in highlights]
+    # The "deliverable" is the goal-refined clips, so evaluate AGAINST those.
+    goal_highlight_segments = [(h.start_time, h.end_time) for h in goal_highlights]
 
     result = evaluator.evaluate_match(
         match_id=match_id,
-        highlight_segments=highlight_segments,
-        predicted_goal_times=predicted_goal_times,
-        gt_events=gt_events,
-        total_video_duration=total_duration,
-    )
-
-    # Evaluate goal-refined highlights separately
-    goal_highlight_segments = [(h.start_time, h.end_time) for h in goal_highlights]
-    goal_ref_result = evaluator.evaluate_match(
-        match_id=match_id + "_goal_refined",
         highlight_segments=goal_highlight_segments,
         predicted_goal_times=predicted_goal_times,
         gt_events=gt_events,
         total_video_duration=total_duration,
     )
 
-    # Clip-quality metrics (only when frame-level GT is available)
-    clip_metrics = {}
+    # Per-goal clip-quality metrics (require frame-level GT from goals.csv)
+    clip_metrics: dict = {}
+    clip_aware: dict = {}
     if goal_clips:
         clip_metrics = evaluator.evaluate_clip_quality(
             goal_clips=goal_clips,
             goal_highlight_segments=goal_highlight_segments,
             predicted_goal_times=predicted_goal_times,
         )
+        clip_aware = evaluator.evaluate_clip_aware_f1(
+            goal_clips=goal_clips,
+            predicted_goal_times=predicted_goal_times,
+            goal_highlight_segments=goal_highlight_segments,
+            iou_threshold=0.5,
+        )
         logger.info(
-            "Clip quality: IoU=%.3f Cov=%.3f StartMAE=%.1fs EndMAE=%.1fs",
+            "Clip quality: IoU=%.3f Cov=%.3f Prec=%.3f StartMAE=%.1fs EndMAE=%.1fs",
             clip_metrics["clip_iou_mean"],
             clip_metrics["clip_coverage_mean"],
+            clip_metrics["clip_precision_mean"],
             clip_metrics["clip_start_mae"],
             clip_metrics["clip_end_mae"],
+        )
+        logger.info(
+            "Clip-aware F1 (IoU>=0.5): F1=%.3f  TP=%d FP=%d FN=%d",
+            clip_aware["clip_aware_f1"],
+            clip_aware["clip_aware_tp"],
+            clip_aware["clip_aware_fp"],
+            clip_aware["clip_aware_fn"],
         )
 
     # Save evaluation results
     eval_results = {
         "match_id": match_id,
+        # Goal-detection metrics (OCR predictions vs GT timestamps)
         "true_positives": result.true_positives,
         "false_positives": result.false_positives,
         "false_negatives": result.false_negatives,
         "precision": result.precision,
         "recall": result.recall,
         "f1": result.f1,
+        # Summary stats — computed from goal_highlights, the actual deliverable
         "total_video_duration": result.total_video_duration,
         "highlight_duration": result.highlight_duration,
         "compression_ratio": result.compression_ratio,
         "goal_coverage": result.goal_coverage,
         "num_gt_events": len(gt_events),
         "num_predicted_goals": len(predicted_goal_times),
-        "num_highlights": len(highlights),
-        # Extended metrics
+        "num_goal_clips": len(goal_highlights),
+        "num_play_long_shots": len(highlights),
+        # Segment stats
         "num_segments": result.num_segments,
         "mean_segment_duration": result.mean_segment_duration,
-        "mean_tiou": result.mean_tiou,
-        "goal_timing_mae": result.goal_timing_mae,
-        "tiou_per_event": result.tiou_per_event,
-        "f1_at_tiou": result.f1_at_tiou,
         "timings": timings,
-        # Clip-quality metrics (frame-level GT only)
+        # Per-goal clip-quality metrics (predicted clip vs frame-level GT clip)
         **clip_metrics,
-        # Goal-refined highlights metrics
-        "goal_refined": {
-            "f1": goal_ref_result.f1,
-            "num_segments": goal_ref_result.num_segments,
-            "mean_segment_duration": goal_ref_result.mean_segment_duration,
-            "compression_ratio": goal_ref_result.compression_ratio,
-            "highlight_duration": goal_ref_result.highlight_duration,
-            "mean_tiou": goal_ref_result.mean_tiou,
-            "goal_timing_mae": goal_ref_result.goal_timing_mae,
-            "goal_coverage": goal_ref_result.goal_coverage,
-        },
+        # End-to-end clip-aware F1 (detection AND clip IoU >= 0.5)
+        **clip_aware,
     }
     def _json_default(obj):
         if hasattr(obj, 'item'):  # numpy scalar

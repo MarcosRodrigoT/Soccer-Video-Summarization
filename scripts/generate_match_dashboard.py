@@ -54,15 +54,15 @@ def load_match_data(match_dir: Path):
     if p.exists():
         data["shots"] = pd.read_csv(p)
 
-    # Player counts (frame-level)
+    # Per-frame player counts (raw, every 5th frame) — for per-shot avg bars
+    p = match_dir / "player_counts.csv"
+    if p.exists():
+        data["player_counts"] = pd.read_csv(p)
+
+    # Per-frame play classification (smoothed) — for the player-count line plot
     p = match_dir / "frame_classification.csv"
     if p.exists():
         data["frames"] = pd.read_csv(p)
-
-    # Play segments
-    p = match_dir / "play_segments.csv"
-    if p.exists():
-        data["play_segments"] = pd.read_csv(p)
 
     # Score events
     p = match_dir / "score_events.csv"
@@ -118,12 +118,12 @@ def generate_dashboard(
             for c in goal_clips
         ]
 
-    # --- Figure layout ---
-    fig = plt.figure(figsize=(24, 20), dpi=150)
+    # --- Figure layout: header / timeline / players / scores / goal-table ---
+    fig = plt.figure(figsize=(24, 17), dpi=150)
     gs = gridspec.GridSpec(
-        7, 2,
+        5, 2,
         figure=fig,
-        height_ratios=[0.6, 1.5, 1.2, 1.2, 1.2, 0.8, 1.5],
+        height_ratios=[1.2, 1.5, 1.2, 1.2, 1.5],
         hspace=0.35,
         wspace=0.25,
         left=0.05, right=0.95, top=0.96, bottom=0.03,
@@ -149,6 +149,8 @@ def generate_dashboard(
     ax_header = fig.add_subplot(gs[0, :])
     ax_header.axis("off")
 
+    from matplotlib.patches import FancyBboxPatch
+
     home = match_info.get("home_team", "Home")
     away = match_info.get("away_team", "Away")
     score = match_info.get("score", "?-?")
@@ -156,43 +158,157 @@ def generate_dashboard(
 
     title = f"{match_id}:  {home}  {score}  {away}  ({season})"
     ax_header.text(
-        0.5, 0.75, title,
+        0.5, 0.94, title,
         transform=ax_header.transAxes, fontsize=18, fontweight="bold",
         ha="center", va="center",
     )
 
-    # Metrics bar
-    f1 = ev["f1"]
+    # ── Pull metrics from evaluation.json ──────────────────────────────────────
+    n_gt   = ev.get("num_gt_events", 0)
+    n_pred = ev.get("num_predicted_goals", 0)
     tp, fp, fn = ev["true_positives"], ev["false_positives"], ev["false_negatives"]
-    comp = ev["compression_ratio"]
-    tiou = ev["mean_tiou"]
-    mae = ev["goal_timing_mae"]
-    n_gt = ev["num_gt_events"]
-    n_pred = ev["num_predicted_goals"]
+    p, r, f1   = ev["precision"], ev["recall"], ev["f1"]
 
-    f1_color = "#4CAF50" if f1 >= 1.0 else "#FF9800" if f1 >= 0.8 else "#F44336"
-    metrics_text = (
-        f"F1 = {f1:.3f}   |   "
-        f"TP={tp}  FP={fp}  FN={fn}   |   "
-        f"GT goals={n_gt}  Predicted={n_pred}   |   "
-        f"Compression={comp*100:.1f}%   |   "
-        f"tIoU={tiou:.3f}   |   "
-        f"MAE={mae:.1f}s   |   "
-        f"Duration={format_mm_ss(total_dur)}"
-    )
-    if "clip_iou_mean" in ev:
-        metrics_text += (
-            f"\nClip IoU={ev['clip_iou_mean']:.3f}   |   "
-            f"Clip Coverage={ev['clip_coverage_mean']:.3f}   |   "
-            f"StartMAE={ev['clip_start_mae']:.1f}s   |   "
-            f"EndMAE={ev['clip_end_mae']:.1f}s"
+    ca_tp = ev.get("clip_aware_tp", 0)
+    ca_fp = ev.get("clip_aware_fp", 0)
+    ca_fn = ev.get("clip_aware_fn", 0)
+    ca_p  = ev.get("clip_aware_precision", 0.0)
+    ca_r  = ev.get("clip_aware_recall", 0.0)
+    ca_f1 = ev.get("clip_aware_f1", 0.0)
+    ca_thr = ev.get("clip_aware_iou_threshold", 0.5)
+
+    has_clip = "clip_iou_mean" in ev
+    ciou  = ev.get("clip_iou_mean", 0.0)
+    ccov  = ev.get("clip_coverage_mean", 0.0)
+    cpre  = ev.get("clip_precision_mean", 0.0)
+    cs_mae = ev.get("clip_start_mae", 0.0)
+    ce_mae = ev.get("clip_end_mae", 0.0)
+
+    comp    = ev["compression_ratio"]
+    hl_dur  = ev["highlight_duration"]
+    n_clips = ev.get("num_goal_clips", 0)
+
+    # Helpers for value colouring
+    def q_color(v, good=0.9, ok=0.7):
+        return "#2E7D32" if v >= good else "#EF6C00" if v >= ok else "#C62828"
+
+    def err_color(v, good=2.0, ok=5.0):
+        return "#2E7D32" if v <= good else "#EF6C00" if v <= ok else "#C62828"
+
+    DARK = "#212121"
+    NA   = "#9E9E9E"
+
+    # ── Four cards: section title + body of (label, value, value_colour) rows ──
+    cards = [
+        {
+            "title":    "GOAL DETECTION",
+            "subtitle": "OCR timestamps vs GT",
+            "color":    "#1565C0",
+            "rows": [
+                ("F1",          f"{f1:.3f}",          q_color(f1)),
+                ("Precision",   f"{p:.3f}",           q_color(p)),
+                ("Recall",      f"{r:.3f}",           q_color(r)),
+                ("TP / FP / FN", f"{tp} / {fp} / {fn}", DARK),
+                ("GT / OCR",    f"{n_gt} / {n_pred}", DARK),
+            ],
+        },
+        {
+            "title":    "CLIP QUALITY",
+            "subtitle": "mean across detected goals (TPs)",
+            "color":    "#6A1B9A",
+            "rows": (
+                [
+                    ("Clip IoU",  f"{ciou:.3f}",   q_color(ciou, 0.7, 0.5)),
+                    ("Coverage",  f"{ccov:.3f}",   q_color(ccov)),
+                    ("Precision", f"{cpre:.3f}",   q_color(cpre)),
+                    ("Start MAE", f"{cs_mae:.1f}s", err_color(cs_mae)),
+                    ("End MAE",   f"{ce_mae:.1f}s", err_color(ce_mae)),
+                ] if has_clip else [("—", "no frame-level GT", NA)]
+            ),
+        },
+        {
+            "title":    f"END-TO-END  (IoU ≥ {ca_thr:.1f})",
+            "subtitle": "detection AND good clip",
+            "color":    "#2E7D32",
+            "rows": (
+                [
+                    ("F1",          f"{ca_f1:.3f}",                 q_color(ca_f1)),
+                    ("Precision",   f"{ca_p:.3f}",                  q_color(ca_p)),
+                    ("Recall",      f"{ca_r:.3f}",                  q_color(ca_r)),
+                    ("TP / FP / FN", f"{ca_tp} / {ca_fp} / {ca_fn}", DARK),
+                ] if has_clip else [("—", "no frame-level GT", NA)]
+            ),
+        },
+        {
+            "title":    "SUMMARY",
+            "subtitle": "output size & duration",
+            "color":    "#37474F",
+            "rows": [
+                ("Compression",        f"{comp*100:.1f}%",          q_color(comp, 0.9, 0.7)),
+                ("Goal clips",         f"{n_clips}",                DARK),
+                ("Total clip duration", f"{format_mm_ss(hl_dur)}",  DARK),
+                ("Match duration",     f"{format_mm_ss(total_dur)}", DARK),
+            ],
+        },
+    ]
+
+    # Layout: 4 cards across the header subplot
+    n_cards   = len(cards)
+    x0, x1    = 0.02, 0.98
+    gap       = 0.012
+    card_w    = (x1 - x0 - (n_cards - 1) * gap) / n_cards
+    card_top  = 0.83
+    card_bot  = 0.04
+    band_h    = 0.18
+
+    for i, card in enumerate(cards):
+        xc    = x0 + i * (card_w + gap)
+        color = card["color"]
+
+        # Body
+        ax_header.add_patch(FancyBboxPatch(
+            (xc, card_bot), card_w, card_top - card_bot,
+            boxstyle="round,pad=0.0,rounding_size=0.008",
+            facecolor="#FAFAFA", edgecolor=color, linewidth=1.5,
+            transform=ax_header.transAxes, zorder=1, mutation_aspect=0.3,
+        ))
+        # Header band
+        ax_header.add_patch(FancyBboxPatch(
+            (xc, card_top - band_h), card_w, band_h,
+            boxstyle="round,pad=0.0,rounding_size=0.008",
+            facecolor=color, edgecolor=color, linewidth=0,
+            transform=ax_header.transAxes, zorder=2, mutation_aspect=0.3,
+        ))
+        # Title
+        ax_header.text(
+            xc + card_w / 2, card_top - band_h * 0.32, card["title"],
+            transform=ax_header.transAxes, fontsize=11, fontweight="bold",
+            color="white", ha="center", va="center", zorder=3,
         )
-    ax_header.text(
-        0.5, 0.25, metrics_text,
-        transform=ax_header.transAxes, fontsize=11, ha="center", va="center",
-        color=f1_color, fontweight="bold",
-        bbox=dict(boxstyle="round,pad=0.3", facecolor="#F5F5F5", edgecolor=f1_color, alpha=0.8),
-    )
+        # Subtitle
+        ax_header.text(
+            xc + card_w / 2, card_top - band_h * 0.78, card["subtitle"],
+            transform=ax_header.transAxes, fontsize=8, fontstyle="italic",
+            color="white", ha="center", va="center", alpha=0.9, zorder=3,
+        )
+        # Rows
+        rows = card["rows"]
+        body_top = card_top - band_h - 0.03
+        body_bot = card_bot + 0.03
+        n_rows   = max(len(rows), 1)
+        row_h    = (body_top - body_bot) / n_rows
+        for j, (label, value, val_color) in enumerate(rows):
+            y_line = body_top - (j + 0.5) * row_h
+            ax_header.text(
+                xc + 0.010, y_line, label,
+                transform=ax_header.transAxes, fontsize=10,
+                color="#424242", ha="left", va="center", zorder=3,
+            )
+            ax_header.text(
+                xc + card_w - 0.010, y_line, value,
+                transform=ax_header.transAxes, fontsize=11, fontweight="bold",
+                color=val_color, ha="right", va="center", zorder=3,
+            )
 
     # =============================================
     # Row 1: Full match timeline (4 lanes)
@@ -213,21 +329,9 @@ def generate_dashboard(
     _draw_score_tracking(ax_scores, data, gt_events, total_dur, colors, match_info)
 
     # =============================================
-    # Row 4: Highlight coverage heatmap
+    # Row 4: Goal event comparison table
     # =============================================
-    ax_coverage = fig.add_subplot(gs[4, :])
-    _draw_highlight_coverage(ax_coverage, data, gt_events, total_dur, colors)
-
-    # =============================================
-    # Row 5: Minute-by-minute coverage bar
-    # =============================================
-    ax_minute = fig.add_subplot(gs[5, :])
-    _draw_minute_coverage(ax_minute, data, gt_events, total_dur, colors)
-
-    # =============================================
-    # Row 6: Goal event comparison table
-    # =============================================
-    ax_table = fig.add_subplot(gs[6, :])
+    ax_table = fig.add_subplot(gs[4, :])
     _draw_goal_table(ax_table, data, gt_events, ev, colors, config)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -237,16 +341,18 @@ def generate_dashboard(
 
 
 def _draw_timeline(ax, data, gt_events, total_dur, colors, config):
-    """4-lane timeline: shots, play/no-play, OCR events + GT, highlights."""
+    """4-lane timeline: shots, avg players (long shots), OCR + GT goals, highlights."""
     import matplotlib.ticker as mticker
 
-    lanes = ["Shots", "Play/No-Play", "Goals (GT + Pred)", "Highlights"]
+    lanes = ["Shots", "Avg Players\n(long shots)", "Goals (GT + Pred)", "Highlights"]
     lane_y = {name: i for i, name in enumerate(lanes)}
     bar_h = 0.7
 
+    min_dur = config.highlight_assembler.min_shot_duration
+    play_thr = float(config.play_classifier.play_threshold)
+
     # Lane 0: Shot boundaries
     if "shots" in data:
-        min_dur = config.highlight_assembler.min_shot_duration
         for _, row in data["shots"].iterrows():
             color = colors["shot_long"] if row["duration"] >= min_dur else colors["shot_short"]
             ax.barh(
@@ -254,14 +360,38 @@ def _draw_timeline(ax, data, gt_events, total_dur, colors, config):
                 height=bar_h, color=color, edgecolor="none", linewidth=0,
             )
 
-    # Lane 1: Play segments
-    if "play_segments" in data:
-        for _, row in data["play_segments"].iterrows():
-            color = colors["play"] if row["is_play"] else colors["no_play"]
-            ax.barh(
-                lane_y["Play/No-Play"], row["duration"], left=row["start_time"],
-                height=bar_h, color=color, edgecolor="none", linewidth=0,
-            )
+    # Lane 1: Per-long-shot avg player count as vertical bars.
+    # Bar height is proportional to avg players (normalized by the play threshold
+    # so that bars >= threshold reach the top half of the lane).  Color encodes
+    # play (avg>=threshold) vs no-play (avg<threshold).
+    if "shots" in data and "player_counts" in data:
+        pc = data["player_counts"]
+        lane_baseline = lane_y["Avg Players\n(long shots)"] - 0.45
+        lane_height = 0.9
+
+        # Compute per-shot avg for ALL long shots
+        bars = []
+        for _, s in data["shots"].iterrows():
+            if s["duration"] < min_dur:
+                continue
+            mask = (pc["frame"] >= s["start_frame"]) & (pc["frame"] <= s["end_frame"])
+            vals = pc.loc[mask, "player_count"]
+            if len(vals) == 0:
+                continue
+            avg = float(vals.mean())
+            bars.append((s["start_time"], s["end_time"], avg))
+
+        if bars:
+            # Normalize: 2× threshold maps to full lane height
+            max_avg = max(2.0 * play_thr, max(a for *_, a in bars))
+            for st, en, avg in bars:
+                h = min(avg / max_avg, 1.0) * lane_height
+                color = colors["play"] if avg >= play_thr else colors["no_play"]
+                ax.bar(
+                    x=(st + en) / 2.0, height=h, width=en - st,
+                    bottom=lane_baseline,
+                    color=color, alpha=0.75, edgecolor="none", linewidth=0,
+                )
 
     # Lane 2: GT goals (scoreboard events) + clip windows + predicted goals
     for evt in gt_events:
@@ -314,11 +444,11 @@ def _draw_timeline(ax, data, gt_events, total_dur, colors, config):
     legend_items = [
         mpatches.Patch(color=colors["shot_long"], label=f"Long shot (≥{config.highlight_assembler.min_shot_duration}s)"),
         mpatches.Patch(color=colors["shot_short"], label="Short shot"),
-        mpatches.Patch(color=colors["play"], label="Play"),
-        mpatches.Patch(color=colors["no_play"], label="No-play"),
+        mpatches.Patch(color=colors["play"], label=f"Avg players ≥{play_thr:.0f} (play)"),
+        mpatches.Patch(color=colors["no_play"], label=f"Avg players <{play_thr:.0f} (no-play)"),
         mpatches.Patch(color=colors["gt_goal"], alpha=0.4, label="GT goal"),
         plt.Line2D([0], [0], marker="v", color=colors["pred_goal"], linestyle="", label="Predicted goal"),
-        mpatches.Patch(color=colors["highlight"], alpha=0.6, label="Highlights"),
+        mpatches.Patch(color=colors["highlight"], alpha=0.6, label="Highlights (play long shots)"),
         mpatches.Patch(color=colors["goal_highlight"], alpha=0.8, label="Goal-refined"),
     ]
     ax.legend(handles=legend_items, loc="upper right", fontsize=8, ncol=4)
@@ -338,12 +468,6 @@ def _draw_player_counts(ax, data, gt_events, total_dur, colors, config):
     # Downsample for performance (every 25th frame = 1 per second)
     step = max(1, len(df) // 6000)
     df_ds = df.iloc[::step]
-
-    # Shade play/no-play regions
-    if "play_segments" in data:
-        for _, row in data["play_segments"].iterrows():
-            color = colors["play"] if row["is_play"] else colors["no_play"]
-            ax.axvspan(row["start_time"], row["end_time"], alpha=0.15, color=color, linewidth=0)
 
     # Plot raw and smoothed
     ax.plot(df_ds["time_seconds"], df_ds["player_count"], color="#BBDEFB",
@@ -427,160 +551,101 @@ def _draw_score_tracking(ax, data, gt_events, total_dur, colors, match_info):
     ax.legend(loc="upper left", fontsize=8)
 
 
-def _draw_highlight_coverage(ax, data, gt_events, total_dur, colors):
-    """Highlight segments as blocks with GT goals overlaid."""
-    import matplotlib.ticker as mticker
-
-    # GT goal shading
-    for evt in gt_events:
-        ax.axvspan(evt.start_time, evt.end_time, alpha=0.2, color=colors["gt_goal"], linewidth=0)
-
-    # Standard highlights
-    if "highlights" in data:
-        for _, row in data["highlights"].iterrows():
-            ax.barh(0, row["duration"], left=row["start_time"], height=0.6,
-                    color=colors["highlight"], alpha=0.5, edgecolor="none")
-
-    # Goal-refined highlights
-    if "goal_highlights" in data:
-        for _, row in data["goal_highlights"].iterrows():
-            ax.barh(1, row["duration"], left=row["start_time"], height=0.6,
-                    color=colors["goal_highlight"], alpha=0.7, edgecolor="none")
-
-    ax.set_yticks([0, 1])
-    ax.set_yticklabels(["Standard\nHighlights", "Goal-Refined\nHighlights"], fontsize=9)
-    ax.set_xlim(0, total_dur)
-    ax.xaxis.set_major_formatter(mticker.FuncFormatter(time_formatter))
-    ax.set_title("Highlight Coverage (red shading = GT goal segments)", fontsize=12, fontweight="bold")
-    ax.invert_yaxis()
-
-
-def _draw_minute_coverage(ax, data, gt_events, total_dur, colors):
-    """Minute-by-minute highlight coverage density bar."""
-    n_minutes = int(np.ceil(total_dur / 60))
-    coverage = np.zeros(n_minutes)
-
-    if "highlights" in data:
-        for _, row in data["highlights"].iterrows():
-            start_min = int(row["start_time"] / 60)
-            end_min = min(int(row["end_time"] / 60), n_minutes - 1)
-            for m in range(start_min, end_min + 1):
-                min_start = m * 60
-                min_end = (m + 1) * 60
-                overlap = max(0, min(row["end_time"], min_end) - max(row["start_time"], min_start))
-                coverage[m] += overlap / 60.0
-
-    coverage = np.clip(coverage, 0, 1)
-
-    # Color bars by coverage level
-    bar_colors = []
-    for c in coverage:
-        if c > 0.8:
-            bar_colors.append(colors["highlight"])
-        elif c > 0.3:
-            bar_colors.append("#81C784")
-        elif c > 0:
-            bar_colors.append("#C8E6C9")
-        else:
-            bar_colors.append("#F5F5F5")
-
-    ax.bar(range(n_minutes), coverage, color=bar_colors, edgecolor="#E0E0E0", linewidth=0.5)
-
-    # Mark GT goal minutes
-    for evt in gt_events:
-        goal_min = int(evt.midpoint / 60)
-        if 0 <= goal_min < n_minutes:
-            ax.axvline(goal_min, color=colors["gt_goal"], linestyle="-", linewidth=2, alpha=0.6)
-
-    ax.set_xlim(-0.5, n_minutes - 0.5)
-    ax.set_ylim(0, 1.05)
-    ax.set_xlabel("Match Minute")
-    ax.set_ylabel("Coverage")
-    ax.set_title("Per-Minute Highlight Density (red lines = GT goal minutes)", fontsize=11, fontweight="bold")
-
-
 def _draw_goal_table(ax, data, gt_events, ev, colors, config):
-    """Goal event comparison table: GT vs predicted, TP/FP/FN classification."""
+    """Per-goal table: detection + clip-quality breakdown per GT goal."""
     ax.axis("off")
 
     tolerance = config.evaluation.tolerance_window
 
-    # Classify each GT event
     score_events = data.get("score_events", pd.DataFrame())
     pred_times = score_events["timestamp"].tolist() if len(score_events) > 0 else []
+
+    # Per-GT-clip clip-quality arrays (None for undetected goals)
+    iou_pg   = ev.get("clip_iou_per_gt",       [None] * len(gt_events))
+    cov_pg   = ev.get("clip_coverage_per_gt",  [None] * len(gt_events))
+    pre_pg   = ev.get("clip_precision_per_gt", [None] * len(gt_events))
+    s_mae_pg = ev.get("clip_start_mae_per_gt", [None] * len(gt_events))
+    e_mae_pg = ev.get("clip_end_mae_per_gt",   [None] * len(gt_events))
+    iou_thr  = ev.get("clip_aware_iou_threshold", 0.5)
+
+    def f(v, fmt="{:.3f}"):
+        return "-" if v is None else fmt.format(v)
 
     rows = []
     matched_preds = set()
 
     for i, evt in enumerate(gt_events):
-        best_pred = None
-        best_dist = float("inf")
-        best_idx = -1
+        # Find the closest predicted goal within tolerance
+        best_pred, best_dist, best_idx = None, float("inf"), -1
         for j, pt in enumerate(pred_times):
             dist = abs(pt - evt.midpoint)
             if dist < best_dist and dist <= tolerance:
-                best_dist = dist
-                best_pred = pt
-                best_idx = j
+                best_dist, best_pred, best_idx = dist, pt, j
 
+        # End-to-end status: TP requires detection AND clip IoU >= threshold
+        iou_v = iou_pg[i] if i < len(iou_pg) else None
         if best_pred is not None and best_idx not in matched_preds:
             matched_preds.add(best_idx)
-            status = "TP"
-            pred_str = format_mm_ss(best_pred)
-            error_str = f"{best_dist:.1f}s"
-            tiou_str = f"{ev['tiou_per_event'][i]:.3f}" if i < len(ev.get("tiou_per_event", [])) else "-"
+            if iou_v is not None and iou_v >= iou_thr:
+                status   = "TP"
+                pred_str = format_mm_ss(best_pred)
+                err_str  = f"{best_dist:.1f}s"
+            else:
+                status   = "FN (clip)"  # detected but boundaries too off
+                pred_str = format_mm_ss(best_pred)
+                err_str  = f"{best_dist:.1f}s"
         else:
-            status = "FN"
-            pred_str = "-"
-            error_str = "-"
-            tiou_str = f"{ev['tiou_per_event'][i]:.3f}" if i < len(ev.get("tiou_per_event", [])) else "-"
+            status, pred_str, err_str = "FN", "-", "-"
 
         rows.append([
             f"Goal {i+1}",
-            f"{format_mm_ss(evt.start_time)} - {format_mm_ss(evt.end_time)}",
             format_mm_ss(evt.midpoint),
             pred_str,
-            error_str,
-            tiou_str,
+            err_str,
+            f(iou_v),
+            f(cov_pg[i] if i < len(cov_pg) else None),
+            f(pre_pg[i] if i < len(pre_pg) else None),
+            f(s_mae_pg[i] if i < len(s_mae_pg) else None, "{:.1f}s"),
+            f(e_mae_pg[i] if i < len(e_mae_pg) else None, "{:.1f}s"),
             status,
         ])
 
-    # Add FP predictions
+    # FP predictions (no matching GT)
     for j, pt in enumerate(pred_times):
         if j not in matched_preds:
             rows.append([
-                f"FP {j+1}",
-                "-",
-                "-",
-                format_mm_ss(pt),
-                "-",
-                "-",
-                "FP",
+                f"FP {j+1}", "-", format_mm_ss(pt), "-", "-", "-", "-", "-", "-", "FP",
             ])
 
     if not rows:
         ax.text(0.5, 0.5, "No goal events in this match",
                 transform=ax.transAxes, ha="center", va="center", fontsize=12, color="gray")
-        ax.set_title("Goal Event Comparison", fontsize=12, fontweight="bold")
+        ax.set_title("Per-Goal Breakdown", fontsize=12, fontweight="bold")
         return
 
-    columns = ["Event", "GT Window", "GT Mid", "Predicted", "Error", "tIoU", "Status"]
+    columns = [
+        "Event", "GT Mid", "Predicted", "Time Err",
+        "Clip IoU", "Coverage", "Precision", "Start MAE", "End MAE",
+        "Status",
+    ]
 
     table = ax.table(
-        cellText=rows,
-        colLabels=columns,
-        cellLoc="center",
-        loc="center",
+        cellText=rows, colLabels=columns,
+        cellLoc="center", loc="center",
     )
     table.auto_set_font_size(False)
-    table.set_fontsize(10)
-    table.scale(1, 1.5)
+    table.set_fontsize(13)
+    table.scale(1, 1.9)
 
-    # Color cells by status
-    status_colors = {"TP": "#C8E6C9", "FP": "#FFE0B2", "FN": "#FFCDD2"}
+    # Status-row coloring
+    status_colors = {
+        "TP":         "#C8E6C9",
+        "FP":         "#FFE0B2",
+        "FN":         "#FFCDD2",
+        "FN (clip)":  "#FFF59D",  # detected but bad clip — yellow
+    }
     for i, row in enumerate(rows):
-        status = row[-1]
-        bg = status_colors.get(status, "#FFFFFF")
+        bg = status_colors.get(row[-1], "#FFFFFF")
         for j in range(len(columns)):
             table[i + 1, j].set_facecolor(bg)
 
@@ -589,7 +654,10 @@ def _draw_goal_table(ax, data, gt_events, ev, colors, config):
         table[0, j].set_facecolor("#37474F")
         table[0, j].set_text_props(color="white", fontweight="bold")
 
-    ax.set_title("Goal Event Comparison (GT vs Predicted)", fontsize=12, fontweight="bold", pad=20)
+    ax.set_title(
+        f"Per-Goal Breakdown   (TP = detected AND Clip IoU ≥ {iou_thr:.1f})",
+        fontsize=12, fontweight="bold", pad=20,
+    )
 
 
 def main():

@@ -2,15 +2,15 @@
 """Extract and compile moment-of-play clips for each detected goal.
 
 For each match and each detected goal (from score_events.csv), this script
-finds the last play-shot segment that immediately precedes the goal
-(from highlights.csv and shot_boundaries.csv), extracts that clip from the
-video at a reduced resolution, and concatenates all clips across all matches
-into a single output video.
+selects the full play shot whose end aligns with the goal moment (from
+shot_boundaries.csv + player_counts.csv), extracts that whole shot at a
+reduced resolution, and concatenates all clips across all matches into a
+single output video.
 
-The "moment of play" is defined as: the last highlight segment (intersection of
-a long shot with play activity) whose mid-point falls within the goal context
-window [goal_time - context_before, goal_time].  This is the play action that
-directly led to the goal.
+A "play shot" is a shot whose average per-frame player count is above the
+PlayClassifier threshold.  Among play shots ending within
+[goal - 30s, goal + 5s], the one whose end_time is closest to the goal is
+selected and returned with its full, unchopped boundaries.
 
 Usage:
     python scripts/generate_goal_clips.py \
@@ -18,7 +18,7 @@ Usage:
         --matches-yaml config/matches_hr.yaml \
         --results-dir results_hr/per_match \
         --output results_hr/goal_clips/all_goals.mp4 \
-        [--scale 0.5] [--fps 25] [--context-before 40] [--context-after 10]
+        [--scale 0.5] [--fps 25]
 """
 
 import argparse
@@ -44,81 +44,62 @@ logger = logging.getLogger(__name__)
 
 # ─── helpers ──────────────────────────────────────────────────────────────────
 
-def _find_moment_of_play(
+def _select_goal_shot(
     goal_time: float,
-    highlights_df: pd.DataFrame,
-    context_before: float = 40.0,
-    context_after: float = 10.0,
-) -> tuple[float, float]:
-    """Return (start, end) of the best highlight clip for this goal.
-
-    Searches for the last highlight segment whose end_time falls within
-    [goal_time - context_before, goal_time + context_after].  If multiple
-    segments qualify, returns the one whose end_time is closest to goal_time.
-    Falls back to a raw context window if no highlight segment is found.
-    """
-    if highlights_df is None or highlights_df.empty:
-        return (max(0.0, goal_time - context_before), goal_time + context_after)
-
-    window_start = goal_time - context_before
-    window_end   = goal_time + context_after
-
-    candidates = highlights_df[
-        (highlights_df["end_time"] >= window_start) &
-        (highlights_df["start_time"] <= window_end)
-    ].copy()
-
-    if candidates.empty:
-        return (max(0.0, goal_time - context_before), goal_time + context_after)
-
-    # Pick the segment whose end_time is nearest to goal_time
-    candidates["dist"] = abs(candidates["end_time"] - goal_time)
-    best = candidates.sort_values("dist").iloc[0]
-    return (float(best["start_time"]), float(best["end_time"]))
-
-
-def _trim_trailing_short_shot(
-    clip_start: float,
-    clip_end: float,
     shots_df: pd.DataFrame,
-    max_trailing_shot: float = 4.0,
-    min_main_fraction: float = 0.20,
+    player_counts_df: pd.DataFrame,
+    player_threshold: float = 5.0,
+    max_lookback: float = 30.0,
+    max_lookahead: float = 5.0,
 ) -> tuple[float, float]:
-    """Remove a brief trailing shot that bleeds in at the clip end.
+    """Select the full play shot whose end aligns with the goal.
 
-    The highlight assembler merges adjacent play segments with up to a 0.5 s
-    gap, which can attach a brief shot (camera cut to net/keeper/crowd) right
-    after the main play action.  We trim the trailing shot only when it is
-    clearly incidental — i.e. it is short in absolute terms AND it makes up
-    less than min_main_fraction of the total clip duration.  This prevents
-    trimming legitimate short goal shots that happen to appear at the end.
+    A "play shot" is one whose average per-frame player count is >= player_threshold.
+    For each goal time T, prefer play shots ending in [T - max_lookback, T + max_lookahead]
+    and pick the one whose end_time is closest to T.  Falls back progressively:
+    containing-shot → nearest play shot → nearest shot.  Returns the full shot bounds
+    (no clipping, no merging).
     """
-    if shots_df is None or shots_df.empty:
-        return clip_start, clip_end
+    # Per-shot avg player count
+    shots = shots_df.copy()
+    avgs = []
+    for _, s in shots.iterrows():
+        mask = (player_counts_df["frame"] >= s["start_frame"]) & \
+               (player_counts_df["frame"] <= s["end_frame"])
+        vals = player_counts_df.loc[mask, "player_count"]
+        avgs.append(float(vals.mean()) if len(vals) else 0.0)
+    shots["avg_players"] = avgs
+    play_shots = shots[shots["avg_players"] >= player_threshold]
 
-    clip_shots = shots_df[
-        (shots_df["end_time"] > clip_start) &
-        (shots_df["start_time"] < clip_end)
-    ].copy()
+    # Pass 1: play shot ending near goal_time
+    cands = play_shots[
+        (play_shots["end_time"] >= goal_time - max_lookback) &
+        (play_shots["end_time"] <= goal_time + max_lookahead)
+    ]
+    if not cands.empty:
+        cands = cands.assign(dist=(cands["end_time"] - goal_time).abs())
+        best = cands.sort_values("dist").iloc[0]
+        return float(best["start_time"]), float(best["end_time"])
 
-    if len(clip_shots) < 2:
-        return clip_start, clip_end  # single shot — nothing to trim
+    # Pass 2: play shot containing goal_time
+    containing = play_shots[
+        (play_shots["start_time"] <= goal_time) &
+        (play_shots["end_time"]   >= goal_time)
+    ]
+    if not containing.empty:
+        s = containing.iloc[0]
+        return float(s["start_time"]), float(s["end_time"])
 
-    last = clip_shots.iloc[-1]
-    last_start = float(last["start_time"])
-    last_dur = clip_end - max(last_start, clip_start)  # duration within clip
-    clip_dur = clip_end - clip_start
+    # Pass 3: nearest play shot regardless of distance
+    if not play_shots.empty:
+        play_shots = play_shots.assign(dist=(play_shots["end_time"] - goal_time).abs())
+        s = play_shots.sort_values("dist").iloc[0]
+        return float(s["start_time"]), float(s["end_time"])
 
-    # Only trim when:
-    #  1. The trailing shot is short in absolute terms, AND
-    #  2. It makes up less than min_main_fraction of the clip
-    #     (so we don't remove a 5 s goal shot from a 6 s clip)
-    if last_dur < max_trailing_shot and last_dur < min_main_fraction * clip_dur:
-        new_end = max(last_start, clip_start + 1.0)
-        if new_end > clip_start:
-            return clip_start, new_end
-
-    return clip_start, clip_end
+    # Pass 4: nearest shot of any kind (degenerate — no play shots at all)
+    shots = shots.assign(dist=(shots["end_time"] - goal_time).abs())
+    s = shots.sort_values("dist").iloc[0]
+    return float(s["start_time"]), float(s["end_time"])
 
 
 def _extract_clip(
@@ -227,10 +208,6 @@ def main():
                         help="Resolution scale factor (0.5 = half resolution)")
     parser.add_argument("--fps", type=int, default=25,
                         help="Output frames per second")
-    parser.add_argument("--context-before", type=float, default=40.0,
-                        help="Seconds before goal to include in context window")
-    parser.add_argument("--context-after", type=float, default=10.0,
-                        help="Seconds after goal to include in context window")
     parser.add_argument("--log-level", default="INFO")
     args = parser.parse_args()
 
@@ -284,12 +261,18 @@ def main():
         except Exception:
             continue
 
-        # ── Load highlights and shot boundaries ─────────────────────────────
-        hl_path = match_dir / "highlights.csv"
-        highlights_df = pd.read_csv(hl_path) if hl_path.exists() else None
-
+        # ── Load shot boundaries and per-frame player counts ────────────────
         shots_path = match_dir / "shot_boundaries.csv"
         shots_df = pd.read_csv(shots_path) if shots_path.exists() else None
+
+        pc_path = match_dir / "player_counts.csv"
+        player_counts_df = pd.read_csv(pc_path) if pc_path.exists() else None
+
+        if shots_df is None or shots_df.empty or player_counts_df is None:
+            logger.warning("%s: missing shots or player_counts, skipping", match_id)
+            continue
+
+        player_threshold = float(config.play_classifier.play_threshold)
 
         # ── Load GT goal clips for overlay info ─────────────────────────────
         gt_clips = []
@@ -313,20 +296,14 @@ def main():
             away_score = int(row.get("away_score", 0))
             total_goals += 1
 
-            # Find the moment-of-play clip (best highlight segment)
-            clip_start, clip_end = _find_moment_of_play(
-                goal_time, highlights_df,
-                context_before=args.context_before,
-                context_after=args.context_after,
+            # Select the full play shot whose end aligns with the goal moment.
+            # This returns whole shot boundaries — no clipping, no merging.
+            clip_start, clip_end = _select_goal_shot(
+                goal_time=goal_time,
+                shots_df=shots_df,
+                player_counts_df=player_counts_df,
+                player_threshold=player_threshold,
             )
-
-            # Trim any trailing shot that bleeds in at the end.
-            # The highlight assembler merges adjacent shots with <=0.5 s gap;
-            # this can attach a short trailing shot (camera cut to net/keeper)
-            # to the end of the main play shot.  Trim shots shorter than 6 s
-            # at the clip end — visible as "1-2 seconds of the next shot".
-            clip_start, clip_end = _trim_trailing_short_shot(
-                clip_start, clip_end, shots_df)
 
             # Clamp to video duration if we know it
             try:
