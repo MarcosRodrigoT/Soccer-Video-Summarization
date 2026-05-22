@@ -17,7 +17,9 @@
   "num_segments": 5,
   "mean_segment_duration": 23.45599999999995,
   "timings": {
-    "highlight_assembly": 0.05710601806640625
+    "highlight_assembly": 0.05857075331732631,
+    "goal_shot_selection": 0.11706943111494184,
+    "evaluation": 0.001260572113096714
   },
   "clip_iou_mean": 0.8974930607514559,
   "clip_coverage_mean": 0.987829195205237,

@@ -17,12 +17,14 @@
   "num_segments": 6,
   "mean_segment_duration": 32.94000000000015,
   "timings": {
-    "highlight_assembly": 0.06040787696838379
+    "highlight_assembly": 0.11242884024977684,
+    "goal_shot_selection": 0.15207403106614947,
+    "evaluation": 0.0012979698367416859
   },
-  "clip_iou_mean": 0.7283970062225884,
-  "clip_coverage_mean": 0.7377067246603715,
-  "clip_precision_mean": 0.8240236148955503,
-  "clip_start_mae": 2.199999999999909,
+  "clip_iou_mean": 0.8948714391330076,
+  "clip_coverage_mean": 0.9041811575707907,
+  "clip_precision_mean": 0.990690281562217,
+  "clip_start_mae": 1.8399999999999181,
   "clip_end_mae": 0.0,
   "clip_iou_per_gt": [
     0.9988023952095819,
@@ -30,7 +32,7 @@
     0.9992242048099309,
     0.9441416893733016,
     0.9970760233918156,
-    0.0
+    0.9988465974625155
   ],
   "clip_coverage_per_gt": [
     0.9988023952095819,
@@ -38,7 +40,7 @@
     0.9992242048099309,
     1.0,
     0.9970760233918156,
-    0.0
+    0.9988465974625155
   ],
   "clip_precision_per_gt": [
     1.0,
@@ -46,7 +48,7 @@
     1.0,
     0.9441416893733016,
     1.0,
-    0.0
+    1.0
   ],
   "clip_start_mae_per_gt": [
     0.03999999999996362,
@@ -54,7 +56,7 @@
     0.03999999999996362,
     3.2799999999997453,
     0.03999999999996362,
-    null
+    0.03999999999996362
   ],
   "clip_end_mae_per_gt": [
     0.0,
@@ -62,13 +64,13 @@
     0.0,
     0.0,
     0.0,
-    null
+    0.0
   ],
-  "clip_aware_tp": 4,
-  "clip_aware_fp": 2,
-  "clip_aware_fn": 2,
-  "clip_aware_precision": 0.6666666666666666,
-  "clip_aware_recall": 0.6666666666666666,
-  "clip_aware_f1": 0.6666666666666666,
+  "clip_aware_tp": 5,
+  "clip_aware_fp": 1,
+  "clip_aware_fn": 1,
+  "clip_aware_precision": 0.8333333333333334,
+  "clip_aware_recall": 0.8333333333333334,
+  "clip_aware_f1": 0.8333333333333334,
   "clip_aware_iou_threshold": 0.5
 }

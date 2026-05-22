@@ -1,0 +1,39 @@
+{
+  "match_id": "Match16",
+  "run_id": "20260522_142307",
+  "video_path": "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga_HR/Match16/Real Betis 3-2 UD Almer\u00eda \uff5c PARTIDO COMPLETO \uff5c LALIGA EA SPORTS 2023\u29f824 [19XdF8EfQaM].mp4",
+  "video_duration_sec": 6622.96,
+  "fps": 25.0,
+  "width": 1920,
+  "height": 1080,
+  "stages": {
+    "shot_segmentation": {
+      "duration_sec": 0.00745758693665266,
+      "cached": true
+    },
+    "object_detection": {
+      "duration_sec": 0.0045812781900167465,
+      "cached": true
+    },
+    "play_classifier": {
+      "duration_sec": 2.849847078323364e-07,
+      "cached": true
+    },
+    "ocr_scoreboard": {
+      "duration_sec": 0.0004137321375310421,
+      "cached": true
+    },
+    "highlight_assembly": {
+      "duration_sec": 0.05080452095717192,
+      "cached": false
+    },
+    "goal_shot_selection": {
+      "duration_sec": 0.10868254816159606,
+      "cached": false
+    },
+    "evaluation": {
+      "duration_sec": 0.0010115578770637512,
+      "cached": false
+    }
+  }
+}

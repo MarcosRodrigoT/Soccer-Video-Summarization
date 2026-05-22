@@ -1,0 +1,4 @@
+segment_id,start_frame,end_frame,start_time,end_time,duration,start_formatted,end_formatted
+1,28094,28344,1123.76,1133.76,10.0,18:43,18:53
+2,49311,49561,1972.44,1982.44,10.0,32:52,33:02
+3,106263,106513,4250.52,4260.52,10.0,70:50,71:00

@@ -1,0 +1,39 @@
+{
+  "match_id": "Match24",
+  "run_id": "20260522_144051",
+  "video_path": "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga_HR/Match24/CA Osasuna 2 - 4 Real Madrid \uff5c PARTIDO COMPLETO \uff5c LALIGA EA SPORTS 2023\u29f824 [vKJy1Zny19s].mp4",
+  "video_duration_sec": 6498.92,
+  "fps": 25.0,
+  "width": 1920,
+  "height": 1080,
+  "stages": {
+    "shot_segmentation": {
+      "duration_sec": 0.006998492404818535,
+      "cached": true
+    },
+    "object_detection": {
+      "duration_sec": 0.004067294765263796,
+      "cached": true
+    },
+    "play_classifier": {
+      "duration_sec": 2.9103830456733704e-07,
+      "cached": true
+    },
+    "ocr_scoreboard": {
+      "duration_sec": 0.0004419027827680111,
+      "cached": true
+    },
+    "highlight_assembly": {
+      "duration_sec": 0.05868295906111598,
+      "cached": false
+    },
+    "goal_shot_selection": {
+      "duration_sec": 0.09956709994003177,
+      "cached": false
+    },
+    "evaluation": {
+      "duration_sec": 0.0010838760063052177,
+      "cached": false
+    }
+  }
+}

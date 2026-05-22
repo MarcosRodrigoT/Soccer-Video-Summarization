@@ -65,6 +65,18 @@ class HighlightAssemblerConfig:
     merge_gap_threshold: float = 0.5  # seconds - merge segments closer than this
     goal_context_before: float = 30.0  # seconds before goal to include
     goal_context_after: float = 15.0  # seconds after goal to include
+    # Goal-shot selection greedily extends BACKWARDS from the anchor shot
+    # (the play long shot ending closest to the goal) over any adjacent play
+    # long shots whose gap is <= goal_block_max_gap AND whose start lies
+    # within goal_block_max_lookback seconds of the goal moment.  This
+    # captures multi-angle coverage of one play action without over-merging
+    # earlier unrelated plays / replays.
+    goal_block_max_gap: float = 2.0
+    goal_block_max_lookback: float = 30.0
+    # If set, goal-clip outputs (goal_highlights + per-goal evaluation) keep
+    # only the last N seconds of each selected play block.  None = keep the
+    # full block.  This produces the "last 10s" variant.
+    goal_clip_max_duration: Optional[float] = None
 
 
 @dataclass

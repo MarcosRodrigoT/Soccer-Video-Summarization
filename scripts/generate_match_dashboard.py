@@ -706,10 +706,16 @@ def main():
         goals_path = str(Path(config.data_dir) / info["goals_path"]) \
             if "goals_path" in info else None
         goal_clips = []
+        # If the config sets goal_clip_max_duration (last-10s mode), the GT
+        # clips are truncated so the dashboard's GT-window visualisation
+        # matches the metric numbers.
+        gt_clip_max = config.highlight_assembler.goal_clip_max_duration
         try:
             if goals_path and Path(goals_path).exists():
                 gt_events = evaluator.load_ground_truth_frame_level(goals_path, 25.0)
-                goal_clips = Evaluator.load_goal_clips(goals_path, 25.0)
+                goal_clips = Evaluator.load_goal_clips(
+                    goals_path, 25.0, max_duration=gt_clip_max,
+                )
             else:
                 gt_df = evaluator.load_ground_truth(gt_path)
                 gt_events = evaluator.extract_goal_events(gt_df)

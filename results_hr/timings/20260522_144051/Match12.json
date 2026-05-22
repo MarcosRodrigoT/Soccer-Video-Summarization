@@ -1,0 +1,39 @@
+{
+  "match_id": "Match12",
+  "run_id": "20260522_144051",
+  "video_path": "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga_HR/Match12/Real Betis 2 - 4 FC Barcelona \uff5c PARTIDO COMPLETO \uff5c LALIGA EA SPORTS 2023\u29f824 [IpugzkfSYsc].mp4",
+  "video_duration_sec": 6745.52,
+  "fps": 25.0,
+  "width": 1920,
+  "height": 1080,
+  "stages": {
+    "shot_segmentation": {
+      "duration_sec": 0.006892475299537182,
+      "cached": true
+    },
+    "object_detection": {
+      "duration_sec": 0.005066656041890383,
+      "cached": true
+    },
+    "play_classifier": {
+      "duration_sec": 3.012828528881073e-07,
+      "cached": true
+    },
+    "ocr_scoreboard": {
+      "duration_sec": 0.000454882625490427,
+      "cached": true
+    },
+    "highlight_assembly": {
+      "duration_sec": 0.06380541063845158,
+      "cached": false
+    },
+    "goal_shot_selection": {
+      "duration_sec": 0.09769848315045238,
+      "cached": false
+    },
+    "evaluation": {
+      "duration_sec": 0.0015921168960630894,
+      "cached": false
+    }
+  }
+}

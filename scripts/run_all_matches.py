@@ -23,17 +23,31 @@ from scripts.run_single_match import load_match_info, run_pipeline
 
 
 def main():
+    from datetime import datetime
     parser = argparse.ArgumentParser(description="Process all matches")
     parser.add_argument("--config", default="config/default.yaml", help="Pipeline config YAML")
     parser.add_argument("--matches", help="Comma-separated match IDs to process (default: all)")
     parser.add_argument("--matches-yaml", default=None, help="Path to matches YAML (default: config/matches.yaml)")
     parser.add_argument("--skip-ocr", action="store_true", help="Skip OCR for all matches")
     parser.add_argument("--skip-video-export", action="store_true", help="Skip video export")
+    parser.add_argument(
+        "--run-id", default=None,
+        help="Tag for saving per-stage timings under "
+             "<results_dir>/timings/<run_id>/. If 'auto', a UTC timestamp is "
+             "generated automatically. Default: no timing log saved.",
+    )
     parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING"])
     args = parser.parse_args()
 
+    # Resolve run_id once so all matches in this batch share the same tag.
+    run_id = args.run_id
+    if run_id == "auto":
+        run_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+
     setup_logging(args.log_level)
     logger = logging.getLogger(__name__)
+    if run_id:
+        logger.info("Run ID for timing logs: %s", run_id)
 
     config = PipelineConfig.from_yaml(args.config)
 
@@ -70,6 +84,7 @@ def main():
                 skip_ocr=args.skip_ocr,
                 skip_video_export=args.skip_video_export,
                 goals_path=info.get("goals_path"),
+                run_id=run_id,
             )
             results.append(result)
 

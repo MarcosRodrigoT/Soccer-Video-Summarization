@@ -1,0 +1,39 @@
+{
+  "match_id": "Match5",
+  "run_id": "20260522_142307",
+  "video_path": "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga_HR/Match5/FC Barcelona 1 - 3 Real Madrid \uff5c PARTIDO COMPLETO \uff5c LALIGA EA SPORTS 2020\u29f821 [J6HGKSJi448].mp4",
+  "video_duration_sec": 6535.92,
+  "fps": 25.0,
+  "width": 1920,
+  "height": 1080,
+  "stages": {
+    "shot_segmentation": {
+      "duration_sec": 0.006839781999588013,
+      "cached": true
+    },
+    "object_detection": {
+      "duration_sec": 0.004174602683633566,
+      "cached": true
+    },
+    "play_classifier": {
+      "duration_sec": 2.919696271419525e-07,
+      "cached": true
+    },
+    "ocr_scoreboard": {
+      "duration_sec": 0.00040871696546673775,
+      "cached": true
+    },
+    "highlight_assembly": {
+      "duration_sec": 0.05777185084298253,
+      "cached": false
+    },
+    "goal_shot_selection": {
+      "duration_sec": 0.10453873500227928,
+      "cached": false
+    },
+    "evaluation": {
+      "duration_sec": 0.0009246468544006348,
+      "cached": false
+    }
+  }
+}

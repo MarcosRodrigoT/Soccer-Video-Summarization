@@ -1,0 +1,87 @@
+{
+  "num_matches": 25,
+  "precision_mean": 0.9942857142857143,
+  "precision_std": 0.027994168488950612,
+  "recall_mean": 0.9942857142857143,
+  "recall_std": 0.027994168488950612,
+  "f1_mean": 0.9942857142857143,
+  "f1_std": 0.027994168488950612,
+  "compression_mean": 0.9920051645553856,
+  "compression_std": 0.0022707356816832236,
+  "goal_coverage_mean": 0.0,
+  "goal_coverage_std": 0.0,
+  "total_tp": 138,
+  "total_fp": 1,
+  "total_fn": 1,
+  "micro_precision": 0.9928057553956835,
+  "micro_recall": 0.9928057553956835,
+  "micro_f1": 0.9928057553956835,
+  "mean_tiou_mean": 0.15473415873015883,
+  "mean_tiou_std": 0.012239956576133698,
+  "goal_timing_mae_mean": 9.433714285714268,
+  "goal_timing_mae_std": 3.180489335587604,
+  "num_segments_mean": 5.56,
+  "num_segments_std": 1.5768322675541617,
+  "mean_segment_duration_mean": 9.398792380952388,
+  "mean_segment_duration_std": 0.5714031637018124,
+  "f1_at_tiou_0.1_mean": 0.9342380952380954,
+  "f1_at_tiou_0.1_std": 0.09439704826470176,
+  "f1_at_tiou_0.3_mean": 0.0,
+  "f1_at_tiou_0.3_std": 0.0,
+  "f1_at_tiou_0.5_mean": 0.0,
+  "f1_at_tiou_0.5_std": 0.0,
+  "f1_at_tiou_0.7_mean": 0.0,
+  "f1_at_tiou_0.7_std": 0.0,
+  "bootstrap_ci": {
+    "precision": {
+      "lower": 0.9828571428571429,
+      "upper": 1.0,
+      "mean": 0.9942857142857143
+    },
+    "recall": {
+      "lower": 0.9828571428571429,
+      "upper": 1.0,
+      "mean": 0.9942857142857143
+    },
+    "f1": {
+      "lower": 0.9828571428571429,
+      "upper": 1.0,
+      "mean": 0.9942857142857143
+    },
+    "compression_ratio": {
+      "lower": 0.9911467835117074,
+      "upper": 0.9929005010631283,
+      "mean": 0.9920051645553856
+    },
+    "goal_coverage": {
+      "lower": 0.0,
+      "upper": 0.0,
+      "mean": 0.0
+    },
+    "mean_tiou": {
+      "lower": 0.1494856666666667,
+      "upper": 0.15925807777777767,
+      "mean": 0.15473415873015883
+    },
+    "goal_timing_mae": {
+      "lower": 8.25365614285714,
+      "upper": 10.756379999999945,
+      "mean": 9.433714285714268
+    },
+    "num_segments": {
+      "lower": 4.96,
+      "upper": 6.161,
+      "mean": 5.56
+    },
+    "mean_segment_duration": {
+      "lower": 9.158736285714294,
+      "upper": 9.619586190476193,
+      "mean": 9.398792380952388
+    },
+    "micro_f1": {
+      "lower": 0.9777777777777777,
+      "upper": 1.0,
+      "mean": 0.9925859714989113
+    }
+  }
+}

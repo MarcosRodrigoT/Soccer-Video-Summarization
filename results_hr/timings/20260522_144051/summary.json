@@ -1,0 +1,86 @@
+{
+  "num_matches": 25,
+  "stages": {
+    "shot_segmentation": {
+      "n_compute": 0,
+      "n_cached": 25,
+      "total_sec": 0.0,
+      "mean_sec": 0.0,
+      "median_sec": 0.0,
+      "min_sec": 0.0,
+      "max_sec": 0.0
+    },
+    "object_detection": {
+      "n_compute": 0,
+      "n_cached": 25,
+      "total_sec": 0.0,
+      "mean_sec": 0.0,
+      "median_sec": 0.0,
+      "min_sec": 0.0,
+      "max_sec": 0.0
+    },
+    "play_classifier": {
+      "n_compute": 0,
+      "n_cached": 25,
+      "total_sec": 0.0,
+      "mean_sec": 0.0,
+      "median_sec": 0.0,
+      "min_sec": 0.0,
+      "max_sec": 0.0
+    },
+    "ocr_scoreboard": {
+      "n_compute": 0,
+      "n_cached": 25,
+      "total_sec": 0.0,
+      "mean_sec": 0.0,
+      "median_sec": 0.0,
+      "min_sec": 0.0,
+      "max_sec": 0.0
+    },
+    "highlight_assembly": {
+      "n_compute": 25,
+      "n_cached": 0,
+      "total_sec": 1.4789757197722793,
+      "mean_sec": 0.05915902879089117,
+      "median_sec": 0.05857075331732631,
+      "min_sec": 0.04696414805948734,
+      "max_sec": 0.07397333579137921
+    },
+    "goal_shot_selection": {
+      "n_compute": 25,
+      "n_cached": 0,
+      "total_sec": 2.5567124797962606,
+      "mean_sec": 0.10226849919185042,
+      "median_sec": 0.10083516174927354,
+      "min_sec": 0.08426234079524875,
+      "max_sec": 0.13365997513756156
+    },
+    "video_export": {
+      "n_compute": 0,
+      "n_cached": 0,
+      "total_sec": 0.0,
+      "mean_sec": 0.0,
+      "median_sec": 0.0,
+      "min_sec": 0.0,
+      "max_sec": 0.0
+    },
+    "evaluation": {
+      "n_compute": 25,
+      "n_cached": 0,
+      "total_sec": 0.0279035703279078,
+      "mean_sec": 0.001116142813116312,
+      "median_sec": 0.0010771490633487701,
+      "min_sec": 0.0009185653179883957,
+      "max_sec": 0.0015921168960630894
+    }
+  },
+  "total_pipeline_sec": {
+    "mean": 0.1625436707958579,
+    "median": 0.16309601068496704,
+    "min": 0.13461680430918932,
+    "max": 0.208557334728539,
+    "sum": 4.063591769896448
+  },
+  "mean_video_duration_sec": 6530.2016,
+  "realtime_factor_mean": 2.489106474076664e-05
+}

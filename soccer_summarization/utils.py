@@ -2,6 +2,7 @@
 
 import os
 import logging
+import time
 from pathlib import Path
 
 import cv2
@@ -9,6 +10,51 @@ import pandas as pd
 
 
 logger = logging.getLogger(__name__)
+
+
+# ─── Per-stage compute-time tracking ─────────────────────────────────────────
+
+class StageTimer:
+    """Records wall-clock duration of named pipeline stages.
+
+    Use as a context manager::
+
+        timer = StageTimer()
+        with timer.time("shot_segmentation"):
+            shots = segmenter.run(video_path)
+
+    Each stage records its `duration_sec` and a `cached` flag.  Cached stages
+    represent file-load time only (typically negligible); their `duration_sec`
+    is recorded but should be excluded when reporting compute time, since the
+    actual compute happened on a prior run.
+    """
+
+    def __init__(self):
+        self.stages: dict[str, dict] = {}
+
+    def time(self, name: str, cached: bool = False):
+        return _StageTimer(self, name, cached)
+
+    def record(self, name: str, duration_sec: float, cached: bool = False):
+        self.stages[name] = {"duration_sec": float(duration_sec), "cached": bool(cached)}
+
+    def to_dict(self) -> dict:
+        return dict(self.stages)
+
+
+class _StageTimer:
+    def __init__(self, parent: StageTimer, name: str, cached: bool):
+        self.parent = parent
+        self.name = name
+        self.cached = cached
+
+    def __enter__(self):
+        self._t0 = time.perf_counter()
+        return self
+
+    def __exit__(self, *args):
+        self.parent.record(self.name, time.perf_counter() - self._t0, self.cached)
+        return False
 
 
 def format_time(seconds: float) -> str:

@@ -1,0 +1,39 @@
+{
+  "match_id": "Match22",
+  "run_id": "20260522_142307",
+  "video_path": "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga_HR/Match22/Rayo Vallecano 0 - 7 Atl\u00e9tico de Madrid \uff5c PARTIDO COMPLETO \uff5c LALIGA EA SPORTS 2023\u29f824 [xjdzdZlgITo].mp4",
+  "video_duration_sec": 6266.0,
+  "fps": 25.0,
+  "width": 1920,
+  "height": 1080,
+  "stages": {
+    "shot_segmentation": {
+      "duration_sec": 0.007109551224857569,
+      "cached": true
+    },
+    "object_detection": {
+      "duration_sec": 0.004203715827316046,
+      "cached": true
+    },
+    "play_classifier": {
+      "duration_sec": 2.668239176273346e-07,
+      "cached": true
+    },
+    "ocr_scoreboard": {
+      "duration_sec": 0.0004324200563132763,
+      "cached": true
+    },
+    "highlight_assembly": {
+      "duration_sec": 0.05630763527005911,
+      "cached": false
+    },
+    "goal_shot_selection": {
+      "duration_sec": 0.10635711578652263,
+      "cached": false
+    },
+    "evaluation": {
+      "duration_sec": 0.001108301803469658,
+      "cached": false
+    }
+  }
+}

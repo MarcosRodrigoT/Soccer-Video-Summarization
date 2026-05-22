@@ -91,21 +91,27 @@ class HighlightAssembler:
         max_lookback: float = 30.0,
         max_lookahead: float = 5.0,
     ) -> list[HighlightSegment]:
-        """Select one full play shot per goal — the shot whose end aligns with the goal.
+        """Select one play BLOCK per goal — the block whose end aligns with the goal.
 
-        For each goal time T, search for the play shot whose end_time is closest to T
-        within the window [T - max_lookback, T + max_lookahead].  A "play shot" is one
-        whose average per-frame player count is >= player_threshold (using the
-        player_counts dataframe with 'frame' and 'player_count' columns).
+        Definitions:
+          * "play long shot" = duration >= config.min_shot_duration AND average
+            per-frame player count >= player_threshold (same as select_play_long_shots).
+          * "play block" = maximal run of consecutive play long shots whose
+            gaps are <= config.goal_block_max_gap seconds.  This captures
+            multi-angle coverage of a single play action where the shot
+            segmenter inserts brief transition frames between camera angles.
 
-        Falls back progressively if no clear match: containing-shot → nearest play
-        shot → nearest shot of any kind.  Always returns one segment per goal.
-
-        Returns a list of HighlightSegment with start/end equal to the chosen shot's
-        full boundaries (no clipping, no merging).
+        For each goal time T, the block whose end_time is closest to T within
+        the window [T - max_lookback, T + max_lookahead] is returned in full.
+        Falls back progressively: containing-block → nearest block → nearest
+        shot of any kind.  Always returns one segment per goal.
         """
         if not goal_times or not shots:
             return []
+
+        min_dur     = self.config.min_shot_duration
+        block_gap   = self.config.goal_block_max_gap
+        block_back  = self.config.goal_block_max_lookback
 
         # Compute avg player count per shot
         pc = player_counts.copy()
@@ -115,59 +121,99 @@ class HighlightAssembler:
             vals = pc.loc[mask, "player_count"]
             shot_avg.append(float(vals.mean()) if len(vals) else 0.0)
 
-        is_play = [a >= player_threshold for a in shot_avg]
-        play_shot_indices = [i for i, p in enumerate(is_play) if p]
+        # A play long shot must satisfy BOTH duration AND player-count thresholds —
+        # this matches select_play_long_shots() and prevents 1-2s "transition"
+        # shots between the play action and the goal celebration from winning the
+        # nearest-end tiebreak.
+        is_play = [
+            (a >= player_threshold) and (shots[i].duration >= min_dur)
+            for i, a in enumerate(shot_avg)
+        ]
+        play_shot_indices = sorted(i for i, p in enumerate(is_play) if p)
 
         result: list[HighlightSegment] = []
+        n_anchors_extended = 0
 
         for g_idx, T in enumerate(goal_times):
-            chosen: Optional[ShotBoundary] = None
-
-            # Pass 1: play shot ending near T
-            candidates = [
+            # Step 1 — pick an anchor: the single play long shot best matching T.
+            anchor_idx: Optional[int] = None
+            cands = [
                 i for i in play_shot_indices
                 if (T - max_lookback) <= shots[i].end_time <= (T + max_lookahead)
             ]
-            if candidates:
-                chosen_i = min(candidates, key=lambda i: abs(shots[i].end_time - T))
-                chosen = shots[chosen_i]
+            if cands:
+                anchor_idx = min(cands, key=lambda i: abs(shots[i].end_time - T))
             else:
-                # Pass 2: play shot CONTAINING T (goal mid-action)
                 containing = [
                     i for i in play_shot_indices
                     if shots[i].start_time <= T <= shots[i].end_time
                 ]
                 if containing:
-                    chosen = shots[containing[0]]
+                    anchor_idx = containing[0]
+                elif play_shot_indices:
+                    anchor_idx = min(play_shot_indices, key=lambda i: abs(shots[i].end_time - T))
                 else:
-                    # Pass 3: nearest play shot in either direction (no window limit)
-                    if play_shot_indices:
-                        chosen_i = min(
-                            play_shot_indices,
-                            key=lambda i: abs(shots[i].end_time - T),
-                        )
-                        chosen = shots[chosen_i]
-                    else:
-                        # Pass 4 (degenerate): nearest shot of any kind
-                        chosen_i = min(
-                            range(len(shots)),
-                            key=lambda i: abs(shots[i].end_time - T),
-                        )
-                        chosen = shots[chosen_i]
+                    anchor_idx = min(range(len(shots)), key=lambda i: abs(shots[i].end_time - T))
 
-            assert chosen is not None
-            result.append(HighlightSegment(
-                segment_id=g_idx + 1,
-                start_frame=chosen.start_frame,
-                end_frame=chosen.end_frame,
-                start_time=chosen.start_time,
-                end_time=chosen.end_time,
-                duration=chosen.duration,
-            ))
+            assert anchor_idx is not None
+            a = shots[anchor_idx]
+            sf, ef = a.start_frame, a.end_frame
+            st, et = a.start_time, a.end_time
 
+            # Step 2 — walk BACKWARDS from the anchor, merging immediately
+            # adjacent play long shots that look like multi-angle coverage of
+            # the same play action.  Two guards prevent over-merging:
+            #   (a) gap between the candidate's end and the current block start
+            #       must be <= goal_block_max_gap (small inter-camera cut),
+            #   (b) T − candidate.start must stay <= goal_block_max_lookback
+            #       (otherwise we'd be pulling in an earlier, unrelated play).
+            if anchor_idx in set(play_shot_indices):
+                # Iterate play long shots ending strictly before the anchor
+                earlier = [i for i in play_shot_indices if i < anchor_idx]
+                for i in reversed(earlier):
+                    cand = shots[i]
+                    if (st - cand.end_time) > block_gap:
+                        break
+                    if (T - cand.start_time) > block_back:
+                        break
+                    sf = cand.start_frame
+                    st = cand.start_time
+                    n_anchors_extended += 1
+
+            # Optional: keep only the last N seconds of the selected play block
+            # (e.g. "last 10s" variant).  None = keep the full block.
+            max_dur = self.config.goal_clip_max_duration
+            if max_dur is not None and (et - st) > max_dur:
+                new_sf = ef - int(round(max_dur * fps))
+                new_sf = max(new_sf, sf)
+                new_st = new_sf / float(fps)
+                result.append(HighlightSegment(
+                    segment_id=g_idx + 1,
+                    start_frame=new_sf,
+                    end_frame=ef,
+                    start_time=new_st,
+                    end_time=et,
+                    duration=et - new_st,
+                ))
+            else:
+                result.append(HighlightSegment(
+                    segment_id=g_idx + 1,
+                    start_frame=sf,
+                    end_frame=ef,
+                    start_time=st,
+                    end_time=et,
+                    duration=et - st,
+                ))
+
+        suffix = (f" — truncated to last {self.config.goal_clip_max_duration:.0f}s"
+                  if self.config.goal_clip_max_duration is not None else "")
         logger.info(
-            "Selected %d goal shots from %d shots (%d play shots, threshold %.1f)",
-            len(result), len(shots), len(play_shot_indices), player_threshold,
+            "Selected %d goal clips from %d shots "
+            "(%d play long shots; anchors extended back %d times "
+            "with gap<=%.1fs, lookback<=%.1fs, thr=%.1f, min_dur=%.1fs)%s",
+            len(result), len(shots), len(play_shot_indices),
+            n_anchors_extended, block_gap, block_back,
+            player_threshold, min_dur, suffix,
         )
         return result
 

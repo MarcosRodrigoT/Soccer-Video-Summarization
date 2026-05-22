@@ -49,19 +49,22 @@ def _select_goal_shot(
     shots_df: pd.DataFrame,
     player_counts_df: pd.DataFrame,
     player_threshold: float = 5.0,
+    min_shot_duration: float = 4.0,
+    block_max_gap: float = 2.0,
+    block_max_lookback: float = 30.0,
     max_lookback: float = 30.0,
     max_lookahead: float = 5.0,
 ) -> tuple[float, float]:
-    """Select the full play shot whose end aligns with the goal.
+    """Pick a play long shot anchor near the goal, then walk BACK over its
+    immediately-adjacent play long shots (multi-angle coverage of the same
+    play action) as long as the gap is small AND the block start stays within
+    a bounded lookback window of the goal moment.
 
-    A "play shot" is one whose average per-frame player count is >= player_threshold.
-    For each goal time T, prefer play shots ending in [T - max_lookback, T + max_lookahead]
-    and pick the one whose end_time is closest to T.  Falls back progressively:
-    containing-shot → nearest play shot → nearest shot.  Returns the full shot bounds
-    (no clipping, no merging).
+    A "play long shot" is one with duration >= min_shot_duration AND average
+    per-frame player count >= player_threshold.  Falls back to "nearest shot
+    of any kind" only if no play long shots exist.
     """
-    # Per-shot avg player count
-    shots = shots_df.copy()
+    shots = shots_df.copy().sort_values("start_time").reset_index(drop=True)
     avgs = []
     for _, s in shots.iterrows():
         mask = (player_counts_df["frame"] >= s["start_frame"]) & \
@@ -69,37 +72,47 @@ def _select_goal_shot(
         vals = player_counts_df.loc[mask, "player_count"]
         avgs.append(float(vals.mean()) if len(vals) else 0.0)
     shots["avg_players"] = avgs
-    play_shots = shots[shots["avg_players"] >= player_threshold]
+    play_mask = (shots["avg_players"] >= player_threshold) & \
+                (shots["duration"] >= min_shot_duration)
+    play_idx = list(shots[play_mask].index)
 
-    # Pass 1: play shot ending near goal_time
-    cands = play_shots[
-        (play_shots["end_time"] >= goal_time - max_lookback) &
-        (play_shots["end_time"] <= goal_time + max_lookahead)
-    ]
-    if not cands.empty:
-        cands = cands.assign(dist=(cands["end_time"] - goal_time).abs())
-        best = cands.sort_values("dist").iloc[0]
-        return float(best["start_time"]), float(best["end_time"])
+    # Step 1: anchor selection
+    anchor: int = -1
+    if play_idx:
+        in_window = [i for i in play_idx
+                     if (goal_time - max_lookback) <= shots.at[i, "end_time"] <= (goal_time + max_lookahead)]
+        if in_window:
+            anchor = min(in_window, key=lambda i: abs(shots.at[i, "end_time"] - goal_time))
+        else:
+            containing = [i for i in play_idx
+                          if shots.at[i, "start_time"] <= goal_time <= shots.at[i, "end_time"]]
+            if containing:
+                anchor = containing[0]
+            else:
+                anchor = min(play_idx, key=lambda i: abs(shots.at[i, "end_time"] - goal_time))
+    else:
+        # No play long shots at all — fall back to nearest shot of any kind
+        nearest = (shots.assign(dist=(shots["end_time"] - goal_time).abs())
+                          .sort_values("dist").iloc[0])
+        return float(nearest["start_time"]), float(nearest["end_time"])
 
-    # Pass 2: play shot containing goal_time
-    containing = play_shots[
-        (play_shots["start_time"] <= goal_time) &
-        (play_shots["end_time"]   >= goal_time)
-    ]
-    if not containing.empty:
-        s = containing.iloc[0]
-        return float(s["start_time"]), float(s["end_time"])
+    st = float(shots.at[anchor, "start_time"])
+    et = float(shots.at[anchor, "end_time"])
 
-    # Pass 3: nearest play shot regardless of distance
-    if not play_shots.empty:
-        play_shots = play_shots.assign(dist=(play_shots["end_time"] - goal_time).abs())
-        s = play_shots.sort_values("dist").iloc[0]
-        return float(s["start_time"]), float(s["end_time"])
+    # Step 2: walk back over adjacent play long shots
+    play_idx_sorted = sorted(play_idx)
+    pos = play_idx_sorted.index(anchor)
+    for prev_pos in range(pos - 1, -1, -1):
+        prev_i = play_idx_sorted[prev_pos]
+        prev_et = float(shots.at[prev_i, "end_time"])
+        prev_st = float(shots.at[prev_i, "start_time"])
+        if (st - prev_et) > block_max_gap:
+            break
+        if (goal_time - prev_st) > block_max_lookback:
+            break
+        st = prev_st  # extend the block backwards
 
-    # Pass 4: nearest shot of any kind (degenerate — no play shots at all)
-    shots = shots.assign(dist=(shots["end_time"] - goal_time).abs())
-    s = shots.sort_values("dist").iloc[0]
-    return float(s["start_time"]), float(s["end_time"])
+    return st, et
 
 
 def _extract_clip(
@@ -208,6 +221,11 @@ def main():
                         help="Resolution scale factor (0.5 = half resolution)")
     parser.add_argument("--fps", type=int, default=25,
                         help="Output frames per second")
+    parser.add_argument(
+        "--clip-max-duration", type=float, default=None,
+        help="If set, keep only the last N seconds of each selected play shot "
+             "(e.g. 10 for the 'last 10s' variant). Default: full shot.",
+    )
     parser.add_argument("--log-level", default="INFO")
     args = parser.parse_args()
 
@@ -273,6 +291,9 @@ def main():
             continue
 
         player_threshold = float(config.play_classifier.play_threshold)
+        min_shot_dur     = float(config.highlight_assembler.min_shot_duration)
+        block_max_gap    = float(config.highlight_assembler.goal_block_max_gap)
+        block_max_back   = float(config.highlight_assembler.goal_block_max_lookback)
 
         # ── Load GT goal clips for overlay info ─────────────────────────────
         gt_clips = []
@@ -303,7 +324,14 @@ def main():
                 shots_df=shots_df,
                 player_counts_df=player_counts_df,
                 player_threshold=player_threshold,
+                min_shot_duration=min_shot_dur,
+                block_max_gap=block_max_gap,
+                block_max_lookback=block_max_back,
             )
+
+            # Optional: truncate to last N seconds of the selected shot
+            if args.clip_max_duration is not None and (clip_end - clip_start) > args.clip_max_duration:
+                clip_start = clip_end - args.clip_max_duration
 
             # Clamp to video duration if we know it
             try:

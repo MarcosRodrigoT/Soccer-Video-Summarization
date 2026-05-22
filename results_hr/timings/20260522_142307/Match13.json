@@ -1,0 +1,39 @@
+{
+  "match_id": "Match13",
+  "run_id": "20260522_142307",
+  "video_path": "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga_HR/Match13/Girona FC 4 - 3 Atl\u00e9tico de Madrid \uff5c PARTIDO COMPLETO \uff5c LALIGA EA SPORTS 2023\u29f824 [kxT0iUxBY1c].mp4",
+  "video_duration_sec": 6390.36,
+  "fps": 25.0,
+  "width": 1920,
+  "height": 1080,
+  "stages": {
+    "shot_segmentation": {
+      "duration_sec": 0.006499558687210083,
+      "cached": true
+    },
+    "object_detection": {
+      "duration_sec": 0.004491305910050869,
+      "cached": true
+    },
+    "play_classifier": {
+      "duration_sec": 3.1990930438041687e-07,
+      "cached": true
+    },
+    "ocr_scoreboard": {
+      "duration_sec": 0.00047270674258470535,
+      "cached": true
+    },
+    "highlight_assembly": {
+      "duration_sec": 0.059569912031292915,
+      "cached": false
+    },
+    "goal_shot_selection": {
+      "duration_sec": 0.09339060494676232,
+      "cached": false
+    },
+    "evaluation": {
+      "duration_sec": 0.0014225090853869915,
+      "cached": false
+    }
+  }
+}

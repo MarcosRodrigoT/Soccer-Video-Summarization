@@ -1,0 +1,60 @@
+# Pipeline configuration: last-10-seconds goal-clip variant.
+#
+# Identical to default_hr.yaml except:
+#   * Stage 5b (goal-shot selection) truncates each play long shot to its
+#     final 10 seconds before saving as goal_highlights.csv.
+#   * Stage 7 (evaluation) also truncates the frame-level GT clips to their
+#     final 10 seconds, so IoU / Coverage / Precision / MAE are computed
+#     apples-to-apples against the truncated GT.
+#   * Outputs are written to results_hr_10s/ so the full-shot baseline in
+#     results_hr/ stays untouched and the two variants can be compared
+#     side-by-side.
+
+shot_segmentation:
+  num_processes: null
+  abrupt_threshold: 0.3
+  abrupt_window_size: 15
+  abrupt_neighborhood_factor: 0.5
+  gradual_filter_window: 15
+  gradual_min_peak_height: 0.03
+  gradual_min_peak_prominence: 0.02
+  gradual_local_threshold_factor: 1.2
+  gradual_local_window_ratio: 3
+  gradual_min_duration: 15
+  gradual_min_distance_from_abrupt: 25
+  gradual_min_contrast_factor: 1.0
+
+object_detection:
+  model_path: "data/models/best.pt"
+  confidence_threshold: 0.5
+  frame_step: 5
+
+play_classifier:
+  play_threshold: 5
+  smoothing_window: 50
+  min_shot_duration: 4.0
+
+ocr_scoreboard:
+  num_sample_frames: 200
+  std_percentile: 8.0
+  min_region_area: 300
+  closing_kernel: [51, 21]
+  score_sample_interval: 3.0
+  score_pattern: "\\d+\\s*[-:]\\s*\\d+"
+  majority_window: 5
+
+highlight_assembler:
+  min_shot_duration: 4.0
+  merge_gap_threshold: 0.5
+  goal_context_before: 30.0
+  goal_context_after: 15.0
+  goal_block_max_gap: 2.0        # merge tightly-adjacent play long shots (multi-angle)
+  goal_block_max_lookback: 30.0  # block start must stay within 30s of the goal moment
+  goal_clip_max_duration: 10.0   # truncate goal clips + GT to the final 10s
+
+evaluation:
+  tolerance_window: 30.0
+  goal_gap_threshold: 30.0
+
+data_dir: "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos"
+results_dir: "results_hr_10s"

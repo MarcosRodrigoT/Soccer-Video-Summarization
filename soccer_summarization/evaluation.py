@@ -160,13 +160,22 @@ class Evaluator:
         return events
 
     @staticmethod
-    def load_goal_clips(goals_path: str, fps: float) -> list[GoalClip]:
+    def load_goal_clips(
+        goals_path: str,
+        fps: float,
+        max_duration: Optional[float] = None,
+    ) -> list[GoalClip]:
         """Load per-goal clip boundaries from goals.csv.
 
         Returns one GoalClip per goal with:
           start_time       = start_frame / fps  (first frame of the play action)
           end_time         = end_frame_shot / fps (last frame of the celebration)
           scoreboard_time  = end_frame_scoreboard / fps (scoreboard update)
+
+        If `max_duration` (seconds) is provided, each clip's start_time is
+        clamped so the clip keeps only the last `max_duration` seconds of the
+        play action.  This is the "last 10s" GT variant used for the truncated
+        output mode.
         """
         for encoding in ("utf-8-sig", "utf-8", "latin-1"):
             try:
@@ -178,9 +187,13 @@ class Evaluator:
             raise ValueError(f"Cannot read goals file: {goals_path}")
         clips = []
         for _, row in df.iterrows():
+            start_t = float(row["start_frame"]) / fps
+            end_t   = float(row["end_frame_shot"]) / fps
+            if max_duration is not None and (end_t - start_t) > max_duration:
+                start_t = end_t - max_duration
             clips.append(GoalClip(
-                start_time=float(row["start_frame"]) / fps,
-                end_time=float(row["end_frame_shot"]) / fps,
+                start_time=start_t,
+                end_time=end_t,
                 scoreboard_time=float(row["end_frame_scoreboard"]) / fps,
             ))
         clips.sort(key=lambda c: c.scoreboard_time)

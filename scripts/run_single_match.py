@@ -11,6 +11,7 @@ import json
 import logging
 import sys
 import time
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -26,7 +27,7 @@ from soccer_summarization.object_detection import PlayerDetector
 from soccer_summarization.ocr_scoreboard import ScoreboardDetector
 from soccer_summarization.play_classifier import PlayClassifier
 from soccer_summarization.shot_segmentation import ShotSegmenter
-from soccer_summarization.utils import get_video_properties, setup_logging
+from soccer_summarization.utils import StageTimer, get_video_properties, setup_logging
 
 
 def load_match_info(match_id: str, config: PipelineConfig, matches_yaml: str = None) -> dict:
@@ -56,8 +57,13 @@ def run_pipeline(
     skip_ocr: bool = False,
     skip_video_export: bool = False,
     goals_path: str = None,
+    run_id: str = None,
 ):
-    """Run the full pipeline on a single match."""
+    """Run the full pipeline on a single match.
+
+    Per-stage timings are recorded with StageTimer and saved to
+    `<results_dir>/timings/<run_id>/<match_id>.json` if run_id is provided.
+    """
     logger = logging.getLogger(__name__)
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -70,31 +76,34 @@ def run_pipeline(
         props["fps"], props["width"], props["height"],
     )
 
-    timings = {}
+    # Per-stage wall-clock timer (stages mark cached=True when loading from disk)
+    stage_timer = StageTimer()
+    timings = {}  # kept for backward compat in evaluation.json
 
     # --- Stage 1: Shot segmentation ---
     shot_cache = out / "shot_boundaries.csv"
     if shot_cache.exists():
         logger.info("Loading cached shot boundaries")
-        shot_df = pd.read_csv(shot_cache)
-        from soccer_summarization.shot_segmentation import ShotBoundary
-        shots = [
-            ShotBoundary(
-                shot_id=int(row["shot_id"]),
-                start_frame=int(row["start_frame"]),
-                end_frame=int(row["end_frame"]),
-                start_time=row["start_time"],
-                end_time=row["end_time"],
-                duration=row["duration"],
-            )
-            for _, row in shot_df.iterrows()
-        ]
+        with stage_timer.time("shot_segmentation", cached=True):
+            shot_df = pd.read_csv(shot_cache)
+            from soccer_summarization.shot_segmentation import ShotBoundary
+            shots = [
+                ShotBoundary(
+                    shot_id=int(row["shot_id"]),
+                    start_frame=int(row["start_frame"]),
+                    end_frame=int(row["end_frame"]),
+                    start_time=row["start_time"],
+                    end_time=row["end_time"],
+                    duration=row["duration"],
+                )
+                for _, row in shot_df.iterrows()
+            ]
     else:
         logger.info("Stage 1: Shot segmentation...")
-        t0 = time.time()
-        segmenter = ShotSegmenter(config.shot_segmentation)
-        shots, _diffs = segmenter.run(video_path)
-        timings["shot_segmentation"] = time.time() - t0
+        with stage_timer.time("shot_segmentation"):
+            segmenter = ShotSegmenter(config.shot_segmentation)
+            shots, _diffs = segmenter.run(video_path)
+        timings["shot_segmentation"] = stage_timer.stages["shot_segmentation"]["duration_sec"]
 
         shot_df = pd.DataFrame([
             {"shot_id": s.shot_id, "start_frame": s.start_frame, "end_frame": s.end_frame,
@@ -108,13 +117,14 @@ def run_pipeline(
     player_cache = out / "player_counts.csv"
     if player_cache.exists():
         logger.info("Loading cached player counts")
-        player_df = pd.read_csv(player_cache)
+        with stage_timer.time("object_detection", cached=True):
+            player_df = pd.read_csv(player_cache)
     else:
         logger.info("Stage 2: YOLO object detection...")
-        t0 = time.time()
-        detector = PlayerDetector(config.object_detection)
-        player_df = detector.run(video_path)
-        timings["object_detection"] = time.time() - t0
+        with stage_timer.time("object_detection"):
+            detector = PlayerDetector(config.object_detection)
+            player_df = detector.run(video_path)
+        timings["object_detection"] = stage_timer.stages["object_detection"]["duration_sec"]
 
         player_df.to_csv(player_cache, index=False)
         logger.info("  %d frames processed (saved to %s)", len(player_df), player_cache)
@@ -125,35 +135,38 @@ def run_pipeline(
     frame_cache = out / "frame_classification.csv"
     if not frame_cache.exists():
         logger.info("Stage 3: Frame-level play classification...")
-        t0 = time.time()
-        classifier = PlayClassifier(config.play_classifier)
-        _, frame_df = classifier.classify(player_df, props["fps"])
-        timings["play_classifier"] = time.time() - t0
+        with stage_timer.time("play_classifier"):
+            classifier = PlayClassifier(config.play_classifier)
+            _, frame_df = classifier.classify(player_df, props["fps"])
+        timings["play_classifier"] = stage_timer.stages["play_classifier"]["duration_sec"]
         frame_df.to_csv(frame_cache, index=False)
         logger.info("  Frame classification saved to %s", frame_cache)
     else:
         logger.info("Loading cached frame classification")
+        with stage_timer.time("play_classifier", cached=True):
+            pass  # nothing actually loaded here
 
     # --- Stage 4: OCR scoreboard ---
     score_cache = out / "score_events.csv"
     score_events = []
     if score_cache.exists():
         logger.info("Loading cached score events")
-        try:
-            score_df = pd.read_csv(score_cache)
-            from soccer_summarization.ocr_scoreboard import ScoreEvent
-            score_events = [
-                ScoreEvent(**row) for _, row in score_df.iterrows()
-            ]
-        except (pd.errors.EmptyDataError, KeyError):
-            logger.info("  Empty or invalid score_events.csv, treating as no detections")
-            score_events = []
+        with stage_timer.time("ocr_scoreboard", cached=True):
+            try:
+                score_df = pd.read_csv(score_cache)
+                from soccer_summarization.ocr_scoreboard import ScoreEvent
+                score_events = [
+                    ScoreEvent(**row) for _, row in score_df.iterrows()
+                ]
+            except (pd.errors.EmptyDataError, KeyError):
+                logger.info("  Empty or invalid score_events.csv, treating as no detections")
+                score_events = []
     elif not skip_ocr:
         logger.info("Stage 4: OCR scoreboard detection...")
-        t0 = time.time()
-        ocr_detector = ScoreboardDetector(config.ocr_scoreboard)
-        region, score_events = ocr_detector.run(video_path)
-        timings["ocr_scoreboard"] = time.time() - t0
+        with stage_timer.time("ocr_scoreboard"):
+            ocr_detector = ScoreboardDetector(config.ocr_scoreboard)
+            region, score_events = ocr_detector.run(video_path)
+        timings["ocr_scoreboard"] = stage_timer.stages["ocr_scoreboard"]["duration_sec"]
 
         score_df = ScoreboardDetector.events_to_dataframe(score_events)
         score_df.to_csv(score_cache, index=False)
@@ -172,15 +185,15 @@ def run_pipeline(
     # no intersection with frame-level play classification, no merging.
     highlight_cache = out / "highlights.csv"
     logger.info("Stage 5: Selecting play long shots...")
-    t0 = time.time()
     assembler = HighlightAssembler(config.highlight_assembler)
 
-    highlights = assembler.select_play_long_shots(
-        shots=shots,
-        player_counts=player_df,
-        player_threshold=float(config.play_classifier.play_threshold),
-    )
-    timings["highlight_assembly"] = time.time() - t0
+    with stage_timer.time("highlight_assembly"):
+        highlights = assembler.select_play_long_shots(
+            shots=shots,
+            player_counts=player_df,
+            player_threshold=float(config.play_classifier.play_threshold),
+        )
+    timings["highlight_assembly"] = stage_timer.stages["highlight_assembly"]["duration_sec"]
 
     hl_df = assembler.highlights_to_dataframe(highlights)
     hl_df.to_csv(highlight_cache, index=False)
@@ -197,13 +210,15 @@ def run_pipeline(
     # goal moment.  Whole shots, no clipping/merging — the "moment of play
     # leading to the goal".
     goal_times = [e.timestamp for e in score_events]
-    goal_highlights = assembler.select_goal_shots(
-        shots=shots,
-        player_counts=player_df,
-        goal_times=goal_times,
-        fps=props["fps"],
-        player_threshold=float(config.play_classifier.play_threshold),
-    )
+    with stage_timer.time("goal_shot_selection"):
+        goal_highlights = assembler.select_goal_shots(
+            shots=shots,
+            player_counts=player_df,
+            goal_times=goal_times,
+            fps=props["fps"],
+            player_threshold=float(config.play_classifier.play_threshold),
+        )
+    timings["goal_shot_selection"] = stage_timer.stages["goal_shot_selection"]["duration_sec"]
     goal_hl_df = assembler.highlights_to_dataframe(goal_highlights)
     goal_hl_df.to_csv(out / "goal_highlights.csv", index=False)
 
@@ -212,52 +227,64 @@ def run_pipeline(
         highlight_video = out / "highlight_video.mp4"
         if not highlight_video.exists():
             logger.info("Stage 6: Exporting highlight video...")
-            t0 = time.time()
-            assembler.export_video(highlights, video_path, str(highlight_video))
-            timings["video_export"] = time.time() - t0
+            with stage_timer.time("video_export"):
+                assembler.export_video(highlights, video_path, str(highlight_video))
+            timings["video_export"] = stage_timer.stages["video_export"]["duration_sec"]
             logger.info("  Saved to %s", highlight_video)
         else:
             logger.info("Stage 6: Highlight video already exists")
 
     # --- Stage 7: Evaluation ---
+    # If goal_clip_max_duration is set (e.g. "last 10s" mode), the GT clips are
+    # also truncated to that final window so the comparison is apples-to-apples.
     logger.info("Stage 7: Evaluation against ground truth...")
-    evaluator = Evaluator(config.evaluation)
-    goal_clips: list[GoalClip] = []
-    if goals_path:
-        gt_events = evaluator.load_ground_truth_frame_level(goals_path, props["fps"])
-        goal_clips = Evaluator.load_goal_clips(goals_path, props["fps"])
-        logger.info("  Using frame-level GT from %s (%d clips)", goals_path, len(goal_clips))
-    else:
-        gt_df = evaluator.load_ground_truth(gt_path)
-        gt_events = evaluator.extract_goal_events(gt_df)
+    gt_clip_max = config.highlight_assembler.goal_clip_max_duration
+    with stage_timer.time("evaluation"):
+        evaluator = Evaluator(config.evaluation)
+        goal_clips: list[GoalClip] = []
+        if goals_path:
+            gt_events = evaluator.load_ground_truth_frame_level(goals_path, props["fps"])
+            goal_clips = Evaluator.load_goal_clips(
+                goals_path, props["fps"], max_duration=gt_clip_max,
+            )
+            logger.info(
+                "  Using frame-level GT from %s (%d clips%s)",
+                goals_path, len(goal_clips),
+                f", truncated to last {gt_clip_max:.0f}s" if gt_clip_max is not None else "",
+            )
+        else:
+            gt_df = evaluator.load_ground_truth(gt_path)
+            gt_events = evaluator.extract_goal_events(gt_df)
 
-    predicted_goal_times = [e.timestamp for e in score_events]
-    # The "deliverable" is the goal-refined clips, so evaluate AGAINST those.
-    goal_highlight_segments = [(h.start_time, h.end_time) for h in goal_highlights]
+        predicted_goal_times = [e.timestamp for e in score_events]
+        # The "deliverable" is the goal-refined clips, so evaluate AGAINST those.
+        goal_highlight_segments = [(h.start_time, h.end_time) for h in goal_highlights]
 
-    result = evaluator.evaluate_match(
-        match_id=match_id,
-        highlight_segments=goal_highlight_segments,
-        predicted_goal_times=predicted_goal_times,
-        gt_events=gt_events,
-        total_video_duration=total_duration,
-    )
+        result = evaluator.evaluate_match(
+            match_id=match_id,
+            highlight_segments=goal_highlight_segments,
+            predicted_goal_times=predicted_goal_times,
+            gt_events=gt_events,
+            total_video_duration=total_duration,
+        )
 
-    # Per-goal clip-quality metrics (require frame-level GT from goals.csv)
-    clip_metrics: dict = {}
-    clip_aware: dict = {}
+        # Per-goal clip-quality metrics (require frame-level GT from goals.csv)
+        clip_metrics: dict = {}
+        clip_aware: dict = {}
+        if goal_clips:
+            clip_metrics = evaluator.evaluate_clip_quality(
+                goal_clips=goal_clips,
+                goal_highlight_segments=goal_highlight_segments,
+                predicted_goal_times=predicted_goal_times,
+            )
+            clip_aware = evaluator.evaluate_clip_aware_f1(
+                goal_clips=goal_clips,
+                predicted_goal_times=predicted_goal_times,
+                goal_highlight_segments=goal_highlight_segments,
+                iou_threshold=0.5,
+            )
+    timings["evaluation"] = stage_timer.stages["evaluation"]["duration_sec"]
     if goal_clips:
-        clip_metrics = evaluator.evaluate_clip_quality(
-            goal_clips=goal_clips,
-            goal_highlight_segments=goal_highlight_segments,
-            predicted_goal_times=predicted_goal_times,
-        )
-        clip_aware = evaluator.evaluate_clip_aware_f1(
-            goal_clips=goal_clips,
-            predicted_goal_times=predicted_goal_times,
-            goal_highlight_segments=goal_highlight_segments,
-            iou_threshold=0.5,
-        )
         logger.info(
             "Clip quality: IoU=%.3f Cov=%.3f Prec=%.3f StartMAE=%.1fs EndMAE=%.1fs",
             clip_metrics["clip_iou_mean"],
@@ -310,6 +337,23 @@ def run_pipeline(
     with open(out / "evaluation.json", "w") as f:
         json.dump(eval_results, f, indent=2, default=_json_default)
 
+    # Save per-stage timings for this run (only when run_id provided)
+    if run_id:
+        timing_dir = Path(config.results_dir) / "timings" / run_id
+        timing_dir.mkdir(parents=True, exist_ok=True)
+        timing_record = {
+            "match_id": match_id,
+            "run_id": run_id,
+            "video_path": str(video_path),
+            "video_duration_sec": float(total_duration),
+            "fps": float(props["fps"]),
+            "width": int(props["width"]),
+            "height": int(props["height"]),
+            "stages": stage_timer.to_dict(),
+        }
+        with open(timing_dir / f"{match_id}.json", "w") as f:
+            json.dump(timing_record, f, indent=2, default=_json_default)
+
     logger.info("Pipeline complete for %s", match_id)
     return result
 
@@ -324,6 +368,9 @@ def main():
     parser.add_argument("--config", default="config/default.yaml", help="Pipeline config YAML")
     parser.add_argument("--skip-ocr", action="store_true", help="Skip OCR scoreboard detection")
     parser.add_argument("--skip-video-export", action="store_true", help="Skip highlight video export")
+    parser.add_argument("--run-id", default=None,
+                        help="Tag for saving per-stage timings under "
+                             "<results_dir>/timings/<run_id>/. Default: no timing log saved.")
     parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING"])
     args = parser.parse_args()
 
@@ -356,6 +403,7 @@ def main():
         skip_ocr=args.skip_ocr,
         skip_video_export=args.skip_video_export,
         goals_path=goals_path,
+        run_id=args.run_id,
     )
 
 

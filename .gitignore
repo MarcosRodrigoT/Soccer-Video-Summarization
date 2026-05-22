@@ -27,6 +27,17 @@ results_hr*/goal_clips/*.mp4
 # Pipeline run log (regenerated per run)
 results_hr*/pipeline.log
 
+# results_hr_10s/per_match/ shares intermediates with results_hr/per_match/
+# via hardlinks for caching — only the 10s-specific outputs need to be
+# committed (goal_highlights.csv, evaluation.json).  Everything else is a
+# duplicate of results_hr/ and only exists locally.
+results_hr_10s/per_match/**/player_counts.csv
+results_hr_10s/per_match/**/shot_boundaries.csv
+results_hr_10s/per_match/**/frame_classification.csv
+results_hr_10s/per_match/**/score_events.csv
+results_hr_10s/per_match/**/scoreboard_region.json
+results_hr_10s/per_match/**/highlights.csv
+
 # OS
 .DS_Store
 Thumbs.db

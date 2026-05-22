@@ -1,0 +1,39 @@
+{
+  "match_id": "Match9",
+  "run_id": "20260522_144051",
+  "video_path": "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga_HR/Match9/FC Barcelona 3 - 5 Villarreal CF \uff5c PARTIDO COMPLETO \uff5c LALIGA EA SPORTS 2023\u29f824 [9dC5EvrhOEc].mp4",
+  "video_duration_sec": 6767.08,
+  "fps": 25.0,
+  "width": 1920,
+  "height": 1080,
+  "stages": {
+    "shot_segmentation": {
+      "duration_sec": 0.0067854980006814,
+      "cached": true
+    },
+    "object_detection": {
+      "duration_sec": 0.005043913144618273,
+      "cached": true
+    },
+    "play_classifier": {
+      "duration_sec": 2.6402994990348816e-07,
+      "cached": true
+    },
+    "ocr_scoreboard": {
+      "duration_sec": 0.0004880460910499096,
+      "cached": true
+    },
+    "highlight_assembly": {
+      "duration_sec": 0.05758827878162265,
+      "cached": false
+    },
+    "goal_shot_selection": {
+      "duration_sec": 0.10083516174927354,
+      "cached": false
+    },
+    "evaluation": {
+      "duration_sec": 0.0012969872914254665,
+      "cached": false
+    }
+  }
+}
