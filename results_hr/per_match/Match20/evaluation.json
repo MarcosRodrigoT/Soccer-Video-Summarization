@@ -7,46 +7,48 @@
   "recall": 1.0,
   "f1": 1.0,
   "total_video_duration": 6893.84,
-  "highlight_duration": 4361.560000000001,
-  "compression_ratio": 0.3673250322026619,
+  "highlight_duration": 27.440000000000055,
+  "compression_ratio": 0.9960196349204508,
   "goal_coverage": 0.0,
   "num_gt_events": 2,
   "num_predicted_goals": 2,
-  "num_highlights": 215,
-  "num_segments": 215,
-  "mean_segment_duration": 20.286325581395356,
-  "mean_tiou": 0.1893333333333317,
-  "goal_timing_mae": 11.060000000000173,
-  "tiou_per_event": [
-    0.24399999999999789,
-    0.13466666666666546
-  ],
-  "f1_at_tiou": {
-    "0.1": 1.0,
-    "0.3": 0.0,
-    "0.5": 0.0,
-    "0.7": 0.0
-  },
+  "num_goal_clips": 2,
+  "num_play_long_shots": 208,
+  "num_segments": 2,
+  "mean_segment_duration": 13.720000000000027,
   "timings": {
-    "highlight_assembly": 0.008675813674926758
+    "highlight_assembly": 0.06936955451965332
   },
-  "clip_iou_mean": 0.7977614891523408,
-  "clip_coverage_mean": 0.8224477845012692,
-  "clip_precision_mean": 0.9654276903100303,
-  "clip_start_mae": 0.35999999999989996,
-  "clip_end_mae": 2.759999999999991,
-  "clip_iou_per_goal": [
-    0.7453027139874663,
-    0.8502202643172154
+  "clip_iou_mean": 0.9966425922311177,
+  "clip_coverage_mean": 0.9966425922311177,
+  "clip_precision_mean": 1.0,
+  "clip_start_mae": 0.03999999999996362,
+  "clip_end_mae": 0.0,
+  "clip_iou_per_gt": [
+    0.9978723404255339,
+    0.9954128440367016
   ],
-  "goal_refined": {
-    "f1": 1.0,
-    "num_segments": 2,
-    "mean_segment_duration": 11.3599999999999,
-    "compression_ratio": 0.9967043041323849,
-    "highlight_duration": 22.7199999999998,
-    "mean_tiou": 0.1893333333333317,
-    "goal_timing_mae": 11.060000000000173,
-    "goal_coverage": 0.0
-  }
+  "clip_coverage_per_gt": [
+    0.9978723404255339,
+    0.9954128440367016
+  ],
+  "clip_precision_per_gt": [
+    1.0,
+    1.0
+  ],
+  "clip_start_mae_per_gt": [
+    0.03999999999996362,
+    0.03999999999996362
+  ],
+  "clip_end_mae_per_gt": [
+    0.0,
+    0.0
+  ],
+  "clip_aware_tp": 2,
+  "clip_aware_fp": 0,
+  "clip_aware_fn": 0,
+  "clip_aware_precision": 1.0,
+  "clip_aware_recall": 1.0,
+  "clip_aware_f1": 1.0,
+  "clip_aware_iou_threshold": 0.5
 }

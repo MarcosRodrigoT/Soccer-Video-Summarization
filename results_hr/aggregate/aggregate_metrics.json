@@ -6,8 +6,8 @@
   "recall_std": 0.027994168488950612,
   "f1_mean": 0.9942857142857143,
   "f1_std": 0.027994168488950612,
-  "compression_mean": 0.3245147102062658,
-  "compression_std": 0.03687623468849047,
+  "compression_mean": 0.9741098990720763,
+  "compression_std": 0.015465033421128,
   "goal_coverage_mean": 0.0,
   "goal_coverage_std": 0.0,
   "total_tp": 138,
@@ -16,18 +16,18 @@
   "micro_precision": 0.9928057553956835,
   "micro_recall": 0.9928057553956835,
   "micro_f1": 0.9928057553956835,
-  "mean_tiou_mean": 0.2734742882322026,
-  "mean_tiou_std": 0.045363334169194885,
-  "goal_timing_mae_mean": 22.731330476190468,
-  "goal_timing_mae_std": 5.416999343430427,
-  "num_segments_mean": 195.24,
-  "num_segments_std": 23.752524076400807,
-  "mean_segment_duration_mean": 22.992729379029335,
-  "mean_segment_duration_std": 3.5810329604621987,
-  "f1_at_tiou_0.1_mean": 0.9666666666666667,
-  "f1_at_tiou_0.1_std": 0.07055336829505571,
-  "f1_at_tiou_0.3_mean": 0.35233333333333333,
-  "f1_at_tiou_0.3_std": 0.21900969651029809,
+  "mean_tiou_mean": 0.25875235087064374,
+  "mean_tiou_std": 0.05675812972893907,
+  "goal_timing_mae_mean": 19.258393333333334,
+  "goal_timing_mae_std": 8.189724389868081,
+  "num_segments_mean": 5.56,
+  "num_segments_std": 1.5768322675541617,
+  "mean_segment_duration_mean": 29.291697142857192,
+  "mean_segment_duration_std": 14.985031922829931,
+  "f1_at_tiou_0.1_mean": 0.8945238095238095,
+  "f1_at_tiou_0.1_std": 0.11751248305379895,
+  "f1_at_tiou_0.3_mean": 0.3605238095238096,
+  "f1_at_tiou_0.3_std": 0.21530252933563507,
   "f1_at_tiou_0.5_mean": 0.0,
   "f1_at_tiou_0.5_std": 0.0,
   "f1_at_tiou_0.7_mean": 0.0,
@@ -49,9 +49,9 @@
       "mean": 0.9942857142857143
     },
     "compression_ratio": {
-      "lower": 0.30959997762324226,
-      "upper": 0.338811587187611,
-      "mean": 0.3245147102062658
+      "lower": 0.9674766912573104,
+      "upper": 0.979894563307685,
+      "mean": 0.9741098990720763
     },
     "goal_coverage": {
       "lower": 0.0,
@@ -59,35 +59,29 @@
       "mean": 0.0
     },
     "mean_tiou": {
-      "lower": 0.2566511722951247,
-      "upper": 0.2911762854836704,
-      "mean": 0.2734742882322026
+      "lower": 0.238101141113573,
+      "upper": 0.28035753355878534,
+      "mean": 0.25875235087064374
     },
     "goal_timing_mae": {
-      "lower": 20.69377535714285,
-      "upper": 24.82354576190471,
-      "mean": 22.731330476190468
+      "lower": 16.30107719047616,
+      "upper": 22.491051119047576,
+      "mean": 19.258393333333334
     },
     "num_segments": {
-      "lower": 185.91899999999998,
-      "upper": 204.80200000000002,
-      "mean": 195.24
+      "lower": 4.96,
+      "upper": 6.161,
+      "mean": 5.56
     },
     "mean_segment_duration": {
-      "lower": 21.601099366280483,
-      "upper": 24.461579180451494,
-      "mean": 22.992729379029335
+      "lower": 23.897607904761944,
+      "upper": 35.61592338095243,
+      "mean": 29.291697142857192
     },
     "micro_f1": {
       "lower": 0.9777777777777777,
       "upper": 1.0,
       "mean": 0.9925859714989113
     }
-  },
-  "clip_iou_mean": 0.6864888912384902,
-  "clip_iou_std": 0.12622475503450373,
-  "clip_coverage_mean": 0.7269555355058845,
-  "clip_coverage_std": 0.1467789468035625,
-  "clip_start_mae_mean": 13.788224761904749,
-  "clip_end_mae_mean": 0.9398533333333045
+  }
 }

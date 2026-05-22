@@ -7,55 +7,73 @@
   "recall": 0.8571428571428571,
   "f1": 0.8571428571428571,
   "total_video_duration": 6390.36,
-  "highlight_duration": 4326.920000000001,
-  "compression_ratio": 0.3228988664175413,
+  "highlight_duration": 175.96000000000018,
+  "compression_ratio": 0.9724647750674453,
   "goal_coverage": 0.0,
   "num_gt_events": 7,
   "num_predicted_goals": 7,
-  "num_highlights": 185,
-  "num_segments": 185,
-  "mean_segment_duration": 23.388756756756763,
-  "mean_tiou": 0.3083392516011765,
-  "goal_timing_mae": 22.3085714285714,
-  "tiou_per_event": [
-    0.326583592938733,
-    0.25200000000000006,
-    0.38865419432709586,
-    0.29266666666666574,
-    0.3468240584598137,
-    0.3689440993788778,
-    0.1827021494370493
-  ],
-  "f1_at_tiou": {
-    "0.1": 0.9333333333333333,
-    "0.3": 0.5333333333333333,
-    "0.5": 0.0,
-    "0.7": 0.0
-  },
+  "num_goal_clips": 7,
+  "num_play_long_shots": 177,
+  "num_segments": 7,
+  "mean_segment_duration": 25.137142857142884,
   "timings": {
-    "highlight_assembly": 0.006437778472900391
+    "highlight_assembly": 0.05595135688781738
   },
-  "clip_iou_mean": 0.6098890050811234,
-  "clip_coverage_mean": 0.6426474631206275,
-  "clip_precision_mean": 0.7950715942425989,
-  "clip_start_mae": 7.663999999999862,
-  "clip_end_mae": 0.5119999999999493,
-  "clip_iou_per_goal": [
-    0.5886255924170618,
+  "clip_iou_mean": 0.7577594630362358,
+  "clip_coverage_mean": 0.7577594630362358,
+  "clip_precision_mean": 0.8333333333333334,
+  "clip_start_mae": 1.423999999999893,
+  "clip_end_mae": 0.0,
+  "clip_iou_per_gt": [
+    0.999052132701422,
     0.0,
-    0.7750952986022897,
-    0.8403547671840291,
-    0.6759156492785836,
-    0.7793427230047765
+    0.9987293519695056,
+    0.5549872122762379,
+    0.9988901220865715,
+    null,
+    0.9948979591836782
   ],
-  "goal_refined": {
-    "f1": 0.8571428571428571,
-    "num_segments": 13,
-    "mean_segment_duration": 12.889230769230728,
-    "compression_ratio": 0.9737792550028481,
-    "highlight_duration": 167.55999999999946,
-    "mean_tiou": 0.28676190476190483,
-    "goal_timing_mae": 18.07666666666667,
-    "goal_coverage": 0.0
-  }
+  "clip_coverage_per_gt": [
+    0.999052132701422,
+    0.0,
+    0.9987293519695056,
+    0.5549872122762379,
+    0.9988901220865715,
+    null,
+    0.9948979591836782
+  ],
+  "clip_precision_per_gt": [
+    1.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    null,
+    1.0
+  ],
+  "clip_start_mae_per_gt": [
+    0.03999999999999204,
+    null,
+    0.03999999999996362,
+    6.959999999999582,
+    0.03999999999996362,
+    null,
+    0.03999999999996362
+  ],
+  "clip_end_mae_per_gt": [
+    0.0,
+    null,
+    0.0,
+    0.0,
+    0.0,
+    null,
+    0.0
+  ],
+  "clip_aware_tp": 5,
+  "clip_aware_fp": 2,
+  "clip_aware_fn": 2,
+  "clip_aware_precision": 0.7142857142857143,
+  "clip_aware_recall": 0.7142857142857143,
+  "clip_aware_f1": 0.7142857142857143,
+  "clip_aware_iou_threshold": 0.5
 }
