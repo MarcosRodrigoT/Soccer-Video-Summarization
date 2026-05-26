@@ -16,8 +16,9 @@ sys.path.insert(0, str(HERE))
 from _style import save_figure  # noqa: E402
 
 FIGURES = [
-    ("fig01_system_architecture",        "system_architecture"),
-    ("fig02_data_flow",                  "data_flow"),
+    ("fig01_system_architecture",            "system_architecture"),
+    ("fig01_system_architecture_horizontal", "system_architecture_horizontal"),
+    ("fig02_data_flow",                      "data_flow"),
     ("fig03_shot_segmentation_detail",   "shot_segmentation_detail"),
     ("fig04_player_detection_detail",    "player_detection_detail"),
     ("fig05_play_classification_detail", "play_classification_detail"),
