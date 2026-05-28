@@ -15,7 +15,8 @@ import pandas as pd
 from _style import save_figure, set_paper_style
 
 PROJECT = Path(__file__).resolve().parents[2]
-MATCH_DIR = PROJECT / "results_hr" / "per_match" / "Match1"
+MATCH_DIR = PROJECT / "results_hr_10s" / "per_match" / "Match1"
+PLAY_SEG_DIR = PROJECT / "results_hr" / "per_match" / "Match1"  # 10s variant has no play_segments.csv
 
 
 def build_figure():
@@ -23,7 +24,7 @@ def build_figure():
 
     shots = pd.read_csv(MATCH_DIR / "shot_boundaries.csv")
     fc = pd.read_csv(MATCH_DIR / "frame_classification.csv")
-    play_seg = pd.read_csv(MATCH_DIR / "play_segments.csv")
+    play_seg = pd.read_csv(PLAY_SEG_DIR / "play_segments.csv")
     highlights = pd.read_csv(MATCH_DIR / "highlights.csv")
     goal_hl = pd.read_csv(MATCH_DIR / "goal_highlights.csv")
     score_ev = pd.read_csv(MATCH_DIR / "score_events.csv")
