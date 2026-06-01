@@ -198,20 +198,8 @@ def generate_dashboard(
     DARK = "#212121"
     NA   = "#9E9E9E"
 
-    # ── Four cards: section title + body of (label, value, value_colour) rows ──
+    # ── Three cards: section title + body of (label, value, value_colour) rows ──
     cards = [
-        {
-            "title":    "GOAL DETECTION",
-            "subtitle": "OCR timestamps vs GT",
-            "color":    "#1565C0",
-            "rows": [
-                ("F1",          f"{f1:.3f}",          q_color(f1)),
-                ("Precision",   f"{p:.3f}",           q_color(p)),
-                ("Recall",      f"{r:.3f}",           q_color(r)),
-                ("TP / FP / FN", f"{tp} / {fp} / {fn}", DARK),
-                ("GT / OCR",    f"{n_gt} / {n_pred}", DARK),
-            ],
-        },
         {
             "title":    "CLIP QUALITY",
             "subtitle": "mean across detected goals (TPs)",
@@ -219,8 +207,6 @@ def generate_dashboard(
             "rows": (
                 [
                     ("Clip IoU",  f"{ciou:.3f}",   q_color(ciou, 0.7, 0.5)),
-                    ("Coverage",  f"{ccov:.3f}",   q_color(ccov)),
-                    ("Precision", f"{cpre:.3f}",   q_color(cpre)),
                     ("Start MAE", f"{cs_mae:.1f}s", err_color(cs_mae)),
                     ("End MAE",   f"{ce_mae:.1f}s", err_color(ce_mae)),
                 ] if has_clip else [("—", "no frame-level GT", NA)]
@@ -252,10 +238,10 @@ def generate_dashboard(
         },
     ]
 
-    # Layout: 4 cards across the header subplot
+    # Layout: 3 cards centered across the header subplot
     n_cards   = len(cards)
-    x0, x1    = 0.02, 0.98
-    gap       = 0.012
+    x0, x1    = 0.10, 0.90
+    gap       = 0.015
     card_w    = (x1 - x0 - (n_cards - 1) * gap) / n_cards
     card_top  = 0.83
     card_bot  = 0.04
@@ -282,13 +268,13 @@ def generate_dashboard(
         # Title
         ax_header.text(
             xc + card_w / 2, card_top - band_h * 0.32, card["title"],
-            transform=ax_header.transAxes, fontsize=11, fontweight="bold",
+            transform=ax_header.transAxes, fontsize=14, fontweight="bold",
             color="white", ha="center", va="center", zorder=3,
         )
         # Subtitle
         ax_header.text(
             xc + card_w / 2, card_top - band_h * 0.78, card["subtitle"],
-            transform=ax_header.transAxes, fontsize=8, fontstyle="italic",
+            transform=ax_header.transAxes, fontsize=10, fontstyle="italic",
             color="white", ha="center", va="center", alpha=0.9, zorder=3,
         )
         # Rows
@@ -300,13 +286,13 @@ def generate_dashboard(
         for j, (label, value, val_color) in enumerate(rows):
             y_line = body_top - (j + 0.5) * row_h
             ax_header.text(
-                xc + 0.010, y_line, label,
-                transform=ax_header.transAxes, fontsize=10,
+                xc + 0.012, y_line, label,
+                transform=ax_header.transAxes, fontsize=12,
                 color="#424242", ha="left", va="center", zorder=3,
             )
             ax_header.text(
-                xc + card_w - 0.010, y_line, value,
-                transform=ax_header.transAxes, fontsize=11, fontweight="bold",
+                xc + card_w - 0.012, y_line, value,
+                transform=ax_header.transAxes, fontsize=13, fontweight="bold",
                 color=val_color, ha="right", va="center", zorder=3,
             )
 

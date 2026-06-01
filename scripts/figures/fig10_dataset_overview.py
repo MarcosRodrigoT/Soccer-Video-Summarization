@@ -47,7 +47,7 @@ def build_figure():
 
     fig = plt.figure(figsize=(9.5, 6.4))
     gs = fig.add_gridspec(2, 3, height_ratios=[1.0, 1.0],
-                          width_ratios=[1.3, 1.0, 1.0], wspace=0.32, hspace=0.40)
+                          width_ratios=[1.3, 1.0, 1.0], wspace=0.45, hspace=0.45)
 
     # ----- (a) per-match goal bars ------------------------------------------
     ax1 = fig.add_subplot(gs[0, :])
@@ -91,14 +91,19 @@ def build_figure():
     season_order = sorted(seasons.keys())
     sizes = [seasons[s] for s in season_order]
     colors = ["#FFF59D", "#CFD8DC", "#90CAF9", "#A5D6A7"][:len(season_order)]
-    wedges, texts, autotexts = ax3.pie(sizes, labels=season_order,
-                                       colors=colors,
-                                       autopct="%.0f%%",
-                                       textprops={"fontsize": 8},
-                                       wedgeprops={"edgecolor": "white",
-                                                   "linewidth": 1.0})
+    wedges, _, _ = ax3.pie(sizes, labels=None,
+                           colors=colors,
+                           autopct="%.0f%%",
+                           textprops={"fontsize": 8, "color": "#1A1A1A"},
+                           wedgeprops={"edgecolor": "white",
+                                       "linewidth": 1.0},
+                           radius=0.95, pctdistance=0.72)
     ax3.set_title("(c)  Matches by season",
                   loc="left", fontsize=10, fontweight="bold")
+    ax3.legend(wedges, season_order,
+               loc="upper center", bbox_to_anchor=(0.5, -0.02),
+               ncol=2, fontsize=7.5, frameon=False,
+               handlelength=1.2, handletextpad=0.4, columnspacing=1.0)
 
     # ----- (d) team frequency ----------------------------------------------
     ax4 = fig.add_subplot(gs[1, 2])

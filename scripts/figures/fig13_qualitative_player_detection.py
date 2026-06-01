@@ -40,19 +40,88 @@ def _segment_center(seg) -> int:
     return int((seg["start_frame"] + seg["end_frame"]) / 2)
 
 
-def pick_frames() -> tuple[list[int], list[int]]:
-    """Return (long_shots, close_ups) frame indices for the 2x2 grid."""
+def _detect_classes(model, cap, fidx: int):
+    """Run YOLO on a single frame and return (frame_rgb, set_of_class_names)."""
+    cap.set(cv2.CAP_PROP_POS_FRAMES, fidx)
+    ok, fr = cap.read()
+    if not ok:
+        return None, set()
+    frame_rgb = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
+    res = model.predict(source=fr, conf=0.5, verbose=False)[0]
+    if res.boxes is None or len(res.boxes) == 0:
+        return frame_rgb, set()
+    cls = res.boxes.cls.cpu().numpy().astype(int)
+    return frame_rgb, {CLASS_NAMES.get(int(c), "?") for c in cls}
+
+
+def _find_all_classes_frame(model, cap, goal_times_s, fps=25.0,
+                            search_back_s=25.0, stride_s=0.5):
+    """Look near each goal for a play frame in which player + goalkeeper + ball
+    are all simultaneously detected; return its frame index, or None."""
+    target = {"ball", "goalkeeper", "player"}
+    for t_goal in goal_times_s:
+        for offset_s in np.arange(0.0, search_back_s, stride_s):
+            fidx = int((t_goal - offset_s) * fps)
+            if fidx <= 0:
+                continue
+            _, classes = _detect_classes(model, cap, fidx)
+            if target.issubset(classes):
+                return fidx
+    return None
+
+
+def _find_zero_detection_frame(model, cap, segs, fps=25.0, stride_s=1.0):
+    """Pick the long no-play segment closest to the start of the match
+    (typically pre-match lineups / graphics) and return the frame index of
+    the first sample within that segment that yields zero YOLO detections."""
+    pre = segs[(segs["is_play"] == False) & (segs["dur"] > 30.0)] \
+            .sort_values("start_time").iloc[0]
+    f0, f1 = int(pre["start_frame"]), int(pre["end_frame"])
+    for fidx in range(f0 + int(2 * fps), f1, int(stride_s * fps)):
+        _, classes = _detect_classes(model, cap, fidx)
+        if not classes:
+            return fidx
+    return (f0 + f1) // 2
+
+
+def pick_frames(model=None, cap=None) -> tuple[list[int], list[int]]:
+    """Return (long_shots, close_ups) frame indices for the 2x2 grid.
+
+    Panel (a) and (c) reuse the originally picked frames (top long-range
+    play shot and longest foreground close-up).  Panel (b) is now picked
+    as a wide-angle play frame in which the detector recovers all three
+    person/ball classes simultaneously (player + goalkeeper + ball) by
+    searching near each detected goal event.  Panel (d) is now picked
+    from the pre-match intro segment so that the no-detection regime is
+    illustrated by a true zero-detection broadcast moment instead of a
+    false positive.
+    """
     segs = pd.read_csv(MATCH_DIR / "play_segments.csv")
     segs["dur"] = segs["end_time"] - segs["start_time"]
 
     play = segs[(segs["is_play"] == True) & (segs["dur"] > 10.0)] \
             .sort_values("avg_player_count", ascending=False)
-    long_shots = [_segment_center(play.iloc[i]) for i in (0, 3)]
+    long_shots = [_segment_center(play.iloc[0])]
 
     no_play = segs[(segs["is_play"] == False) &
                    (segs["avg_player_count"] < 1.0) &
                    (segs["dur"] > 5.0)].sort_values("dur", ascending=False)
-    close_ups = [_segment_center(no_play.iloc[i]) for i in (0, 1)]
+    close_ups = [_segment_center(no_play.iloc[0])]
+
+    if model is not None and cap is not None:
+        se = pd.read_csv(MATCH_DIR / "score_events.csv")
+        goal_times = se["timestamp"].tolist()
+        f_all_classes = _find_all_classes_frame(model, cap, goal_times)
+        if f_all_classes is not None:
+            long_shots.append(f_all_classes)
+        else:
+            long_shots.append(_segment_center(play.iloc[3]))
+
+        f_zero = _find_zero_detection_frame(model, cap, segs)
+        close_ups.append(f_zero)
+    else:
+        long_shots.append(_segment_center(play.iloc[3]))
+        close_ups.append(_segment_center(no_play.iloc[1]))
 
     return long_shots, close_ups
 
@@ -104,12 +173,14 @@ def build_figure():
                 axes[r][c].set_xticks([]); axes[r][c].set_yticks([])
         return fig
 
-    long_shots, close_ups = pick_frames()
-
     from ultralytics import YOLO
     model = YOLO(str(MODEL_PATH))
 
     cap = cv2.VideoCapture(str(VIDEO))
+
+    long_shots, close_ups = pick_frames(model=model, cap=cap)
+    print(f"  panel (b) frame: {long_shots[1]}")
+    print(f"  panel (d) frame: {close_ups[1]}")
 
     panel_labels = [
         ["(a) long range, play",   "(b) long range, play"],
@@ -147,4 +218,4 @@ def build_figure():
 
 if __name__ == "__main__":
     fig = build_figure()
-    save_figure(fig, "qualitative_player_detection")
+    save_figure(fig, "qualitative_player_detection", also_png=True)
