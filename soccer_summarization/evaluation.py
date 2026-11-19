@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class GoalEvent:
     """A discrete goal event extracted from GT or predictions."""
+
     start_time: float
     end_time: float
     team: str  # "team1", "team2", or "any"
@@ -31,14 +32,16 @@ class GoalEvent:
 @dataclass
 class GoalClip:
     """Frame-level GT clip for one goal (from goals.csv)."""
-    start_time: float       # start_frame / fps  — start of the play action
-    end_time: float         # end_frame_shot / fps — end of the goal celebration
+
+    start_time: float  # start_frame / fps  — start of the play action
+    end_time: float  # end_frame_shot / fps — end of the goal celebration
     scoreboard_time: float  # end_frame_scoreboard / fps — scoreboard update
 
 
 @dataclass
 class EvaluationResult:
     """Evaluation metrics for a single match."""
+
     match_id: str
     # Goal detection
     true_positives: int
@@ -60,16 +63,15 @@ class EvaluationResult:
     tiou_per_event: list = field(default_factory=list)
     f1_at_tiou: dict = field(default_factory=dict)
     # Clip-quality metrics (require frame-level GT from goals.csv)
-    clip_iou_mean: float = 0.0        # tIoU between predicted highlight and GT clip
-    clip_coverage_mean: float = 0.0   # recall: fraction of GT clip covered
+    clip_iou_mean: float = 0.0  # tIoU between predicted highlight and GT clip
+    clip_coverage_mean: float = 0.0  # recall: fraction of GT clip covered
     clip_precision_mean: float = 0.0  # precision: fraction of highlight that is GT clip
-    clip_start_mae: float = 0.0       # MAE between predicted start and GT start_frame
-    clip_end_mae: float = 0.0         # MAE between predicted end and GT end_frame_shot
+    clip_start_mae: float = 0.0  # MAE between predicted start and GT start_frame
+    clip_end_mae: float = 0.0  # MAE between predicted end and GT end_frame_shot
     clip_iou_per_goal: list = field(default_factory=list)
 
 
-def _compute_temporal_iou(seg_start: float, seg_end: float,
-                          gt_start: float, gt_end: float) -> float:
+def _compute_temporal_iou(seg_start: float, seg_end: float, gt_start: float, gt_end: float) -> float:
     """Compute temporal IoU between a predicted segment and a GT segment."""
     intersection_start = max(seg_start, gt_start)
     intersection_end = min(seg_end, gt_end)
@@ -98,8 +100,7 @@ def _find_best_segment_for_event(
     expanded_end = event.end_time + tolerance
 
     for seg_start, seg_end in highlight_segments:
-        tiou = _compute_temporal_iou(seg_start, seg_end,
-                                     expanded_start, expanded_end)
+        tiou = _compute_temporal_iou(seg_start, seg_end, expanded_start, expanded_end)
         if tiou > best_tiou:
             best_tiou = tiou
             best_seg = (seg_start, seg_end)
@@ -188,14 +189,16 @@ class Evaluator:
         clips = []
         for _, row in df.iterrows():
             start_t = float(row["start_frame"]) / fps
-            end_t   = float(row["end_frame_shot"]) / fps
+            end_t = float(row["end_frame_shot"]) / fps
             if max_duration is not None and (end_t - start_t) > max_duration:
                 start_t = end_t - max_duration
-            clips.append(GoalClip(
-                start_time=start_t,
-                end_time=end_t,
-                scoreboard_time=float(row["end_frame_scoreboard"]) / fps,
-            ))
+            clips.append(
+                GoalClip(
+                    start_time=start_t,
+                    end_time=end_t,
+                    scoreboard_time=float(row["end_frame_scoreboard"]) / fps,
+                )
+            )
         clips.sort(key=lambda c: c.scoreboard_time)
         return clips
 
@@ -224,18 +227,15 @@ class Evaluator:
 
         # Per-GT-clip parallel lists (None for undetected goals, so that callers
         # can align with the GT goal index in dashboards / tables).
-        iou_per_gt:       list = []
-        coverage_per_gt:  list = []
+        iou_per_gt: list = []
+        coverage_per_gt: list = []
         precision_per_gt: list = []
         start_mae_per_gt: list = []
-        end_mae_per_gt:   list = []
+        end_mae_per_gt: list = []
 
         for clip in goal_clips:
             # Check if this goal was detected (TP)
-            matched = any(
-                abs(t - clip.scoreboard_time) <= tolerance
-                for t in predicted_goal_times
-            )
+            matched = any(abs(t - clip.scoreboard_time) <= tolerance for t in predicted_goal_times)
             if not matched:
                 iou_per_gt.append(None)
                 coverage_per_gt.append(None)
@@ -295,11 +295,11 @@ class Evaluator:
             "clip_start_mae": safe_mean(start_mae_list),
             "clip_end_mae": safe_mean(end_mae_list),
             # Per-GT-clip values (length == len(goal_clips); None for FN)
-            "clip_iou_per_gt":       iou_per_gt,
-            "clip_coverage_per_gt":  coverage_per_gt,
+            "clip_iou_per_gt": iou_per_gt,
+            "clip_coverage_per_gt": coverage_per_gt,
             "clip_precision_per_gt": precision_per_gt,
             "clip_start_mae_per_gt": start_mae_per_gt,
-            "clip_end_mae_per_gt":   end_mae_per_gt,
+            "clip_end_mae_per_gt": end_mae_per_gt,
         }
 
     def evaluate_clip_aware_f1(
@@ -363,8 +363,8 @@ class Evaluator:
 
         fp = len(predicted_goal_times) - len(matched_pred_idx)
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
-        recall    = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        f1        = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+        f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
 
         return {
             "clip_aware_tp": tp,
@@ -403,22 +403,26 @@ class Evaluator:
                 row = goal_rows.iloc[i]
                 if row["start"] - current_end > gap_threshold:
                     # New event
-                    events.append(GoalEvent(
-                        start_time=current_start,
-                        end_time=current_end,
-                        team=team_name,
-                    ))
+                    events.append(
+                        GoalEvent(
+                            start_time=current_start,
+                            end_time=current_end,
+                            team=team_name,
+                        )
+                    )
                     current_start = row["start"]
                     current_end = row["end"]
                 else:
                     current_end = max(current_end, row["end"])
 
             # Last event
-            events.append(GoalEvent(
-                start_time=current_start,
-                end_time=current_end,
-                team=team_name,
-            ))
+            events.append(
+                GoalEvent(
+                    start_time=current_start,
+                    end_time=current_end,
+                    team=team_name,
+                )
+            )
 
         # Deduplicate events that overlap (both teams flagged for same goal)
         events = self._deduplicate_events(events)
@@ -427,7 +431,9 @@ class Evaluator:
         for e in events:
             logger.info(
                 "  Goal at %.1fs-%.1fs (%s)",
-                e.start_time, e.end_time, e.team,
+                e.start_time,
+                e.end_time,
+                e.team,
             )
         return events
 
@@ -467,7 +473,7 @@ class Evaluator:
 
         for i, pred_time in enumerate(predicted_goal_times):
             for j, gt_event in enumerate(gt_events):
-                if (gt_event.start_time - tolerance <= pred_time <= gt_event.end_time + tolerance):
+                if gt_event.start_time - tolerance <= pred_time <= gt_event.end_time + tolerance:
                     matched_gt.add(j)
                     matched_pred.add(i)
                     break
@@ -548,9 +554,7 @@ class Evaluator:
         timing_errors = []
 
         for event in gt_events:
-            best_tiou, timing_error, _ = _find_best_segment_for_event(
-                highlight_segments, event, tolerance
-            )
+            best_tiou, timing_error, _ = _find_best_segment_for_event(highlight_segments, event, tolerance)
             tiou_per_event.append(best_tiou)
             if best_tiou > 0:
                 timing_errors.append(timing_error)
@@ -564,9 +568,7 @@ class Evaluator:
             tp = sum(1 for t in tiou_per_event if t >= threshold)
             fn = len(gt_events) - tp
             # For FP: count predicted goals not matched at this threshold
-            fp = self._count_fp_at_tiou(
-                highlight_segments, predicted_goal_times, gt_events, threshold, tolerance
-            )
+            fp = self._count_fp_at_tiou(highlight_segments, predicted_goal_times, gt_events, threshold, tolerance)
             p = tp / (tp + fp) if (tp + fp) > 0 else 0.0
             r = tp / (tp + fn) if (tp + fn) > 0 else 0.0
             f1 = 2 * p * r / (p + r) if (p + r) > 0 else 0.0
@@ -596,9 +598,7 @@ class Evaluator:
                 expanded_end = event.end_time + tolerance
                 if expanded_start <= pred_time <= expanded_end:
                     # Check if any highlight segment covers this well enough
-                    best_tiou, _, _ = _find_best_segment_for_event(
-                        highlight_segments, event, tolerance
-                    )
+                    best_tiou, _, _ = _find_best_segment_for_event(highlight_segments, event, tolerance)
                     if best_tiou >= tiou_threshold:
                         matched = True
                         break
@@ -616,12 +616,8 @@ class Evaluator:
     ) -> EvaluationResult:
         """Full evaluation for a single match."""
         goal_metrics = self.evaluate_goal_detection(predicted_goal_times, gt_events)
-        quality_metrics = self.evaluate_highlight_quality(
-            highlight_segments, gt_events, total_video_duration
-        )
-        temporal_metrics = self.evaluate_temporal_quality(
-            highlight_segments, predicted_goal_times, gt_events
-        )
+        quality_metrics = self.evaluate_highlight_quality(highlight_segments, gt_events, total_video_duration)
+        temporal_metrics = self.evaluate_temporal_quality(highlight_segments, predicted_goal_times, gt_events)
 
         result = EvaluationResult(
             match_id=match_id,
@@ -631,11 +627,16 @@ class Evaluator:
         )
 
         logger.info(
-            "Match %s: P=%.2f R=%.2f F1=%.2f | Compression=%.1f%% Coverage=%.1f%% | "
-            "tIoU=%.3f MAE=%.1fs Segments=%d",
-            match_id, result.precision, result.recall, result.f1,
-            result.compression_ratio * 100, result.goal_coverage * 100,
-            result.mean_tiou, result.goal_timing_mae, result.num_segments,
+            "Match %s: P=%.2f R=%.2f F1=%.2f | Compression=%.1f%% Coverage=%.1f%% | " "tIoU=%.3f MAE=%.1fs Segments=%d",
+            match_id,
+            result.precision,
+            result.recall,
+            result.f1,
+            result.compression_ratio * 100,
+            result.goal_coverage * 100,
+            result.mean_tiou,
+            result.goal_timing_mae,
+            result.num_segments,
         )
         return result
 
@@ -722,10 +723,7 @@ class Evaluator:
         cis = {}
         for metric_name, extractor in metric_extractors.items():
             values = np.array([extractor(r) for r in results])
-            bootstrap_means = np.array([
-                np.mean(rng.choice(values, size=n, replace=True))
-                for _ in range(n_iterations)
-            ])
+            bootstrap_means = np.array([np.mean(rng.choice(values, size=n, replace=True)) for _ in range(n_iterations)])
             lower = float(np.percentile(bootstrap_means, alpha * 100))
             upper = float(np.percentile(bootstrap_means, (1 - alpha) * 100))
             cis[metric_name] = {"lower": lower, "upper": upper, "mean": float(np.mean(values))}
