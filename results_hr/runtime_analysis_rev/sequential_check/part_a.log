@@ -1,0 +1,12 @@
+Match2 {'frames_new': 32902, 'frames_ref': 32902, 'frames_compared': 32902, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 39.899080594070256, 'inference_sec': 239.69653563247994}}
+Match3 {'frames_new': 31983, 'frames_ref': 31983, 'frames_compared': 31983, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 39.71796412067488, 'inference_sec': 232.8624672475271}}
+Match4 {'frames_new': 29643, 'frames_ref': 29643, 'frames_compared': 29643, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 36.29965722095221, 'inference_sec': 217.50810024049133}}
+Match5 {'frames_new': 32680, 'frames_ref': 32680, 'frames_compared': 32680, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 39.88007855089381, 'inference_sec': 238.50944533664733}}
+Match6 {'frames_new': 33082, 'frames_ref': 33082, 'frames_compared': 33082, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 40.62309579877183, 'inference_sec': 240.40695533901453}}
+Match7 {'frames_new': 33000, 'frames_ref': 33000, 'frames_compared': 33000, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 40.13222164241597, 'inference_sec': 238.43495233450085}}
+Match8 {'frames_new': 32168, 'frames_ref': 32168, 'frames_compared': 32168, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 39.58435232331976, 'inference_sec': 234.78714988799766}}
+Match9 {'frames_new': 33836, 'frames_ref': 33836, 'frames_compared': 33836, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 41.550372927449644, 'inference_sec': 246.07387169776484}}
+Match10 {'frames_new': 31659, 'frames_ref': 31659, 'frames_compared': 31659, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 38.53468795353547, 'inference_sec': 229.58324923366308}}
+Match11 {'frames_new': 32173, 'frames_ref': 32173, 'frames_compared': 32173, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 39.58101286832243, 'inference_sec': 234.1074663545005}}
+Match12 {'frames_new': 33728, 'frames_ref': 33728, 'frames_compared': 33728, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 38.58876484679058, 'inference_sec': 240.7881855852902}}
+Match13 {'frames_new': 31952, 'frames_ref': 31952, 'frames_compared': 31952, 'identical_fraction': 1.0, 'max_abs_diff': 0, 'detection_sec': {'decode_sec': 34.39344890974462, 'inference_sec': 225.6435994147323}}
