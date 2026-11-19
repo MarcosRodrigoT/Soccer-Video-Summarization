@@ -1,0 +1,93 @@
+12:58:15 [__main__] INFO: Match1: Valencia CF - FC Barcelona (2-3) LALIGA 2013⧸2014 FULL MATCH [Qzrg3QDmQ4k].mp4 (104.4 min, 25 fps, 1920x1080, 156637 frames)
+12:58:15 [__main__] INFO: [1/6] Shot segmentation...
+12:58:15 [soccer_summarization.shot_segmentation] INFO: Computing histogram differences with 32 processes...
+[h264 @ 0x431132c0] mmco: unref short failure
+13:02:29 [soccer_summarization.shot_segmentation] INFO: Abrupt transitions: 490
+13:02:29 [soccer_summarization.shot_segmentation] INFO: Gradual transitions: 260 regions
+13:02:29 [__main__] INFO:   750 shots (490 abrupt + 260 gradual)
+13:02:29 [__main__] INFO: [2/6] YOLO object detection...
+13:02:29 [soccer_summarization.object_detection] INFO: Loading YOLO model from data/models/best.pt
+13:02:30 [soccer_summarization.object_detection] INFO: Model loaded on cuda
+13:02:30 [soccer_summarization.object_detection] INFO: Processing 156637 frames (every 5, effective 5.0 fps)...
+13:06:13 [soccer_summarization.object_detection] INFO: Detection complete: 31328 sampled frames, avg 10.2 players/frame
+13:06:13 [__main__] INFO:   31328 frames processed
+13:06:13 [__main__] INFO: [3/6] Play classification...
+13:06:13 [soccer_summarization.play_classifier] INFO: Classification: 66.9% play frames (threshold=5, window=50)
+13:06:15 [soccer_summarization.play_classifier] INFO: Found 522 segments (261 play, 261 no-play)
+13:06:15 [__main__] INFO: [4/6] OCR scoreboard...
+[h264 @ 0x44c20e40] mmco: unref short failure
+[h264 @ 0x44c20e40] mmco: unref short failure
+[h264 @ 0x44c20e40] mmco: unref short failure
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO: Variability map (IQR): shape=(1080, 1920), range=[1.0, 199.0], mean=34.8, 200 samples
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO: Overlay mask: std threshold=19.2 (P8), 154008 static pixels (7.4%)
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO: Split wide region (4,432,1916,583) into 8 sub-regions: [(5, 432, 2, 583), (127, 432, 17, 583), (201, 432, 1, 583), (856, 432, 22, 583), (919, 432, 640, 583), (1658, 432, 35, 583), (1733, 432, 23, 583), (1918, 432, 2, 583)]
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO: Found 12 overlay regions (merged from 14 components)
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (120,83) 373x46
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (1412,85) 219x46
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (5,432) 2x583
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (127,432) 17x583
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (201,432) 1x583
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (509,432) 392x597
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (919,432) 640x644
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (1658,432) 35x583
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (1733,432) 23x583
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (1918,432) 2x583
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (353,1000) 135x77
+13:06:32 [soccer_summarization.ocr_scoreboard] INFO:   Region: (1596,1033) 324x47
+[h264 @ 0x4e58b000] mmco: unref short failure
+13:06:34 [soccer_summarization.ocr_scoreboard] INFO:   Region (120,83,373,46): OCR score=64
+13:06:34 [soccer_summarization.ocr_scoreboard] INFO:   Region (1412,85,219,46): OCR score=-29
+13:06:34 [soccer_summarization.ocr_scoreboard] INFO:   Region (5,432,2,583): OCR score=0
+13:06:34 [soccer_summarization.ocr_scoreboard] INFO:   Region (127,432,17,583): OCR score=0
+13:06:34 [soccer_summarization.ocr_scoreboard] INFO:   Region (201,432,1,583): OCR score=0
+13:06:35 [soccer_summarization.ocr_scoreboard] INFO:   Region (509,432,392,597): OCR score=0
+13:06:36 [soccer_summarization.ocr_scoreboard] INFO:   Region (919,432,640,644): OCR score=7
+13:06:36 [soccer_summarization.ocr_scoreboard] INFO:   Region (1658,432,35,583): OCR score=1
+13:06:36 [soccer_summarization.ocr_scoreboard] INFO:   Region (1733,432,23,583): OCR score=0
+13:06:36 [soccer_summarization.ocr_scoreboard] INFO:   Region (1918,432,2,583): OCR score=0
+13:06:36 [soccer_summarization.ocr_scoreboard] INFO:   Region (353,1000,135,77): OCR score=0
+13:06:36 [soccer_summarization.ocr_scoreboard] INFO:   Region (1596,1033,324,47): OCR score=0
+13:06:36 [soccer_summarization.ocr_scoreboard] INFO: Scoreboard at (120,83,373,46) score=64
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+[h264 @ 0x855f4ec0] mmco: unref short failure
+13:09:22 [__main__] INFO: Collected 3986 raw OCR readings
+13:09:22 [soccer_summarization.ocr_scoreboard] INFO: Strategy 1 (X-Y pattern): 1892 readings
+13:09:22 [__main__] INFO: Parsed 1892 raw score readings
+13:09:22 [__main__] INFO: Detected 5 score change events
+13:09:22 [__main__] INFO: [5/6] Highlight assembly...
+13:09:22 [soccer_summarization.highlight_assembler] INFO: Play long shots: 226 / 376 long shots (>=4.0s), total 3941.9s (65:41)
+13:09:22 [soccer_summarization.highlight_assembler] INFO: Selected 5 goal clips from 750 shots (226 play long shots; anchors extended back 0 times with gap<=2.0s, lookback<=30.0s, thr=5.0, min_dur=4.0s)
+13:09:22 [__main__] INFO:   226 play long shots, 5 goal clips
+13:09:22 [__main__] INFO: [6/6] Evaluation...
+13:09:22 [soccer_summarization.evaluation] INFO: Loaded 5 frame-level GT events from /mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga/Match1/goals.csv
+13:09:22 [soccer_summarization.evaluation] INFO: Match Match1: P=1.00 R=1.00 F1=1.00 | Compression=98.1% Coverage=0.0% | tIoU=0.333 MAE=11.3s Segments=5
+13:09:22 [__main__] INFO: Wrote /home/mrt/Projects/Soccer-Video-Summarization/results_hr/runtime_analysis_rev/Match1_sequential_fp16/runtime_substages.json
+13:09:22 [__main__] INFO: Total pipeline compute: 11:06.86  (real-time factor: 0.106x)

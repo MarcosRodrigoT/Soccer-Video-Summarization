@@ -41,3 +41,6 @@ results_hr_10s/per_match/**/highlights.csv
 # OS
 .DS_Store
 Thumbs.db
+
+# Exported detector engines (large, rebuilt from best.pt)
+data/models/trt/
