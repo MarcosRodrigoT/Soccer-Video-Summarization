@@ -1,0 +1,1269 @@
+{
+  "definition": "delay = end_frame_scoreboard - end_frame_shot (seconds, 25 fps)",
+  "num_goals": 139,
+  "min": -0.96,
+  "median": 3.92,
+  "mean": 6.021007194244604,
+  "p90": 10.968,
+  "max": 105.96,
+  "num_le_0": 7,
+  "num_le_10": 122,
+  "num_le_20": 137,
+  "num_gt_lookback": 2,
+  "lookback_sec": 30.0,
+  "max_excluding_gt_lookback": 19.0,
+  "num_with_play_long_shot_in_between": 2,
+  "goals": [
+    {
+      "match": "Match1",
+      "goal": 1,
+      "delay_sec": -0.48,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match1",
+      "goal": 2,
+      "delay_sec": -0.48,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.992,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match1",
+      "goal": 3,
+      "delay_sec": 0.2,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9455,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match1",
+      "goal": 4,
+      "delay_sec": -0.96,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match1",
+      "goal": 5,
+      "delay_sec": -0.76,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9682,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match2",
+      "goal": 1,
+      "delay_sec": 2.24,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match2",
+      "goal": 2,
+      "delay_sec": 1.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match2",
+      "goal": 3,
+      "delay_sec": 0.28,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match2",
+      "goal": 4,
+      "delay_sec": 0.64,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match2",
+      "goal": 5,
+      "delay_sec": 1.08,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match3",
+      "goal": 1,
+      "delay_sec": 2.72,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match3",
+      "goal": 2,
+      "delay_sec": 2.4,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match3",
+      "goal": 3,
+      "delay_sec": 2.88,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.992,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match4",
+      "goal": 1,
+      "delay_sec": 1.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match4",
+      "goal": 2,
+      "delay_sec": 1.64,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match4",
+      "goal": 3,
+      "delay_sec": 0.88,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match4",
+      "goal": 4,
+      "delay_sec": 0.0,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match4",
+      "goal": 5,
+      "delay_sec": 2.56,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match5",
+      "goal": 1,
+      "delay_sec": 1.28,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match5",
+      "goal": 2,
+      "delay_sec": 0.8,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match5",
+      "goal": 3,
+      "delay_sec": 0.2,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match5",
+      "goal": 4,
+      "delay_sec": 2.4,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match6",
+      "goal": 1,
+      "delay_sec": 4.32,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.994,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match6",
+      "goal": 2,
+      "delay_sec": -0.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.0,
+      "end_to_end_tp": false,
+      "note": ""
+    },
+    {
+      "match": "Match6",
+      "goal": 3,
+      "delay_sec": 9.28,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match6",
+      "goal": 4,
+      "delay_sec": 3.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match6",
+      "goal": 5,
+      "delay_sec": 1.08,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match7",
+      "goal": 1,
+      "delay_sec": 7.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match7",
+      "goal": 2,
+      "delay_sec": 9.72,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match7",
+      "goal": 3,
+      "delay_sec": 7.2,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9928,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match7",
+      "goal": 4,
+      "delay_sec": 8.52,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match7",
+      "goal": 5,
+      "delay_sec": 9.16,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.5974,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match7",
+      "goal": 6,
+      "delay_sec": 5.8,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match7",
+      "goal": 7,
+      "delay_sec": 8.16,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match8",
+      "goal": 1,
+      "delay_sec": 2.48,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match8",
+      "goal": 2,
+      "delay_sec": 3.4,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.552,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match8",
+      "goal": 3,
+      "delay_sec": 6.2,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match8",
+      "goal": 4,
+      "delay_sec": 3.68,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match8",
+      "goal": 5,
+      "delay_sec": 4.76,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match8",
+      "goal": 6,
+      "delay_sec": 3.68,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match9",
+      "goal": 1,
+      "delay_sec": 5.0,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9912,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match9",
+      "goal": 2,
+      "delay_sec": 2.84,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match9",
+      "goal": 3,
+      "delay_sec": 5.84,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match9",
+      "goal": 4,
+      "delay_sec": 2.4,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match9",
+      "goal": 5,
+      "delay_sec": 8.12,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match9",
+      "goal": 6,
+      "delay_sec": 0.72,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match9",
+      "goal": 7,
+      "delay_sec": 5.8,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match9",
+      "goal": 8,
+      "delay_sec": 2.32,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match10",
+      "goal": 1,
+      "delay_sec": 4.08,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match10",
+      "goal": 2,
+      "delay_sec": 2.32,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match10",
+      "goal": 3,
+      "delay_sec": 3.76,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9939,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match10",
+      "goal": 4,
+      "delay_sec": 4.4,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match10",
+      "goal": 5,
+      "delay_sec": 8.24,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9945,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match11",
+      "goal": 1,
+      "delay_sec": 11.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match11",
+      "goal": 2,
+      "delay_sec": 11.0,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match11",
+      "goal": 3,
+      "delay_sec": 9.28,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match11",
+      "goal": 4,
+      "delay_sec": 12.28,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match11",
+      "goal": 5,
+      "delay_sec": 8.52,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.5576,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match12",
+      "goal": 1,
+      "delay_sec": 13.8,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match12",
+      "goal": 2,
+      "delay_sec": 15.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match12",
+      "goal": 3,
+      "delay_sec": 16.08,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match12",
+      "goal": 4,
+      "delay_sec": 105.96,
+      "play_long_shots_in_between": 5,
+      "clip_iou": 0.0,
+      "end_to_end_tp": false,
+      "note": "El gol ha ocurrido muchiiiiisimo antes, pero han estado revisando si contaba o no. Hay varios replays y no actualizan el marcador hasta bastante después"
+    },
+    {
+      "match": "Match12",
+      "goal": 5,
+      "delay_sec": 10.52,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match12",
+      "goal": 6,
+      "delay_sec": 13.64,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match13",
+      "goal": 1,
+      "delay_sec": 4.8,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match13",
+      "goal": 2,
+      "delay_sec": 85.44,
+      "play_long_shots_in_between": 2,
+      "clip_iou": 0.0,
+      "end_to_end_tp": false,
+      "note": "Han llamado al VAR para comprobar si el gol contaba o no, por lo que el marcador se actualiza mucho más tarde. También aparecen muchos replays entre medias."
+    },
+    {
+      "match": "Match13",
+      "goal": 3,
+      "delay_sec": 3.92,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match13",
+      "goal": 4,
+      "delay_sec": 7.4,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.868,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match13",
+      "goal": 5,
+      "delay_sec": 4.8,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match13",
+      "goal": 6,
+      "delay_sec": 6.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": null,
+      "end_to_end_tp": false,
+      "note": ""
+    },
+    {
+      "match": "Match13",
+      "goal": 7,
+      "delay_sec": 3.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9949,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match14",
+      "goal": 1,
+      "delay_sec": 2.96,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9531,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match14",
+      "goal": 2,
+      "delay_sec": 2.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match14",
+      "goal": 3,
+      "delay_sec": 10.96,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match14",
+      "goal": 4,
+      "delay_sec": 0.88,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match14",
+      "goal": 5,
+      "delay_sec": 4.68,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9955,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match15",
+      "goal": 1,
+      "delay_sec": 4.24,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match15",
+      "goal": 2,
+      "delay_sec": 6.2,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9953,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match15",
+      "goal": 3,
+      "delay_sec": 4.4,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9915,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match15",
+      "goal": 4,
+      "delay_sec": 5.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9922,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match15",
+      "goal": 5,
+      "delay_sec": 1.56,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match15",
+      "goal": 6,
+      "delay_sec": 2.52,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match16",
+      "goal": 1,
+      "delay_sec": 4.72,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match16",
+      "goal": 2,
+      "delay_sec": -0.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match16",
+      "goal": 3,
+      "delay_sec": 4.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match16",
+      "goal": 4,
+      "delay_sec": 1.24,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9956,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match16",
+      "goal": 5,
+      "delay_sec": 3.44,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match17",
+      "goal": 1,
+      "delay_sec": 2.68,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9955,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match17",
+      "goal": 2,
+      "delay_sec": 2.8,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match17",
+      "goal": 3,
+      "delay_sec": 10.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.938,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match18",
+      "goal": 1,
+      "delay_sec": 6.2,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.44,
+      "end_to_end_tp": false,
+      "note": ""
+    },
+    {
+      "match": "Match18",
+      "goal": 2,
+      "delay_sec": 1.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match18",
+      "goal": 3,
+      "delay_sec": 4.52,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match18",
+      "goal": 4,
+      "delay_sec": 9.76,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match18",
+      "goal": 5,
+      "delay_sec": 4.16,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match19",
+      "goal": 1,
+      "delay_sec": 0.56,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.994,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match19",
+      "goal": 2,
+      "delay_sec": 4.32,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match19",
+      "goal": 3,
+      "delay_sec": 1.72,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9946,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match19",
+      "goal": 4,
+      "delay_sec": 6.12,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match19",
+      "goal": 5,
+      "delay_sec": 6.2,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match19",
+      "goal": 6,
+      "delay_sec": 4.96,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match19",
+      "goal": 7,
+      "delay_sec": 1.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match19",
+      "goal": 8,
+      "delay_sec": 3.04,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9948,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match20",
+      "goal": 1,
+      "delay_sec": 3.32,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match20",
+      "goal": 2,
+      "delay_sec": 1.92,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9954,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match21",
+      "goal": 1,
+      "delay_sec": 4.44,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9942,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match21",
+      "goal": 2,
+      "delay_sec": 5.08,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9937,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match21",
+      "goal": 3,
+      "delay_sec": 5.44,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match21",
+      "goal": 4,
+      "delay_sec": 19.0,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9945,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match21",
+      "goal": 5,
+      "delay_sec": 4.32,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match22",
+      "goal": 1,
+      "delay_sec": 12.76,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match22",
+      "goal": 2,
+      "delay_sec": 5.36,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match22",
+      "goal": 3,
+      "delay_sec": 8.64,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match22",
+      "goal": 4,
+      "delay_sec": 5.92,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match22",
+      "goal": 5,
+      "delay_sec": 3.36,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match22",
+      "goal": 6,
+      "delay_sec": 7.8,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match22",
+      "goal": 7,
+      "delay_sec": 4.88,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match23",
+      "goal": 1,
+      "delay_sec": 1.24,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match23",
+      "goal": 2,
+      "delay_sec": 3.92,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.9956,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match23",
+      "goal": 3,
+      "delay_sec": 1.72,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match23",
+      "goal": 4,
+      "delay_sec": 17.16,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match23",
+      "goal": 5,
+      "delay_sec": 4.56,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match23",
+      "goal": 6,
+      "delay_sec": 1.44,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match23",
+      "goal": 7,
+      "delay_sec": 2.72,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match23",
+      "goal": 8,
+      "delay_sec": 4.88,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.992,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match24",
+      "goal": 1,
+      "delay_sec": 2.08,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match24",
+      "goal": 2,
+      "delay_sec": 1.88,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 0.576,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match24",
+      "goal": 3,
+      "delay_sec": 2.56,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match24",
+      "goal": 4,
+      "delay_sec": 2.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match24",
+      "goal": 5,
+      "delay_sec": 3.12,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match24",
+      "goal": 6,
+      "delay_sec": 3.24,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match25",
+      "goal": 1,
+      "delay_sec": 12.76,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match25",
+      "goal": 2,
+      "delay_sec": 13.44,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match25",
+      "goal": 3,
+      "delay_sec": 1.88,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match25",
+      "goal": 4,
+      "delay_sec": 2.84,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match25",
+      "goal": 5,
+      "delay_sec": 5.16,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match25",
+      "goal": 6,
+      "delay_sec": 2.72,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match25",
+      "goal": 7,
+      "delay_sec": 1.36,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    },
+    {
+      "match": "Match25",
+      "goal": 8,
+      "delay_sec": 3.6,
+      "play_long_shots_in_between": 0,
+      "clip_iou": 1.0,
+      "end_to_end_tp": true,
+      "note": ""
+    }
+  ]
+}
