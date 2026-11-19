@@ -1,0 +1,129 @@
+{
+  "match_id": "Match1",
+  "video_path": "/mnt/Data-fast/mrt/lf/SoccerNetClip10Videos/Laliga_HR/Match1/Valencia CF - FC Barcelona (2-3) LALIGA 2013\u29f82014 FULL MATCH [Qzrg3QDmQ4k].mp4",
+  "video_duration_sec": 6265.48,
+  "fps": 25,
+  "total_frames": 156637,
+  "width": 1920,
+  "height": 1080,
+  "yolo_frame_step": 5,
+  "ocr_sample_interval_sec": 3.0,
+  "num_shots": 750,
+  "num_score_events": 5,
+  "num_goal_clips": 5,
+  "num_play_long_shots": 226,
+  "f1": 1.0,
+  "clip_aware_f1": 1.0,
+  "timestamp": "2026-06-01T15:14:40",
+  "hardware": {
+    "platform": "Linux-6.8.0-117-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900K",
+    "cpu_count": 32,
+    "gpus": [
+      {
+        "name": "NVIDIA GeForce RTX 4090",
+        "memory_mib": 24564,
+        "driver": "590.48.01"
+      },
+      {
+        "name": "NVIDIA GeForce RTX 4090",
+        "memory_mib": 24564,
+        "driver": "590.48.01"
+      }
+    ],
+    "torch_version": "2.10.0+cu128",
+    "cuda_version": "12.8",
+    "cuda_available": true,
+    "mem_total_kib": 131600972
+  },
+  "substages": [
+    {
+      "stage": "shot_segmentation",
+      "substage": "frame_difference",
+      "duration_sec": 275.41963718399893
+    },
+    {
+      "stage": "shot_segmentation",
+      "substage": "abrupt_detection",
+      "duration_sec": 0.010991666000336409
+    },
+    {
+      "stage": "shot_segmentation",
+      "substage": "gradual_detection",
+      "duration_sec": 0.052057864999369485
+    },
+    {
+      "stage": "shot_segmentation",
+      "substage": "shot_assembly",
+      "duration_sec": 0.00035333999949216377
+    },
+    {
+      "stage": "object_detection",
+      "substage": "model_load",
+      "duration_sec": 1.9116712680006458
+    },
+    {
+      "stage": "object_detection",
+      "substage": "inference_loop",
+      "duration_sec": 1616.655022347999
+    },
+    {
+      "stage": "play_classifier",
+      "substage": "smoothing_threshold",
+      "duration_sec": 1.6217691759993613
+    },
+    {
+      "stage": "ocr_scoreboard",
+      "substage": "variability_map",
+      "duration_sec": 17.74868017299923
+    },
+    {
+      "stage": "ocr_scoreboard",
+      "substage": "overlay_mask",
+      "duration_sec": 0.027582325999901514
+    },
+    {
+      "stage": "ocr_scoreboard",
+      "substage": "region_search",
+      "duration_sec": 2.8760586570006126
+    },
+    {
+      "stage": "ocr_scoreboard",
+      "substage": "ocr_sampling_recognition",
+      "duration_sec": 154.39365610000095
+    },
+    {
+      "stage": "ocr_scoreboard",
+      "substage": "parsing",
+      "duration_sec": 0.0054579269999521784
+    },
+    {
+      "stage": "ocr_scoreboard",
+      "substage": "robustness_cascade",
+      "duration_sec": 0.0038502010011143284
+    },
+    {
+      "stage": "highlight_assembly",
+      "substage": "play_long_shots",
+      "duration_sec": 0.060335438000038266
+    },
+    {
+      "stage": "highlight_assembly",
+      "substage": "goal_shot_selection",
+      "duration_sec": 0.11257693500010646
+    },
+    {
+      "stage": "evaluation",
+      "substage": "load_ground_truth",
+      "duration_sec": 0.008002635000593727
+    },
+    {
+      "stage": "evaluation",
+      "substage": "match_and_score",
+      "duration_sec": 0.0001428580017091008
+    }
+  ],
+  "total_compute_sec": 2070.9078460970013,
+  "realtime_factor": 0.3305266070751166
+}
