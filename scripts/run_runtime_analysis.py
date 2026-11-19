@@ -295,8 +295,14 @@ def track_scores_instrumented(
 
 # ─── Main orchestration ─────────────────────────────────────────────────────
 
-def run(match_id: str, config_path: Path, output_dir: Path) -> dict:
+def run(match_id: str, config_path: Path, output_dir: Path,
+        seek_decode: bool = False, half: bool = False,
+        model_path: str | None = None) -> dict:
     config = PipelineConfig.from_yaml(str(config_path))
+    config.object_detection.sequential_decode = not seek_decode
+    config.object_detection.half = half
+    if model_path:
+        config.object_detection.model_path = model_path
 
     matches_yaml = config_path.parent / "matches_hr.yaml"
     if not matches_yaml.exists():
@@ -346,8 +352,15 @@ def run(match_id: str, config_path: Path, output_dir: Path) -> dict:
     detector = PlayerDetector(config.object_detection)
     with timer.time("object_detection", "model_load"):
         detector._load_model()
-    with timer.time("object_detection", "inference_loop"):
-        player_df = detector.run(video_path)
+    t_loop = time.perf_counter()
+    player_df = detector.run(video_path)
+    t_loop = time.perf_counter() - t_loop
+    # Split the detection loop into video decoding and YOLO inference
+    # (the remainder, logging and DataFrame assembly, goes to inference).
+    decode_sec = detector.last_timing["decode_sec"]
+    timer.record("object_detection", "frame_decode", decode_sec)
+    timer.record("object_detection", "yolo_inference", t_loop - decode_sec)
+    player_df.to_csv(output_dir / "player_counts.csv", index=False)
     logger.info("  %d frames processed", len(player_df))
 
     # ── Stage 3: Play classification ──────────────────────────────────────
@@ -443,6 +456,9 @@ def run(match_id: str, config_path: Path, output_dir: Path) -> dict:
         "width": int(props["width"]),
         "height": int(props["height"]),
         "yolo_frame_step": int(config.object_detection.frame_step),
+        "yolo_model_path": str(config.object_detection.model_path),
+        "yolo_sequential_decode": bool(config.object_detection.sequential_decode),
+        "yolo_half": bool(config.object_detection.half),
         "ocr_sample_interval_sec": float(config.ocr_scoreboard.score_sample_interval),
         "num_shots": len(shots),
         "num_score_events": len(score_events),
@@ -483,6 +499,11 @@ def main():
         default=None,
         help="Output dir (default: <results_dir>/runtime_analysis/<match_id>)",
     )
+    ap.add_argument("--seek-decode", action="store_true",
+                    help="Seek to every sampled frame (original, slow loop).")
+    ap.add_argument("--half", action="store_true", help="FP16 YOLO inference.")
+    ap.add_argument("--model-path", default=None,
+                    help="Override the detector weights (e.g. a TensorRT .engine).")
     ap.add_argument("--log-level", default="INFO")
     args = ap.parse_args()
     setup_logging(args.log_level)
@@ -496,7 +517,8 @@ def main():
     )
     output_dir = output_dir.resolve()
 
-    run(args.match_id, cfg_path, output_dir)
+    run(args.match_id, cfg_path, output_dir, seek_decode=args.seek_decode,
+        half=args.half, model_path=args.model_path)
 
 
 if __name__ == "__main__":

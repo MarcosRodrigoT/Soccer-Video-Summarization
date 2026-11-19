@@ -67,6 +67,8 @@ SUBSTAGE_LABEL = {
     # object_detection
     "model_load":                 "YOLOv8 model load",
     "inference_loop":             "Frame extraction + inference loop",
+    "frame_decode":               "Video decoding of sampled frames",
+    "yolo_inference":             "YOLOv8 inference + post-processing",
     # play_classifier
     "smoothing_threshold":        "Rolling smoothing + thresholding",
     # ocr_scoreboard
@@ -218,6 +220,10 @@ HIGH_VOLUME_KEYS = [
      "Shot dissimilarity signal (Sec. 4)",        "#388E3C"),
     ("object_detection",   "inference_loop",
      "YOLOv8 player detection (Sec. 5)",          "#1976D2"),
+    ("object_detection",   "yolo_inference",
+     "YOLOv8 player detection (Sec. 5)",          "#1976D2"),
+    ("object_detection",   "frame_decode",
+     "Video decoding for detection (Sec. 5)",     "#64B5F6"),
     ("ocr_scoreboard",     "ocr_sampling_recognition",
      "Scoreboard OCR tracking (Sec. 6)",          "#F57C00"),
 ]
@@ -279,19 +285,8 @@ def plot_simplified_breakdown(data: dict, records: list[dict], total: float,
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
-    duration = data.get("video_duration_sec", 0.0)
-    match_disp = data['match_id'].replace("Match", "Match ")
-    title = (
-        f"Per-frame compute cost on {match_disp} "
-        f"(broadcast {format_time_detailed(duration)}, "
-        f"total compute {format_time_detailed(total)})"
-    )
-    # `suptitle` centres horizontally on the figure canvas rather than on the
-    # axes box, which would otherwise be shifted right by the long y-tick
-    # labels and produce a visually off-centre title.
-    fig.suptitle(title, fontsize=10.5, fontweight="bold", x=0.5, y=0.98)
-
-    fig.tight_layout(rect=(0, 0, 1, 0.93))
+    # No title inside the figure: the journal asks for captions only.
+    fig.tight_layout()
     for p in output_paths:
         fig.savefig(p, bbox_inches="tight", facecolor="white")
         logger.info("Saved %s", p)
