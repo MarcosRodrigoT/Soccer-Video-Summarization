@@ -37,3 +37,21 @@ def summarize(evals: list[dict]) -> dict:
         "ocr_fp": sum(e["false_positives"] for e in evals),
         "ocr_fn": sum(e["false_negatives"] for e in evals),
     }
+
+
+def per_match_tp_mean(e: dict, key: str):
+    """Mean of a per-GT metric over the end-to-end true positives of a match."""
+    tp = [i for i, x in enumerate(e["clip_iou_per_gt"]) if x is not None and x >= 0.5]
+    return st.mean(e[key][i] for i in tp) if tp else None
+
+
+def bootstrap_ci(values, n_resamples: int = 10_000, seed: int = 0, level: float = 0.95):
+    """Percentile bootstrap CI of the mean, resampling matches with replacement."""
+    import numpy as np
+
+    v = np.asarray(values, dtype=float)
+    rng = np.random.default_rng(seed)
+    means = v[rng.integers(0, len(v), (n_resamples, len(v)))].mean(axis=1)
+    a = (1 - level) / 2 * 100
+    lo, hi = np.percentile(means, [a, 100 - a])
+    return {"lower": float(lo), "upper": float(hi), "n_resamples": n_resamples, "seed": seed}
