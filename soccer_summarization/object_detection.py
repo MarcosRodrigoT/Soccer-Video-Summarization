@@ -12,6 +12,7 @@ significantly outperforms it in detection coverage.
 """
 
 import logging
+import time
 from typing import Optional
 
 import cv2
@@ -35,6 +36,9 @@ class PlayerDetector:
     def __init__(self, config: Optional[ObjectDetectionConfig] = None):
         self.config = config or ObjectDetectionConfig()
         self.model = None
+        # Wall-clock split of the last run(): video decoding vs. detection
+        # (inference + post-processing), for the runtime analysis.
+        self.last_timing = {"decode_sec": 0.0, "inference_sec": 0.0}
 
     def _load_model(self):
         """Load YOLO model lazily."""
@@ -47,8 +51,31 @@ class PlayerDetector:
         self.model = YOLO(self.config.model_path)
 
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model.to(device)
+        if str(self.config.model_path).endswith(".pt"):
+            self.model.to(device)  # exported models (e.g. TensorRT) pick their device themselves
         logger.info("Model loaded on %s", device)
+
+    @staticmethod
+    def _sampled_frames(cap, total_frames: int, step: int, sequential: bool):
+        """Yield (frame_idx, frame) for every `step`-th frame of the video."""
+        if sequential:
+            frame_idx = 0
+            while frame_idx < total_frames:
+                if not cap.grab():
+                    return
+                if frame_idx % step == 0:
+                    ret, frame = cap.retrieve()
+                    if not ret:
+                        return
+                    yield frame_idx, frame
+                frame_idx += 1
+        else:
+            for frame_idx in range(0, total_frames, step):
+                cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
+                ret, frame = cap.read()
+                if not ret:
+                    return
+                yield frame_idx, frame
 
     def run(self, video_path: str) -> pd.DataFrame:
         """Run detection on a video and return per-frame player counts.
@@ -74,15 +101,21 @@ class PlayerDetector:
             total_frames, step, fps / step,
         )
 
-        frame_idx = 0
-        while frame_idx < total_frames:
-            cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
-            ret, frame = cap.read()
-            if not ret:
+        decode_sec = inference_sec = 0.0
+        frames = self._sampled_frames(cap, total_frames, step, self.config.sequential_decode)
+        while True:
+            t0 = time.perf_counter()
+            item = next(frames, None)
+            t1 = time.perf_counter()
+            decode_sec += t1 - t0
+            if item is None:
                 break
+            frame_idx, frame = item
 
             # Run YOLO on single frame
-            preds = self.model.predict(frame, save=False, verbose=False, conf=conf_threshold)
+            preds = self.model.predict(
+                frame, save=False, verbose=False, conf=conf_threshold, half=self.config.half
+            )
 
             player_count = 0
             box_diagonals = []
@@ -108,10 +141,10 @@ class PlayerDetector:
                 "player_count": player_count,
                 "avg_box_diagonal": avg_diagonal,
             })
-
-            frame_idx += step
+            inference_sec += time.perf_counter() - t1
 
         cap.release()
+        self.last_timing = {"decode_sec": decode_sec, "inference_sec": inference_sec}
 
         df = pd.DataFrame(results_data)
         logger.info(

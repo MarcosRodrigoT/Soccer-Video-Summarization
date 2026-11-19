@@ -39,6 +39,11 @@ class ObjectDetectionConfig:
     # Model classes: ball=0, goalkeeper=1, player=2, referee=3
     # People = {1,2,3} (all except ball)
     frame_step: int = 5  # process every Nth frame (5 = 5fps at 25fps video)
+    # Decode the video sequentially and keep every Nth frame. False reproduces
+    # the original loop, which seeks to each sampled frame (much slower: every
+    # seek re-decodes from the previous keyframe).
+    sequential_decode: bool = True
+    half: bool = False  # FP16 inference (PyTorch models; TensorRT engines carry their own precision)
 
 
 @dataclass
