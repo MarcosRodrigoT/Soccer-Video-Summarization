@@ -1,0 +1,7 @@
+{
+  "method": "pyscenedetect",
+  "seconds": 1207.0031964415684,
+  "frames_processed": 162473,
+  "frames_opencv": 162473,
+  "num_shots": 730
+}

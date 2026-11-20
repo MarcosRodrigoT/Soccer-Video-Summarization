@@ -1,0 +1,7 @@
+{
+  "method": "transnetv2",
+  "seconds": 165.78438222920522,
+  "frames_processed": 162473,
+  "frames_opencv": 162473,
+  "num_shots": 512
+}
