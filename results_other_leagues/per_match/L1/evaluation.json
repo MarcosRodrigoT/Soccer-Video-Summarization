@@ -1,0 +1,28 @@
+{
+  "match_id": "L1",
+  "true_positives": 0,
+  "false_positives": 0,
+  "false_negatives": 0,
+  "precision": 0.0,
+  "recall": 0.0,
+  "f1": 0.0,
+  "total_video_duration": 5464.64,
+  "highlight_duration": 0,
+  "compression_ratio": 1.0,
+  "goal_coverage": 0.0,
+  "num_gt_events": 0,
+  "num_predicted_goals": 0,
+  "num_goal_clips": 0,
+  "num_play_long_shots": 246,
+  "num_segments": 0,
+  "mean_segment_duration": 0.0,
+  "timings": {
+    "shot_segmentation": 220.77725400496274,
+    "object_detection": 197.54565995605662,
+    "play_classifier": 1.4115438601002097,
+    "ocr_scoreboard": 118.07608483778313,
+    "highlight_assembly": 0.2761287307366729,
+    "goal_shot_selection": 3.229780122637749e-05,
+    "evaluation": 0.004211199935525656
+  }
+}

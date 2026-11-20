@@ -1,0 +1,670 @@
+{
+ "title": "R1.5 \u00b7 Goals on other leagues",
+ "instructions": "Each item is a <b>goal detected</b> by the pipeline on a match from another league. The first two images show the scoreboard found by the pipeline a few seconds <b>before</b> and <b>after</b> the detected score change. The next images are frames of the produced <b>10-s goal clip</b> (start \u2192 end) and one frame 2 s after it. Answer <b>clip OK</b> if the clip is the live wide-angle play that ends with the goal (the same kind of clip as in the LaLiga evaluation), <b>clip wrong</b> if the goal is real but the clip shows a replay, a celebration or another play, and <b>not a goal</b> if the score change is spurious.",
+ "options": [
+  {
+   "value": "goal_clip_ok",
+   "label": "Real goal \u2014 clip shows the live play ending in the goal"
+  },
+  {
+   "value": "goal_clip_wrong",
+   "label": "Real goal \u2014 clip shows something else (replay, other play...)"
+  },
+  {
+   "value": "not_goal",
+   "label": "Not a goal (score did not really change, or goal disallowed)"
+  },
+  {
+   "value": "unsure",
+   "label": "Unsure"
+  }
+ ],
+ "items": [
+  {
+   "id": "PL1_g00",
+   "images": [
+    "img/PL1_g00_0.jpg",
+    "img/PL1_g00_1.jpg",
+    "img/PL1_g00_2.jpg",
+    "img/PL1_g00_3.jpg",
+    "img/PL1_g00_4.jpg",
+    "img/PL1_g00_5.jpg",
+    "img/PL1_g00_6.jpg",
+    "img/PL1_g00_7.jpg",
+    "img/PL1_g00_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Premier League \u00b7 Tottenham Hotspur 5-3 Chelsea \u00b7 detected 0-0 \u2192 0-1 at 18:39",
+   "info": "clip 1110.9\u20131120.9 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "PL1",
+    "event": 0,
+    "frame": 27975,
+    "score": [
+     0,
+     1
+    ]
+   }
+  },
+  {
+   "id": "PL1_g01",
+   "images": [
+    "img/PL1_g01_0.jpg",
+    "img/PL1_g01_1.jpg",
+    "img/PL1_g01_2.jpg",
+    "img/PL1_g01_3.jpg",
+    "img/PL1_g01_4.jpg",
+    "img/PL1_g01_5.jpg",
+    "img/PL1_g01_6.jpg",
+    "img/PL1_g01_7.jpg",
+    "img/PL1_g01_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Premier League \u00b7 Tottenham Hotspur 5-3 Chelsea \u00b7 detected 0-1 \u2192 1-1 at 30:24",
+   "info": "clip 1814.8\u20131824.8 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "PL1",
+    "event": 1,
+    "frame": 45600,
+    "score": [
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "id": "PL1_g02",
+   "images": [
+    "img/PL1_g02_0.jpg",
+    "img/PL1_g02_1.jpg",
+    "img/PL1_g02_2.jpg",
+    "img/PL1_g02_3.jpg",
+    "img/PL1_g02_4.jpg",
+    "img/PL1_g02_5.jpg",
+    "img/PL1_g02_6.jpg",
+    "img/PL1_g02_7.jpg",
+    "img/PL1_g02_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Premier League \u00b7 Tottenham Hotspur 5-3 Chelsea \u00b7 detected 1-1 \u2192 2-1 at 44:51",
+   "info": "clip 2680.5\u20132690.5 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "PL1",
+    "event": 2,
+    "frame": 67275,
+    "score": [
+     2,
+     1
+    ]
+   }
+  },
+  {
+   "id": "PL1_g03",
+   "images": [
+    "img/PL1_g03_0.jpg",
+    "img/PL1_g03_1.jpg",
+    "img/PL1_g03_2.jpg",
+    "img/PL1_g03_3.jpg",
+    "img/PL1_g03_4.jpg",
+    "img/PL1_g03_5.jpg",
+    "img/PL1_g03_6.jpg",
+    "img/PL1_g03_7.jpg",
+    "img/PL1_g03_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Premier League \u00b7 Tottenham Hotspur 5-3 Chelsea \u00b7 detected 2-1 \u2192 3-1 at 48:57",
+   "info": "clip 2928.7\u20132938.7 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "PL1",
+    "event": 3,
+    "frame": 73425,
+    "score": [
+     3,
+     1
+    ]
+   }
+  },
+  {
+   "id": "PL1_g04",
+   "images": [
+    "img/PL1_g04_0.jpg",
+    "img/PL1_g04_1.jpg",
+    "img/PL1_g04_2.jpg",
+    "img/PL1_g04_3.jpg",
+    "img/PL1_g04_4.jpg",
+    "img/PL1_g04_5.jpg",
+    "img/PL1_g04_6.jpg",
+    "img/PL1_g04_7.jpg",
+    "img/PL1_g04_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Premier League \u00b7 Tottenham Hotspur 5-3 Chelsea \u00b7 detected 3-1 \u2192 4-1 at 57:15",
+   "info": "clip 3425.9\u20133435.9 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "PL1",
+    "event": 4,
+    "frame": 85875,
+    "score": [
+     4,
+     1
+    ]
+   }
+  },
+  {
+   "id": "PL1_g05",
+   "images": [
+    "img/PL1_g05_0.jpg",
+    "img/PL1_g05_1.jpg",
+    "img/PL1_g05_2.jpg",
+    "img/PL1_g05_3.jpg",
+    "img/PL1_g05_4.jpg",
+    "img/PL1_g05_5.jpg",
+    "img/PL1_g05_6.jpg",
+    "img/PL1_g05_7.jpg",
+    "img/PL1_g05_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Premier League \u00b7 Tottenham Hotspur 5-3 Chelsea \u00b7 detected 4-1 \u2192 4-2 at 65:33",
+   "info": "clip 3922.6\u20133932.6 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "PL1",
+    "event": 5,
+    "frame": 98325,
+    "score": [
+     4,
+     2
+    ]
+   }
+  },
+  {
+   "id": "PL1_g06",
+   "images": [
+    "img/PL1_g06_0.jpg",
+    "img/PL1_g06_1.jpg",
+    "img/PL1_g06_2.jpg",
+    "img/PL1_g06_3.jpg",
+    "img/PL1_g06_4.jpg",
+    "img/PL1_g06_5.jpg",
+    "img/PL1_g06_6.jpg",
+    "img/PL1_g06_7.jpg",
+    "img/PL1_g06_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Premier League \u00b7 Tottenham Hotspur 5-3 Chelsea \u00b7 detected 4-2 \u2192 5-2 at 82:36",
+   "info": "clip 4945.0\u20134955.0 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "PL1",
+    "event": 6,
+    "frame": 123900,
+    "score": [
+     5,
+     2
+    ]
+   }
+  },
+  {
+   "id": "PL1_g07",
+   "images": [
+    "img/PL1_g07_0.jpg",
+    "img/PL1_g07_1.jpg",
+    "img/PL1_g07_2.jpg",
+    "img/PL1_g07_3.jpg",
+    "img/PL1_g07_4.jpg",
+    "img/PL1_g07_5.jpg",
+    "img/PL1_g07_6.jpg",
+    "img/PL1_g07_7.jpg",
+    "img/PL1_g07_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Premier League \u00b7 Tottenham Hotspur 5-3 Chelsea \u00b7 detected 5-2 \u2192 5-3 at 91:51",
+   "info": "clip 5506.6\u20135512.0 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "PL1",
+    "event": 7,
+    "frame": 137775,
+    "score": [
+     5,
+     3
+    ]
+   }
+  },
+  {
+   "id": "SA1_g00",
+   "images": [
+    "img/SA1_g00_0.jpg",
+    "img/SA1_g00_1.jpg",
+    "img/SA1_g00_2.jpg",
+    "img/SA1_g00_3.jpg",
+    "img/SA1_g00_4.jpg",
+    "img/SA1_g00_5.jpg",
+    "img/SA1_g00_6.jpg",
+    "img/SA1_g00_7.jpg",
+    "img/SA1_g00_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Serie A \u00b7 Inter 4-4 Juventus \u00b7 detected 0-0 \u2192 1-0 at 24:30",
+   "info": "clip 1454.9\u20131464.9 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "SA1",
+    "event": 0,
+    "frame": 36750,
+    "score": [
+     1,
+     0
+    ]
+   }
+  },
+  {
+   "id": "SA1_g01",
+   "images": [
+    "img/SA1_g01_0.jpg",
+    "img/SA1_g01_1.jpg",
+    "img/SA1_g01_2.jpg",
+    "img/SA1_g01_3.jpg",
+    "img/SA1_g01_4.jpg",
+    "img/SA1_g01_5.jpg",
+    "img/SA1_g01_6.jpg",
+    "img/SA1_g01_7.jpg",
+    "img/SA1_g01_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Serie A \u00b7 Inter 4-4 Juventus \u00b7 detected 1-0 \u2192 1-1 at 29:24",
+   "info": "clip 1745.8\u20131755.8 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "SA1",
+    "event": 1,
+    "frame": 44100,
+    "score": [
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "id": "SA1_g02",
+   "images": [
+    "img/SA1_g02_0.jpg",
+    "img/SA1_g02_1.jpg",
+    "img/SA1_g02_2.jpg",
+    "img/SA1_g02_3.jpg",
+    "img/SA1_g02_4.jpg",
+    "img/SA1_g02_5.jpg",
+    "img/SA1_g02_6.jpg",
+    "img/SA1_g02_7.jpg",
+    "img/SA1_g02_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Serie A \u00b7 Inter 4-4 Juventus \u00b7 detected 1-1 \u2192 1-2 at 36:06",
+   "info": "clip 2150.1\u20132160.1 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "SA1",
+    "event": 2,
+    "frame": 54150,
+    "score": [
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "id": "SA1_g03",
+   "images": [
+    "img/SA1_g03_0.jpg",
+    "img/SA1_g03_1.jpg",
+    "img/SA1_g03_2.jpg",
+    "img/SA1_g03_3.jpg",
+    "img/SA1_g03_4.jpg",
+    "img/SA1_g03_5.jpg",
+    "img/SA1_g03_6.jpg",
+    "img/SA1_g03_7.jpg",
+    "img/SA1_g03_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Serie A \u00b7 Inter 4-4 Juventus \u00b7 detected 1-2 \u2192 2-2 at 44:15",
+   "info": "clip 2637.7\u20132647.7 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "SA1",
+    "event": 3,
+    "frame": 66375,
+    "score": [
+     2,
+     2
+    ]
+   }
+  },
+  {
+   "id": "SA1_g04",
+   "images": [
+    "img/SA1_g04_0.jpg",
+    "img/SA1_g04_1.jpg",
+    "img/SA1_g04_2.jpg",
+    "img/SA1_g04_3.jpg",
+    "img/SA1_g04_4.jpg",
+    "img/SA1_g04_5.jpg",
+    "img/SA1_g04_6.jpg",
+    "img/SA1_g04_7.jpg",
+    "img/SA1_g04_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Serie A \u00b7 Inter 4-4 Juventus \u00b7 detected 2-2 \u2192 3-2 at 47:09",
+   "info": "clip 2820.6\u20132826.3 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "SA1",
+    "event": 4,
+    "frame": 70725,
+    "score": [
+     3,
+     2
+    ]
+   }
+  },
+  {
+   "id": "SA1_g05",
+   "images": [
+    "img/SA1_g05_0.jpg",
+    "img/SA1_g05_1.jpg",
+    "img/SA1_g05_2.jpg",
+    "img/SA1_g05_3.jpg",
+    "img/SA1_g05_4.jpg",
+    "img/SA1_g05_5.jpg",
+    "img/SA1_g05_6.jpg",
+    "img/SA1_g05_7.jpg",
+    "img/SA1_g05_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Serie A \u00b7 Inter 4-4 Juventus \u00b7 detected 3-2 \u2192 4-2 at 67:54",
+   "info": "clip 4057.8\u20134066.9 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "SA1",
+    "event": 5,
+    "frame": 101850,
+    "score": [
+     4,
+     2
+    ]
+   }
+  },
+  {
+   "id": "SA1_g06",
+   "images": [
+    "img/SA1_g06_0.jpg",
+    "img/SA1_g06_1.jpg",
+    "img/SA1_g06_2.jpg",
+    "img/SA1_g06_3.jpg",
+    "img/SA1_g06_4.jpg",
+    "img/SA1_g06_5.jpg",
+    "img/SA1_g06_6.jpg",
+    "img/SA1_g06_7.jpg",
+    "img/SA1_g06_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Serie A \u00b7 Inter 4-4 Juventus \u00b7 detected 4-2 \u2192 4-3 at 86:09",
+   "info": "clip 5152.8\u20135162.8 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "SA1",
+    "event": 6,
+    "frame": 129225,
+    "score": [
+     4,
+     3
+    ]
+   }
+  },
+  {
+   "id": "SA1_g07",
+   "images": [
+    "img/SA1_g07_0.jpg",
+    "img/SA1_g07_1.jpg",
+    "img/SA1_g07_2.jpg",
+    "img/SA1_g07_3.jpg",
+    "img/SA1_g07_4.jpg",
+    "img/SA1_g07_5.jpg",
+    "img/SA1_g07_6.jpg",
+    "img/SA1_g07_7.jpg",
+    "img/SA1_g07_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Serie A \u00b7 Inter 4-4 Juventus \u00b7 detected 4-3 \u2192 4-4 at 96:21",
+   "info": "clip 5765.6\u20135775.6 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "SA1",
+    "event": 7,
+    "frame": 144525,
+    "score": [
+     4,
+     4
+    ]
+   }
+  },
+  {
+   "id": "BL1_g00",
+   "images": [
+    "img/BL1_g00_0.jpg",
+    "img/BL1_g00_1.jpg",
+    "img/BL1_g00_2.jpg",
+    "img/BL1_g00_3.jpg",
+    "img/BL1_g00_4.jpg",
+    "img/BL1_g00_5.jpg",
+    "img/BL1_g00_6.jpg",
+    "img/BL1_g00_7.jpg",
+    "img/BL1_g00_8.jpg"
+   ],
+   "image_labels": [
+    "scoreboard \u22126 s",
+    "scoreboard +6 s",
+    "clip 0 s",
+    "clip 2 s",
+    "clip 4 s",
+    "clip 6 s",
+    "clip 8 s",
+    "clip 10 s",
+    "clip end +2 s"
+   ],
+   "columns": 4,
+   "caption": "Bundesliga \u00b7 RB Leipzig 4-5 Bayern Munich \u00b7 detected 0-0 \u2192 1-1 at 21:09",
+   "info": "clip 1257.6\u20131266.7 s",
+   "prelabel": "goal_clip_ok",
+   "meta": {
+    "match": "BL1",
+    "event": 0,
+    "frame": 31725,
+    "score": [
+     1,
+     1
+    ]
+   }
+  }
+ ]
+}

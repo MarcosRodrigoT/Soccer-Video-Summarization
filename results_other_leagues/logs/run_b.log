@@ -1,0 +1,91 @@
+12:36:21 [run_single_match] INFO: Match BL1: RB Leipzig 4-5 Bayern München - FULL Match - Bundesliga 2017 Advent Calendar 24 [1yHWGw8DH4A].mp4 (102.9 min, 25 fps, 1920x1080)
+12:36:21 [run_single_match] INFO: Stage 1: Shot segmentation...
+12:36:21 [soccer_summarization.shot_segmentation] INFO: Computing histogram differences with 32 processes...
+12:45:47 [soccer_summarization.shot_segmentation] INFO: Abrupt transitions: 562
+12:45:47 [soccer_summarization.shot_segmentation] INFO: Gradual transitions: 178 regions
+12:45:47 [soccer_summarization.shot_segmentation] INFO: Shot segmentation: 741 shots from 562 abrupt + 178 gradual transitions
+12:45:47 [run_single_match] INFO:   741 shots detected (saved to results_other_leagues/per_match/BL1/shot_boundaries.csv)
+12:45:47 [run_single_match] INFO: Stage 2: YOLO object detection...
+12:45:48 [soccer_summarization.object_detection] INFO: Loading YOLO model from data/models/best.pt
+12:45:51 [soccer_summarization.object_detection] INFO: Model loaded on cuda
+12:45:51 [soccer_summarization.object_detection] INFO: Processing 154300 frames (every 5, effective 5.0 fps)...
+12:53:51 [soccer_summarization.object_detection] INFO: Detection complete: 30860 sampled frames, avg 10.1 players/frame
+12:53:51 [run_single_match] INFO:   30860 frames processed (saved to results_other_leagues/per_match/BL1/player_counts.csv)
+12:53:51 [run_single_match] INFO: Stage 3: Frame-level play classification...
+12:53:51 [soccer_summarization.play_classifier] INFO: Classification: 63.4% play frames (threshold=5, window=50)
+12:53:55 [soccer_summarization.play_classifier] INFO: Found 535 segments (267 play, 268 no-play)
+12:53:55 [run_single_match] INFO:   Frame classification saved to results_other_leagues/per_match/BL1/frame_classification.csv
+12:53:55 [run_single_match] INFO: Stage 4: OCR scoreboard detection...
+12:53:55 [soccer_summarization.ocr_scoreboard] INFO: Building std map...
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO: Variability map (IQR): shape=(1080, 1920), range=[0.0, 175.0], mean=29.5, 200 samples
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO: Building overlay mask...
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO: Overlay mask: std threshold=16.2 (P8), 154231 static pixels (7.4%)
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO: Finding scoreboard region...
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO: Split wide region (0,516,1920,564) into 3 sub-regions: [(0, 516, 433, 564), (468, 516, 289, 564), (1616, 516, 84, 564)]
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO: Found 4 overlay regions (merged from 4 components)
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO:   Region: (297,59) 502x45
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO:   Region: (0,516) 433x564
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO:   Region: (468,516) 289x564
+12:54:28 [soccer_summarization.ocr_scoreboard] INFO:   Region: (1616,516) 84x564
+12:54:30 [soccer_summarization.ocr_scoreboard] INFO:   Region (297,59,502,45): OCR score=15
+12:54:31 [soccer_summarization.ocr_scoreboard] INFO:   Region (0,516,433,564): OCR score=1
+12:54:31 [soccer_summarization.ocr_scoreboard] INFO:   Region (468,516,289,564): OCR score=0
+12:54:31 [soccer_summarization.ocr_scoreboard] INFO:   Region (1616,516,84,564): OCR score=0
+12:54:31 [soccer_summarization.ocr_scoreboard] INFO: Scoreboard at (297,59,502,45) score=15
+12:54:31 [soccer_summarization.ocr_scoreboard] INFO: Tracking scores...
+12:58:00 [soccer_summarization.ocr_scoreboard] INFO: Collected 7689 raw OCR readings
+12:58:00 [soccer_summarization.ocr_scoreboard] INFO: Strategy 1 (X-Y pattern): 101 readings
+12:58:00 [soccer_summarization.ocr_scoreboard] INFO: Parsed 101 raw score readings
+12:58:00 [soccer_summarization.ocr_scoreboard] INFO: Detected 1 score change events
+12:58:00 [run_single_match] INFO:   1 score events (saved to results_other_leagues/per_match/BL1/score_events.csv)
+12:58:00 [run_single_match] INFO: Stage 5: Selecting play long shots...
+12:58:00 [soccer_summarization.highlight_assembler] INFO: Play long shots: 243 / 452 long shots (>=4.0s), total 3550.4s (59:10)
+12:58:00 [run_single_match] INFO:   243 play long shots, 3550.4s total (42.5% compression)
+12:58:00 [soccer_summarization.highlight_assembler] INFO: Selected 1 goal clips from 741 shots (243 play long shots; anchors extended back 0 times with gap<=2.0s, lookback<=30.0s, thr=5.0, min_dur=4.0s) — truncated to last 10s
+12:58:00 [run_single_match] INFO: Stage 7: Evaluation against ground truth...
+12:58:00 [soccer_summarization.evaluation] INFO: Extracted 0 goal events from GT
+12:58:00 [soccer_summarization.evaluation] INFO: Match BL1: P=0.00 R=0.00 F1=0.00 | Compression=99.9% Coverage=0.0% | tIoU=0.000 MAE=0.0s Segments=1
+12:58:00 [run_single_match] INFO: Pipeline complete for BL1
+12:58:00 [run_single_match] INFO: Match L1: FULL MATCH — Troyes vs PSG (2015-2016) ： La victoire la plus large de l'histoire de la Ligue 1 [ZEGyZkJe-60].mp4 (91.1 min, 25 fps, 1920x1080)
+12:58:00 [run_single_match] INFO: Stage 1: Shot segmentation...
+12:58:00 [soccer_summarization.shot_segmentation] INFO: Computing histogram differences with 32 processes...
+13:01:41 [soccer_summarization.shot_segmentation] INFO: Abrupt transitions: 581
+13:01:41 [soccer_summarization.shot_segmentation] INFO: Gradual transitions: 246 regions
+13:01:41 [soccer_summarization.shot_segmentation] INFO: Shot segmentation: 828 shots from 581 abrupt + 246 gradual transitions
+13:01:41 [run_single_match] INFO:   828 shots detected (saved to results_other_leagues/per_match/L1/shot_boundaries.csv)
+13:01:41 [run_single_match] INFO: Stage 2: YOLO object detection...
+13:01:41 [soccer_summarization.object_detection] INFO: Loading YOLO model from data/models/best.pt
+13:01:41 [soccer_summarization.object_detection] INFO: Model loaded on cuda
+13:01:41 [soccer_summarization.object_detection] INFO: Processing 136616 frames (every 5, effective 5.0 fps)...
+13:04:58 [soccer_summarization.object_detection] INFO: Detection complete: 27324 sampled frames, avg 10.8 players/frame
+13:04:58 [run_single_match] INFO:   27324 frames processed (saved to results_other_leagues/per_match/L1/player_counts.csv)
+13:04:58 [run_single_match] INFO: Stage 3: Frame-level play classification...
+13:04:58 [soccer_summarization.play_classifier] INFO: Classification: 69.4% play frames (threshold=5, window=50)
+13:05:00 [soccer_summarization.play_classifier] INFO: Found 459 segments (229 play, 230 no-play)
+13:05:00 [run_single_match] INFO:   Frame classification saved to results_other_leagues/per_match/L1/frame_classification.csv
+13:05:00 [run_single_match] INFO: Stage 4: OCR scoreboard detection...
+13:05:00 [soccer_summarization.ocr_scoreboard] INFO: Building std map...
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO: Variability map (IQR): shape=(1080, 1920), range=[0.0, 133.5], mean=59.6, 200 samples
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO: Building overlay mask...
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO: Overlay mask: std threshold=36.5 (P8), 164745 static pixels (7.9%)
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO: Finding scoreboard region...
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO: Split wide region (4,442,1607,570) into 3 sub-regions: [(7, 442, 828, 570), (911, 442, 114, 570), (1151, 442, 95, 570)]
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO: Found 4 overlay regions (merged from 4 components)
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO:   Region: (1913,376) 7x704
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO:   Region: (7,442) 828x570
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO:   Region: (911,442) 114x570
+13:06:49 [soccer_summarization.ocr_scoreboard] INFO:   Region: (1151,442) 95x570
+13:06:55 [soccer_summarization.ocr_scoreboard] INFO:   Region (1913,376,7,704): OCR score=0
+13:06:57 [soccer_summarization.ocr_scoreboard] INFO:   Region (7,442,828,570): OCR score=0
+13:06:57 [soccer_summarization.ocr_scoreboard] INFO:   Region (911,442,114,570): OCR score=0
+13:06:58 [soccer_summarization.ocr_scoreboard] INFO:   Region (1151,442,95,570): OCR score=0
+13:06:58 [soccer_summarization.ocr_scoreboard] WARNING: No scoreboard region found
+13:06:58 [soccer_summarization.ocr_scoreboard] WARNING: Could not locate scoreboard
+13:06:58 [run_single_match] INFO:   0 score events (saved to results_other_leagues/per_match/L1/score_events.csv)
+13:06:58 [run_single_match] INFO: Stage 5: Selecting play long shots...
+13:06:58 [soccer_summarization.highlight_assembler] INFO: Play long shots: 246 / 386 long shots (>=4.0s), total 3365.8s (56:05)
+13:06:58 [run_single_match] INFO:   246 play long shots, 3365.8s total (38.4% compression)
+13:06:58 [run_single_match] INFO: Stage 7: Evaluation against ground truth...
+13:06:58 [soccer_summarization.evaluation] INFO: Extracted 0 goal events from GT
+13:06:58 [soccer_summarization.evaluation] INFO: Match L1: P=0.00 R=0.00 F1=0.00 | Compression=100.0% Coverage=0.0% | tIoU=0.000 MAE=0.0s Segments=0
+13:06:58 [run_single_match] INFO: Pipeline complete for L1

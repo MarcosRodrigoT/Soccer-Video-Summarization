@@ -69,8 +69,14 @@ def main():
         meta = meta_all[m]
         res = Path(args.results) / m
         video = next((Path(args.data_dir) / meta["video_dir"]).glob("*.mp4"))
-        ev = pd.read_csv(res / "score_events.csv") if (res / "score_events.csv").stat().st_size else pd.DataFrame()
-        clips = pd.read_csv(res / "goal_highlights.csv") if (res / "goal_highlights.csv").exists() else pd.DataFrame()
+        try:
+            ev = pd.read_csv(res / "score_events.csv")
+        except pd.errors.EmptyDataError:  # no scoreboard found: no events to review
+            ev = pd.DataFrame()
+        try:
+            clips = pd.read_csv(res / "goal_highlights.csv")
+        except (FileNotFoundError, pd.errors.EmptyDataError):
+            clips = pd.DataFrame()
         region = json.load(open(res / "scoreboard_region.json")) if (res / "scoreboard_region.json").exists() else None
         crop = (region["x"], region["y"], region["w"], region["h"]) if region else None
         cap = cv2.VideoCapture(str(video))

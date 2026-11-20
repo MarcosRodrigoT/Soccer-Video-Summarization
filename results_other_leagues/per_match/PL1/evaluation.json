@@ -1,0 +1,28 @@
+{
+  "match_id": "PL1",
+  "true_positives": 0,
+  "false_positives": 8,
+  "false_negatives": 0,
+  "precision": 0.0,
+  "recall": 0.0,
+  "f1": 0.0,
+  "total_video_duration": 6148.68,
+  "highlight_duration": 75.4399999999996,
+  "compression_ratio": 0.9877306999225851,
+  "goal_coverage": 0.0,
+  "num_gt_events": 0,
+  "num_predicted_goals": 8,
+  "num_goal_clips": 8,
+  "num_play_long_shots": 170,
+  "num_segments": 8,
+  "mean_segment_duration": 9.42999999999995,
+  "timings": {
+    "shot_segmentation": 566.6008456810378,
+    "object_detection": 513.7821553107351,
+    "play_classifier": 1.8445257074199617,
+    "ocr_scoreboard": 640.1017232448794,
+    "highlight_assembly": 0.11417572014033794,
+    "goal_shot_selection": 0.17514765029773116,
+    "evaluation": 0.0018713190220296383
+  }
+}

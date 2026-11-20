@@ -1,0 +1,28 @@
+{
+  "match_id": "SA1",
+  "true_positives": 0,
+  "false_positives": 8,
+  "false_negatives": 0,
+  "precision": 0.0,
+  "recall": 0.0,
+  "f1": 0.0,
+  "total_video_duration": 6541.72,
+  "highlight_duration": 74.84000000000015,
+  "compression_ratio": 0.9885595837180435,
+  "goal_coverage": 0.0,
+  "num_gt_events": 0,
+  "num_predicted_goals": 8,
+  "num_goal_clips": 8,
+  "num_play_long_shots": 188,
+  "num_segments": 8,
+  "mean_segment_duration": 9.355000000000018,
+  "timings": {
+    "shot_segmentation": 266.46367970714346,
+    "object_detection": 258.49358458211645,
+    "play_classifier": 1.616217234171927,
+    "ocr_scoreboard": 317.98969128821045,
+    "highlight_assembly": 0.06086638616397977,
+    "goal_shot_selection": 0.1289532040245831,
+    "evaluation": 0.0008719651959836483
+  }
+}

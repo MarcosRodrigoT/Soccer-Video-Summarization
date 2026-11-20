@@ -1,0 +1,49 @@
+{
+  "preliminary": true,
+  "reviewed": 0,
+  "total": 766,
+  "excluded_mixed_unsure": 13,
+  "classes": {
+    "other": 324,
+    "play": 375,
+    "replay": 44,
+    "closeup_play": 10
+  },
+  "false_positive_classes": {
+    "fp_other": 13,
+    "fp_replay": 28
+  },
+  "Match1": {
+    "tp": 206,
+    "fp": 13,
+    "fn": 2,
+    "tn": 147,
+    "precision": 0.9406392694063926,
+    "recall": 0.9903846153846154,
+    "f1": 0.9648711943793911,
+    "accuracy": 0.9592391304347826
+  },
+  "all": {
+    "tp": 371,
+    "fp": 41,
+    "fn": 4,
+    "tn": 327,
+    "precision": 0.9004854368932039,
+    "recall": 0.9893333333333333,
+    "f1": 0.9428208386277002,
+    "accuracy": 0.9394347240915208
+  },
+  "Match6": {
+    "tp": 165,
+    "fp": 28,
+    "fn": 2,
+    "tn": 180,
+    "precision": 0.8549222797927462,
+    "recall": 0.9880239520958084,
+    "f1": 0.9166666666666666,
+    "accuracy": 0.92
+  },
+  "closeup_play": {
+    "as_play": 10
+  }
+}

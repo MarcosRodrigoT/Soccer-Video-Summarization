@@ -1,0 +1,28 @@
+{
+  "match_id": "BL1",
+  "true_positives": 0,
+  "false_positives": 1,
+  "false_negatives": 0,
+  "precision": 0.0,
+  "recall": 0.0,
+  "f1": 0.0,
+  "total_video_duration": 6172.0,
+  "highlight_duration": 9.160000000000082,
+  "compression_ratio": 0.9985158781594297,
+  "goal_coverage": 0.0,
+  "num_gt_events": 0,
+  "num_predicted_goals": 1,
+  "num_goal_clips": 1,
+  "num_play_long_shots": 243,
+  "num_segments": 1,
+  "mean_segment_duration": 9.160000000000082,
+  "timings": {
+    "shot_segmentation": 566.0431731068529,
+    "object_detection": 484.1016729096882,
+    "play_classifier": 3.3869090089574456,
+    "ocr_scoreboard": 245.02476280601695,
+    "highlight_assembly": 0.09145733900368214,
+    "goal_shot_selection": 0.1337427729740739,
+    "evaluation": 0.0010214517824351788
+  }
+}
