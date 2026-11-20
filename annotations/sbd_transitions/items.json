@@ -1,0 +1,8970 @@
+{
+ "title": "R1.2 \u00b7 Shot transitions (4 \u00d7 10 min)",
+ "instructions": "Each item is a <b>candidate shot transition</b>. The six frames go from before (left) to after (right); the middle two are the first and last frame of the proposed transition. Answer <b>transition</b> if the camera shot changes there (hard cut, dissolve, fade, wipe or logo transition, including transitions into or out of replays), and <b>none</b> if it is the same continuous shot (camera motion, zoom, flash, on-screen graphics appearing). The suggestion is a detector consensus, so please check every item.",
+ "options": [
+  {
+   "value": "transition",
+   "label": "Real shot transition (cut, fade, wipe, logo)"
+  },
+  {
+   "value": "none",
+   "label": "No transition (same shot continues)"
+  },
+  {
+   "value": "unsure",
+   "label": "Unsure"
+  }
+ ],
+ "columns": 6,
+ "items": [
+  {
+   "id": "Match1_c0000",
+   "images": [
+    "img/Match1_c0000_0.jpg",
+    "img/Match1_c0000_1.jpg",
+    "img/Match1_c0000_2.jpg",
+    "img/Match1_c0000_3.jpg",
+    "img/Match1_c0000_4.jpg",
+    "img/Match1_c0000_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 26:03 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 39090,
+    "b": 39091,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0001",
+   "images": [
+    "img/Match1_c0001_0.jpg",
+    "img/Match1_c0001_1.jpg",
+    "img/Match1_c0001_2.jpg",
+    "img/Match1_c0001_3.jpg",
+    "img/Match1_c0001_4.jpg",
+    "img/Match1_c0001_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 26:09 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 39228,
+    "b": 39229,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0002",
+   "images": [
+    "img/Match1_c0002_0.jpg",
+    "img/Match1_c0002_1.jpg",
+    "img/Match1_c0002_2.jpg",
+    "img/Match1_c0002_3.jpg",
+    "img/Match1_c0002_4.jpg",
+    "img/Match1_c0002_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 26:23 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 39598,
+    "b": 39599,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0003",
+   "images": [
+    "img/Match1_c0003_0.jpg",
+    "img/Match1_c0003_1.jpg",
+    "img/Match1_c0003_2.jpg",
+    "img/Match1_c0003_3.jpg",
+    "img/Match1_c0003_4.jpg",
+    "img/Match1_c0003_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 26:24 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 39618,
+    "b": 39619,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0004",
+   "images": [
+    "img/Match1_c0004_0.jpg",
+    "img/Match1_c0004_1.jpg",
+    "img/Match1_c0004_2.jpg",
+    "img/Match1_c0004_3.jpg",
+    "img/Match1_c0004_4.jpg",
+    "img/Match1_c0004_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 26:49 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 40242,
+    "b": 40243,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0005",
+   "images": [
+    "img/Match1_c0005_0.jpg",
+    "img/Match1_c0005_1.jpg",
+    "img/Match1_c0005_2.jpg",
+    "img/Match1_c0005_3.jpg",
+    "img/Match1_c0005_4.jpg",
+    "img/Match1_c0005_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 26:51 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 40275,
+    "b": 40276,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0006",
+   "images": [
+    "img/Match1_c0006_0.jpg",
+    "img/Match1_c0006_1.jpg",
+    "img/Match1_c0006_2.jpg",
+    "img/Match1_c0006_3.jpg",
+    "img/Match1_c0006_4.jpg",
+    "img/Match1_c0006_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 27:46 \u00b7 proposed 28-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 41651,
+    "b": 41678,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0007",
+   "images": [
+    "img/Match1_c0007_0.jpg",
+    "img/Match1_c0007_1.jpg",
+    "img/Match1_c0007_2.jpg",
+    "img/Match1_c0007_3.jpg",
+    "img/Match1_c0007_4.jpg",
+    "img/Match1_c0007_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 27:47 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 41693,
+    "b": 41694,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0008",
+   "images": [
+    "img/Match1_c0008_0.jpg",
+    "img/Match1_c0008_1.jpg",
+    "img/Match1_c0008_2.jpg",
+    "img/Match1_c0008_3.jpg",
+    "img/Match1_c0008_4.jpg",
+    "img/Match1_c0008_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 27:48 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 41714,
+    "b": 41715,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0009",
+   "images": [
+    "img/Match1_c0009_0.jpg",
+    "img/Match1_c0009_1.jpg",
+    "img/Match1_c0009_2.jpg",
+    "img/Match1_c0009_3.jpg",
+    "img/Match1_c0009_4.jpg",
+    "img/Match1_c0009_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 27:53 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 41839,
+    "b": 41840,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0010",
+   "images": [
+    "img/Match1_c0010_0.jpg",
+    "img/Match1_c0010_1.jpg",
+    "img/Match1_c0010_2.jpg",
+    "img/Match1_c0010_3.jpg",
+    "img/Match1_c0010_4.jpg",
+    "img/Match1_c0010_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 28:07 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 42199,
+    "b": 42200,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0011",
+   "images": [
+    "img/Match1_c0011_0.jpg",
+    "img/Match1_c0011_1.jpg",
+    "img/Match1_c0011_2.jpg",
+    "img/Match1_c0011_3.jpg",
+    "img/Match1_c0011_4.jpg",
+    "img/Match1_c0011_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 28:09 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 42235,
+    "b": 42236,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0012",
+   "images": [
+    "img/Match1_c0012_0.jpg",
+    "img/Match1_c0012_1.jpg",
+    "img/Match1_c0012_2.jpg",
+    "img/Match1_c0012_3.jpg",
+    "img/Match1_c0012_4.jpg",
+    "img/Match1_c0012_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 28:18 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 42473,
+    "b": 42474,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0013",
+   "images": [
+    "img/Match1_c0013_0.jpg",
+    "img/Match1_c0013_1.jpg",
+    "img/Match1_c0013_2.jpg",
+    "img/Match1_c0013_3.jpg",
+    "img/Match1_c0013_4.jpg",
+    "img/Match1_c0013_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 28:20 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 42522,
+    "b": 42523,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0014",
+   "images": [
+    "img/Match1_c0014_0.jpg",
+    "img/Match1_c0014_1.jpg",
+    "img/Match1_c0014_2.jpg",
+    "img/Match1_c0014_3.jpg",
+    "img/Match1_c0014_4.jpg",
+    "img/Match1_c0014_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 28:23 \u00b7 proposed 8-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 42589,
+    "b": 42596,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0015",
+   "images": [
+    "img/Match1_c0015_0.jpg",
+    "img/Match1_c0015_1.jpg",
+    "img/Match1_c0015_2.jpg",
+    "img/Match1_c0015_3.jpg",
+    "img/Match1_c0015_4.jpg",
+    "img/Match1_c0015_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 28:46 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 43168,
+    "b": 43169,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0016",
+   "images": [
+    "img/Match1_c0016_0.jpg",
+    "img/Match1_c0016_1.jpg",
+    "img/Match1_c0016_2.jpg",
+    "img/Match1_c0016_3.jpg",
+    "img/Match1_c0016_4.jpg",
+    "img/Match1_c0016_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 28:48 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 43217,
+    "b": 43218,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0017",
+   "images": [
+    "img/Match1_c0017_0.jpg",
+    "img/Match1_c0017_1.jpg",
+    "img/Match1_c0017_2.jpg",
+    "img/Match1_c0017_3.jpg",
+    "img/Match1_c0017_4.jpg",
+    "img/Match1_c0017_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 28:59 \u00b7 proposed 25-frame interval",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 43497,
+    "b": 43521,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0018",
+   "images": [
+    "img/Match1_c0018_0.jpg",
+    "img/Match1_c0018_1.jpg",
+    "img/Match1_c0018_2.jpg",
+    "img/Match1_c0018_3.jpg",
+    "img/Match1_c0018_4.jpg",
+    "img/Match1_c0018_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:33 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 44347,
+    "b": 44348,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0019",
+   "images": [
+    "img/Match1_c0019_0.jpg",
+    "img/Match1_c0019_1.jpg",
+    "img/Match1_c0019_2.jpg",
+    "img/Match1_c0019_3.jpg",
+    "img/Match1_c0019_4.jpg",
+    "img/Match1_c0019_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:36 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 44405,
+    "b": 44406,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0020",
+   "images": [
+    "img/Match1_c0020_0.jpg",
+    "img/Match1_c0020_1.jpg",
+    "img/Match1_c0020_2.jpg",
+    "img/Match1_c0020_3.jpg",
+    "img/Match1_c0020_4.jpg",
+    "img/Match1_c0020_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:44 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 44609,
+    "b": 44610,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0021",
+   "images": [
+    "img/Match1_c0021_0.jpg",
+    "img/Match1_c0021_1.jpg",
+    "img/Match1_c0021_2.jpg",
+    "img/Match1_c0021_3.jpg",
+    "img/Match1_c0021_4.jpg",
+    "img/Match1_c0021_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:49 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 44735,
+    "b": 44736,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0022",
+   "images": [
+    "img/Match1_c0022_0.jpg",
+    "img/Match1_c0022_1.jpg",
+    "img/Match1_c0022_2.jpg",
+    "img/Match1_c0022_3.jpg",
+    "img/Match1_c0022_4.jpg",
+    "img/Match1_c0022_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:50 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 44771,
+    "b": 44772,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0023",
+   "images": [
+    "img/Match1_c0023_0.jpg",
+    "img/Match1_c0023_1.jpg",
+    "img/Match1_c0023_2.jpg",
+    "img/Match1_c0023_3.jpg",
+    "img/Match1_c0023_4.jpg",
+    "img/Match1_c0023_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:52 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 44810,
+    "b": 44811,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0024",
+   "images": [
+    "img/Match1_c0024_0.jpg",
+    "img/Match1_c0024_1.jpg",
+    "img/Match1_c0024_2.jpg",
+    "img/Match1_c0024_3.jpg",
+    "img/Match1_c0024_4.jpg",
+    "img/Match1_c0024_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:53 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 44833,
+    "b": 44834,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0025",
+   "images": [
+    "img/Match1_c0025_0.jpg",
+    "img/Match1_c0025_1.jpg",
+    "img/Match1_c0025_2.jpg",
+    "img/Match1_c0025_3.jpg",
+    "img/Match1_c0025_4.jpg",
+    "img/Match1_c0025_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:57 \u00b7 proposed 7-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 44926,
+    "b": 44932,
+    "methods": [
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0026",
+   "images": [
+    "img/Match1_c0026_0.jpg",
+    "img/Match1_c0026_1.jpg",
+    "img/Match1_c0026_2.jpg",
+    "img/Match1_c0026_3.jpg",
+    "img/Match1_c0026_4.jpg",
+    "img/Match1_c0026_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 29:58 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 44950,
+    "b": 44951,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0027",
+   "images": [
+    "img/Match1_c0027_0.jpg",
+    "img/Match1_c0027_1.jpg",
+    "img/Match1_c0027_2.jpg",
+    "img/Match1_c0027_3.jpg",
+    "img/Match1_c0027_4.jpg",
+    "img/Match1_c0027_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:00 \u00b7 proposed 36-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45005,
+    "b": 45040,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0028",
+   "images": [
+    "img/Match1_c0028_0.jpg",
+    "img/Match1_c0028_1.jpg",
+    "img/Match1_c0028_2.jpg",
+    "img/Match1_c0028_3.jpg",
+    "img/Match1_c0028_4.jpg",
+    "img/Match1_c0028_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:03 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45087,
+    "b": 45088,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0029",
+   "images": [
+    "img/Match1_c0029_0.jpg",
+    "img/Match1_c0029_1.jpg",
+    "img/Match1_c0029_2.jpg",
+    "img/Match1_c0029_3.jpg",
+    "img/Match1_c0029_4.jpg",
+    "img/Match1_c0029_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:05 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45145,
+    "b": 45146,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0030",
+   "images": [
+    "img/Match1_c0030_0.jpg",
+    "img/Match1_c0030_1.jpg",
+    "img/Match1_c0030_2.jpg",
+    "img/Match1_c0030_3.jpg",
+    "img/Match1_c0030_4.jpg",
+    "img/Match1_c0030_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:07 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 45181,
+    "b": 45182,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0031",
+   "images": [
+    "img/Match1_c0031_0.jpg",
+    "img/Match1_c0031_1.jpg",
+    "img/Match1_c0031_2.jpg",
+    "img/Match1_c0031_3.jpg",
+    "img/Match1_c0031_4.jpg",
+    "img/Match1_c0031_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:08 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45218,
+    "b": 45219,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0032",
+   "images": [
+    "img/Match1_c0032_0.jpg",
+    "img/Match1_c0032_1.jpg",
+    "img/Match1_c0032_2.jpg",
+    "img/Match1_c0032_3.jpg",
+    "img/Match1_c0032_4.jpg",
+    "img/Match1_c0032_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45253,
+    "b": 45254,
+    "methods": [
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0033",
+   "images": [
+    "img/Match1_c0033_0.jpg",
+    "img/Match1_c0033_1.jpg",
+    "img/Match1_c0033_2.jpg",
+    "img/Match1_c0033_3.jpg",
+    "img/Match1_c0033_4.jpg",
+    "img/Match1_c0033_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:15 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45387,
+    "b": 45388,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0034",
+   "images": [
+    "img/Match1_c0034_0.jpg",
+    "img/Match1_c0034_1.jpg",
+    "img/Match1_c0034_2.jpg",
+    "img/Match1_c0034_3.jpg",
+    "img/Match1_c0034_4.jpg",
+    "img/Match1_c0034_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:18 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45463,
+    "b": 45464,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0035",
+   "images": [
+    "img/Match1_c0035_0.jpg",
+    "img/Match1_c0035_1.jpg",
+    "img/Match1_c0035_2.jpg",
+    "img/Match1_c0035_3.jpg",
+    "img/Match1_c0035_4.jpg",
+    "img/Match1_c0035_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:19 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45484,
+    "b": 45485,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0036",
+   "images": [
+    "img/Match1_c0036_0.jpg",
+    "img/Match1_c0036_1.jpg",
+    "img/Match1_c0036_2.jpg",
+    "img/Match1_c0036_3.jpg",
+    "img/Match1_c0036_4.jpg",
+    "img/Match1_c0036_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:26 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45672,
+    "b": 45673,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0037",
+   "images": [
+    "img/Match1_c0037_0.jpg",
+    "img/Match1_c0037_1.jpg",
+    "img/Match1_c0037_2.jpg",
+    "img/Match1_c0037_3.jpg",
+    "img/Match1_c0037_4.jpg",
+    "img/Match1_c0037_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:35 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45885,
+    "b": 45886,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0038",
+   "images": [
+    "img/Match1_c0038_0.jpg",
+    "img/Match1_c0038_1.jpg",
+    "img/Match1_c0038_2.jpg",
+    "img/Match1_c0038_3.jpg",
+    "img/Match1_c0038_4.jpg",
+    "img/Match1_c0038_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:36 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 45911,
+    "b": 45912,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0039",
+   "images": [
+    "img/Match1_c0039_0.jpg",
+    "img/Match1_c0039_1.jpg",
+    "img/Match1_c0039_2.jpg",
+    "img/Match1_c0039_3.jpg",
+    "img/Match1_c0039_4.jpg",
+    "img/Match1_c0039_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:38 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 45958,
+    "b": 45959,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0040",
+   "images": [
+    "img/Match1_c0040_0.jpg",
+    "img/Match1_c0040_1.jpg",
+    "img/Match1_c0040_2.jpg",
+    "img/Match1_c0040_3.jpg",
+    "img/Match1_c0040_4.jpg",
+    "img/Match1_c0040_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:39 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 45985,
+    "b": 45986,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0041",
+   "images": [
+    "img/Match1_c0041_0.jpg",
+    "img/Match1_c0041_1.jpg",
+    "img/Match1_c0041_2.jpg",
+    "img/Match1_c0041_3.jpg",
+    "img/Match1_c0041_4.jpg",
+    "img/Match1_c0041_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:40 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 46012,
+    "b": 46013,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0042",
+   "images": [
+    "img/Match1_c0042_0.jpg",
+    "img/Match1_c0042_1.jpg",
+    "img/Match1_c0042_2.jpg",
+    "img/Match1_c0042_3.jpg",
+    "img/Match1_c0042_4.jpg",
+    "img/Match1_c0042_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 30:41 \u00b7 proposed 36-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 46047,
+    "b": 46082,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0043",
+   "images": [
+    "img/Match1_c0043_0.jpg",
+    "img/Match1_c0043_1.jpg",
+    "img/Match1_c0043_2.jpg",
+    "img/Match1_c0043_3.jpg",
+    "img/Match1_c0043_4.jpg",
+    "img/Match1_c0043_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:07 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 46679,
+    "b": 46680,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0044",
+   "images": [
+    "img/Match1_c0044_0.jpg",
+    "img/Match1_c0044_1.jpg",
+    "img/Match1_c0044_2.jpg",
+    "img/Match1_c0044_3.jpg",
+    "img/Match1_c0044_4.jpg",
+    "img/Match1_c0044_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 46768,
+    "b": 46769,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0045",
+   "images": [
+    "img/Match1_c0045_0.jpg",
+    "img/Match1_c0045_1.jpg",
+    "img/Match1_c0045_2.jpg",
+    "img/Match1_c0045_3.jpg",
+    "img/Match1_c0045_4.jpg",
+    "img/Match1_c0045_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:12 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 46818,
+    "b": 46819,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0046",
+   "images": [
+    "img/Match1_c0046_0.jpg",
+    "img/Match1_c0046_1.jpg",
+    "img/Match1_c0046_2.jpg",
+    "img/Match1_c0046_3.jpg",
+    "img/Match1_c0046_4.jpg",
+    "img/Match1_c0046_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:19 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 46994,
+    "b": 46995,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0047",
+   "images": [
+    "img/Match1_c0047_0.jpg",
+    "img/Match1_c0047_1.jpg",
+    "img/Match1_c0047_2.jpg",
+    "img/Match1_c0047_3.jpg",
+    "img/Match1_c0047_4.jpg",
+    "img/Match1_c0047_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:21 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47029,
+    "b": 47030,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0048",
+   "images": [
+    "img/Match1_c0048_0.jpg",
+    "img/Match1_c0048_1.jpg",
+    "img/Match1_c0048_2.jpg",
+    "img/Match1_c0048_3.jpg",
+    "img/Match1_c0048_4.jpg",
+    "img/Match1_c0048_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:39 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47498,
+    "b": 47499,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0049",
+   "images": [
+    "img/Match1_c0049_0.jpg",
+    "img/Match1_c0049_1.jpg",
+    "img/Match1_c0049_2.jpg",
+    "img/Match1_c0049_3.jpg",
+    "img/Match1_c0049_4.jpg",
+    "img/Match1_c0049_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:42 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47561,
+    "b": 47562,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0050",
+   "images": [
+    "img/Match1_c0050_0.jpg",
+    "img/Match1_c0050_1.jpg",
+    "img/Match1_c0050_2.jpg",
+    "img/Match1_c0050_3.jpg",
+    "img/Match1_c0050_4.jpg",
+    "img/Match1_c0050_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:44 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47614,
+    "b": 47615,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0051",
+   "images": [
+    "img/Match1_c0051_0.jpg",
+    "img/Match1_c0051_1.jpg",
+    "img/Match1_c0051_2.jpg",
+    "img/Match1_c0051_3.jpg",
+    "img/Match1_c0051_4.jpg",
+    "img/Match1_c0051_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:47 \u00b7 proposed 13-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47681,
+    "b": 47693,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0052",
+   "images": [
+    "img/Match1_c0052_0.jpg",
+    "img/Match1_c0052_1.jpg",
+    "img/Match1_c0052_2.jpg",
+    "img/Match1_c0052_3.jpg",
+    "img/Match1_c0052_4.jpg",
+    "img/Match1_c0052_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:50 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47753,
+    "b": 47754,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0053",
+   "images": [
+    "img/Match1_c0053_0.jpg",
+    "img/Match1_c0053_1.jpg",
+    "img/Match1_c0053_2.jpg",
+    "img/Match1_c0053_3.jpg",
+    "img/Match1_c0053_4.jpg",
+    "img/Match1_c0053_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:51 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47777,
+    "b": 47778,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0054",
+   "images": [
+    "img/Match1_c0054_0.jpg",
+    "img/Match1_c0054_1.jpg",
+    "img/Match1_c0054_2.jpg",
+    "img/Match1_c0054_3.jpg",
+    "img/Match1_c0054_4.jpg",
+    "img/Match1_c0054_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:53 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47829,
+    "b": 47830,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0055",
+   "images": [
+    "img/Match1_c0055_0.jpg",
+    "img/Match1_c0055_1.jpg",
+    "img/Match1_c0055_2.jpg",
+    "img/Match1_c0055_3.jpg",
+    "img/Match1_c0055_4.jpg",
+    "img/Match1_c0055_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:54 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47856,
+    "b": 47857,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0056",
+   "images": [
+    "img/Match1_c0056_0.jpg",
+    "img/Match1_c0056_1.jpg",
+    "img/Match1_c0056_2.jpg",
+    "img/Match1_c0056_3.jpg",
+    "img/Match1_c0056_4.jpg",
+    "img/Match1_c0056_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 31:55 \u00b7 proposed 37-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 47885,
+    "b": 47921,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0057",
+   "images": [
+    "img/Match1_c0057_0.jpg",
+    "img/Match1_c0057_1.jpg",
+    "img/Match1_c0057_2.jpg",
+    "img/Match1_c0057_3.jpg",
+    "img/Match1_c0057_4.jpg",
+    "img/Match1_c0057_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 32:16 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 48406,
+    "b": 48407,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0058",
+   "images": [
+    "img/Match1_c0058_0.jpg",
+    "img/Match1_c0058_1.jpg",
+    "img/Match1_c0058_2.jpg",
+    "img/Match1_c0058_3.jpg",
+    "img/Match1_c0058_4.jpg",
+    "img/Match1_c0058_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 32:19 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 48497,
+    "b": 48498,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0059",
+   "images": [
+    "img/Match1_c0059_0.jpg",
+    "img/Match1_c0059_1.jpg",
+    "img/Match1_c0059_2.jpg",
+    "img/Match1_c0059_3.jpg",
+    "img/Match1_c0059_4.jpg",
+    "img/Match1_c0059_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 32:22 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 48566,
+    "b": 48567,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0060",
+   "images": [
+    "img/Match1_c0060_0.jpg",
+    "img/Match1_c0060_1.jpg",
+    "img/Match1_c0060_2.jpg",
+    "img/Match1_c0060_3.jpg",
+    "img/Match1_c0060_4.jpg",
+    "img/Match1_c0060_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 32:38 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 48961,
+    "b": 48962,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0061",
+   "images": [
+    "img/Match1_c0061_0.jpg",
+    "img/Match1_c0061_1.jpg",
+    "img/Match1_c0061_2.jpg",
+    "img/Match1_c0061_3.jpg",
+    "img/Match1_c0061_4.jpg",
+    "img/Match1_c0061_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 32:41 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 49044,
+    "b": 49045,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0062",
+   "images": [
+    "img/Match1_c0062_0.jpg",
+    "img/Match1_c0062_1.jpg",
+    "img/Match1_c0062_2.jpg",
+    "img/Match1_c0062_3.jpg",
+    "img/Match1_c0062_4.jpg",
+    "img/Match1_c0062_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 32:42 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 49071,
+    "b": 49072,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0063",
+   "images": [
+    "img/Match1_c0063_0.jpg",
+    "img/Match1_c0063_1.jpg",
+    "img/Match1_c0063_2.jpg",
+    "img/Match1_c0063_3.jpg",
+    "img/Match1_c0063_4.jpg",
+    "img/Match1_c0063_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 32:48 \u00b7 proposed 34-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 49210,
+    "b": 49243,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0064",
+   "images": [
+    "img/Match1_c0064_0.jpg",
+    "img/Match1_c0064_1.jpg",
+    "img/Match1_c0064_2.jpg",
+    "img/Match1_c0064_3.jpg",
+    "img/Match1_c0064_4.jpg",
+    "img/Match1_c0064_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 32:57 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 49441,
+    "b": 49442,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0065",
+   "images": [
+    "img/Match1_c0065_0.jpg",
+    "img/Match1_c0065_1.jpg",
+    "img/Match1_c0065_2.jpg",
+    "img/Match1_c0065_3.jpg",
+    "img/Match1_c0065_4.jpg",
+    "img/Match1_c0065_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:00 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 49502,
+    "b": 49503,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0066",
+   "images": [
+    "img/Match1_c0066_0.jpg",
+    "img/Match1_c0066_1.jpg",
+    "img/Match1_c0066_2.jpg",
+    "img/Match1_c0066_3.jpg",
+    "img/Match1_c0066_4.jpg",
+    "img/Match1_c0066_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:08 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 49714,
+    "b": 49715,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0067",
+   "images": [
+    "img/Match1_c0067_0.jpg",
+    "img/Match1_c0067_1.jpg",
+    "img/Match1_c0067_2.jpg",
+    "img/Match1_c0067_3.jpg",
+    "img/Match1_c0067_4.jpg",
+    "img/Match1_c0067_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 49763,
+    "b": 49764,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0068",
+   "images": [
+    "img/Match1_c0068_0.jpg",
+    "img/Match1_c0068_1.jpg",
+    "img/Match1_c0068_2.jpg",
+    "img/Match1_c0068_3.jpg",
+    "img/Match1_c0068_4.jpg",
+    "img/Match1_c0068_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:22 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 50053,
+    "b": 50054,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0069",
+   "images": [
+    "img/Match1_c0069_0.jpg",
+    "img/Match1_c0069_1.jpg",
+    "img/Match1_c0069_2.jpg",
+    "img/Match1_c0069_3.jpg",
+    "img/Match1_c0069_4.jpg",
+    "img/Match1_c0069_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:22 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 50074,
+    "b": 50074,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0070",
+   "images": [
+    "img/Match1_c0070_0.jpg",
+    "img/Match1_c0070_1.jpg",
+    "img/Match1_c0070_2.jpg",
+    "img/Match1_c0070_3.jpg",
+    "img/Match1_c0070_4.jpg",
+    "img/Match1_c0070_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:25 \u00b7 proposed 10-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 50132,
+    "b": 50141,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0071",
+   "images": [
+    "img/Match1_c0071_0.jpg",
+    "img/Match1_c0071_1.jpg",
+    "img/Match1_c0071_2.jpg",
+    "img/Match1_c0071_3.jpg",
+    "img/Match1_c0071_4.jpg",
+    "img/Match1_c0071_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:27 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 50185,
+    "b": 50186,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0072",
+   "images": [
+    "img/Match1_c0072_0.jpg",
+    "img/Match1_c0072_1.jpg",
+    "img/Match1_c0072_2.jpg",
+    "img/Match1_c0072_3.jpg",
+    "img/Match1_c0072_4.jpg",
+    "img/Match1_c0072_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:36 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 50406,
+    "b": 50407,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0073",
+   "images": [
+    "img/Match1_c0073_0.jpg",
+    "img/Match1_c0073_1.jpg",
+    "img/Match1_c0073_2.jpg",
+    "img/Match1_c0073_3.jpg",
+    "img/Match1_c0073_4.jpg",
+    "img/Match1_c0073_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:38 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 50462,
+    "b": 50463,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0074",
+   "images": [
+    "img/Match1_c0074_0.jpg",
+    "img/Match1_c0074_1.jpg",
+    "img/Match1_c0074_2.jpg",
+    "img/Match1_c0074_3.jpg",
+    "img/Match1_c0074_4.jpg",
+    "img/Match1_c0074_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:44 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 50617,
+    "b": 50618,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0075",
+   "images": [
+    "img/Match1_c0075_0.jpg",
+    "img/Match1_c0075_1.jpg",
+    "img/Match1_c0075_2.jpg",
+    "img/Match1_c0075_3.jpg",
+    "img/Match1_c0075_4.jpg",
+    "img/Match1_c0075_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:47 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 50693,
+    "b": 50694,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0076",
+   "images": [
+    "img/Match1_c0076_0.jpg",
+    "img/Match1_c0076_1.jpg",
+    "img/Match1_c0076_2.jpg",
+    "img/Match1_c0076_3.jpg",
+    "img/Match1_c0076_4.jpg",
+    "img/Match1_c0076_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 33:51 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 50780,
+    "b": 50781,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0077",
+   "images": [
+    "img/Match1_c0077_0.jpg",
+    "img/Match1_c0077_1.jpg",
+    "img/Match1_c0077_2.jpg",
+    "img/Match1_c0077_3.jpg",
+    "img/Match1_c0077_4.jpg",
+    "img/Match1_c0077_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:18 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 51456,
+    "b": 51457,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0078",
+   "images": [
+    "img/Match1_c0078_0.jpg",
+    "img/Match1_c0078_1.jpg",
+    "img/Match1_c0078_2.jpg",
+    "img/Match1_c0078_3.jpg",
+    "img/Match1_c0078_4.jpg",
+    "img/Match1_c0078_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:19 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 51490,
+    "b": 51491,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0079",
+   "images": [
+    "img/Match1_c0079_0.jpg",
+    "img/Match1_c0079_1.jpg",
+    "img/Match1_c0079_2.jpg",
+    "img/Match1_c0079_3.jpg",
+    "img/Match1_c0079_4.jpg",
+    "img/Match1_c0079_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:22 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 51568,
+    "b": 51569,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0080",
+   "images": [
+    "img/Match1_c0080_0.jpg",
+    "img/Match1_c0080_1.jpg",
+    "img/Match1_c0080_2.jpg",
+    "img/Match1_c0080_3.jpg",
+    "img/Match1_c0080_4.jpg",
+    "img/Match1_c0080_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:24 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 51615,
+    "b": 51616,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0081",
+   "images": [
+    "img/Match1_c0081_0.jpg",
+    "img/Match1_c0081_1.jpg",
+    "img/Match1_c0081_2.jpg",
+    "img/Match1_c0081_3.jpg",
+    "img/Match1_c0081_4.jpg",
+    "img/Match1_c0081_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:27 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 51681,
+    "b": 51682,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0082",
+   "images": [
+    "img/Match1_c0082_0.jpg",
+    "img/Match1_c0082_1.jpg",
+    "img/Match1_c0082_2.jpg",
+    "img/Match1_c0082_3.jpg",
+    "img/Match1_c0082_4.jpg",
+    "img/Match1_c0082_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:28 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 51715,
+    "b": 51716,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0083",
+   "images": [
+    "img/Match1_c0083_0.jpg",
+    "img/Match1_c0083_1.jpg",
+    "img/Match1_c0083_2.jpg",
+    "img/Match1_c0083_3.jpg",
+    "img/Match1_c0083_4.jpg",
+    "img/Match1_c0083_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:30 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 51770,
+    "b": 51771,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0084",
+   "images": [
+    "img/Match1_c0084_0.jpg",
+    "img/Match1_c0084_1.jpg",
+    "img/Match1_c0084_2.jpg",
+    "img/Match1_c0084_3.jpg",
+    "img/Match1_c0084_4.jpg",
+    "img/Match1_c0084_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:31 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 51788,
+    "b": 51789,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0085",
+   "images": [
+    "img/Match1_c0085_0.jpg",
+    "img/Match1_c0085_1.jpg",
+    "img/Match1_c0085_2.jpg",
+    "img/Match1_c0085_3.jpg",
+    "img/Match1_c0085_4.jpg",
+    "img/Match1_c0085_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:32 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 51811,
+    "b": 51812,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0086",
+   "images": [
+    "img/Match1_c0086_0.jpg",
+    "img/Match1_c0086_1.jpg",
+    "img/Match1_c0086_2.jpg",
+    "img/Match1_c0086_3.jpg",
+    "img/Match1_c0086_4.jpg",
+    "img/Match1_c0086_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:33 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 51828,
+    "b": 51829,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0087",
+   "images": [
+    "img/Match1_c0087_0.jpg",
+    "img/Match1_c0087_1.jpg",
+    "img/Match1_c0087_2.jpg",
+    "img/Match1_c0087_3.jpg",
+    "img/Match1_c0087_4.jpg",
+    "img/Match1_c0087_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:35 \u00b7 proposed 4-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 51877,
+    "b": 51880,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0088",
+   "images": [
+    "img/Match1_c0088_0.jpg",
+    "img/Match1_c0088_1.jpg",
+    "img/Match1_c0088_2.jpg",
+    "img/Match1_c0088_3.jpg",
+    "img/Match1_c0088_4.jpg",
+    "img/Match1_c0088_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:48 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 52223,
+    "b": 52223,
+    "methods": [
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0089",
+   "images": [
+    "img/Match1_c0089_0.jpg",
+    "img/Match1_c0089_1.jpg",
+    "img/Match1_c0089_2.jpg",
+    "img/Match1_c0089_3.jpg",
+    "img/Match1_c0089_4.jpg",
+    "img/Match1_c0089_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:49 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 52235,
+    "b": 52236,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0090",
+   "images": [
+    "img/Match1_c0090_0.jpg",
+    "img/Match1_c0090_1.jpg",
+    "img/Match1_c0090_2.jpg",
+    "img/Match1_c0090_3.jpg",
+    "img/Match1_c0090_4.jpg",
+    "img/Match1_c0090_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:52 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match1",
+    "a": 52304,
+    "b": 52305,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0091",
+   "images": [
+    "img/Match1_c0091_0.jpg",
+    "img/Match1_c0091_1.jpg",
+    "img/Match1_c0091_2.jpg",
+    "img/Match1_c0091_3.jpg",
+    "img/Match1_c0091_4.jpg",
+    "img/Match1_c0091_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:53 \u00b7 proposed 36-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 52346,
+    "b": 52381,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match1_c0092",
+   "images": [
+    "img/Match1_c0092_0.jpg",
+    "img/Match1_c0092_1.jpg",
+    "img/Match1_c0092_2.jpg",
+    "img/Match1_c0092_3.jpg",
+    "img/Match1_c0092_4.jpg",
+    "img/Match1_c0092_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match1 \u00b7 34:59 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match1",
+    "a": 52486,
+    "b": 52487,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0000",
+   "images": [
+    "img/Match4_c0000_0.jpg",
+    "img/Match4_c0000_1.jpg",
+    "img/Match4_c0000_2.jpg",
+    "img/Match4_c0000_3.jpg",
+    "img/Match4_c0000_4.jpg",
+    "img/Match4_c0000_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 25:01 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 37525,
+    "b": 37526,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0001",
+   "images": [
+    "img/Match4_c0001_0.jpg",
+    "img/Match4_c0001_1.jpg",
+    "img/Match4_c0001_2.jpg",
+    "img/Match4_c0001_3.jpg",
+    "img/Match4_c0001_4.jpg",
+    "img/Match4_c0001_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 25:25 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 38148,
+    "b": 38149,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0002",
+   "images": [
+    "img/Match4_c0002_0.jpg",
+    "img/Match4_c0002_1.jpg",
+    "img/Match4_c0002_2.jpg",
+    "img/Match4_c0002_3.jpg",
+    "img/Match4_c0002_4.jpg",
+    "img/Match4_c0002_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 25:28 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 38203,
+    "b": 38204,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0003",
+   "images": [
+    "img/Match4_c0003_0.jpg",
+    "img/Match4_c0003_1.jpg",
+    "img/Match4_c0003_2.jpg",
+    "img/Match4_c0003_3.jpg",
+    "img/Match4_c0003_4.jpg",
+    "img/Match4_c0003_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:14 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 39363,
+    "b": 39364,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0004",
+   "images": [
+    "img/Match4_c0004_0.jpg",
+    "img/Match4_c0004_1.jpg",
+    "img/Match4_c0004_2.jpg",
+    "img/Match4_c0004_3.jpg",
+    "img/Match4_c0004_4.jpg",
+    "img/Match4_c0004_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:16 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match4",
+    "a": 39414,
+    "b": 39414,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0005",
+   "images": [
+    "img/Match4_c0005_0.jpg",
+    "img/Match4_c0005_1.jpg",
+    "img/Match4_c0005_2.jpg",
+    "img/Match4_c0005_3.jpg",
+    "img/Match4_c0005_4.jpg",
+    "img/Match4_c0005_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:19 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 39475,
+    "b": 39476,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0006",
+   "images": [
+    "img/Match4_c0006_0.jpg",
+    "img/Match4_c0006_1.jpg",
+    "img/Match4_c0006_2.jpg",
+    "img/Match4_c0006_3.jpg",
+    "img/Match4_c0006_4.jpg",
+    "img/Match4_c0006_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:23 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 39581,
+    "b": 39582,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0007",
+   "images": [
+    "img/Match4_c0007_0.jpg",
+    "img/Match4_c0007_1.jpg",
+    "img/Match4_c0007_2.jpg",
+    "img/Match4_c0007_3.jpg",
+    "img/Match4_c0007_4.jpg",
+    "img/Match4_c0007_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:25 \u00b7 proposed 5-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 39637,
+    "b": 39641,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0008",
+   "images": [
+    "img/Match4_c0008_0.jpg",
+    "img/Match4_c0008_1.jpg",
+    "img/Match4_c0008_2.jpg",
+    "img/Match4_c0008_3.jpg",
+    "img/Match4_c0008_4.jpg",
+    "img/Match4_c0008_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:30 \u00b7 proposed 14-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 39760,
+    "b": 39773,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0009",
+   "images": [
+    "img/Match4_c0009_0.jpg",
+    "img/Match4_c0009_1.jpg",
+    "img/Match4_c0009_2.jpg",
+    "img/Match4_c0009_3.jpg",
+    "img/Match4_c0009_4.jpg",
+    "img/Match4_c0009_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:37 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 39942,
+    "b": 39943,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0010",
+   "images": [
+    "img/Match4_c0010_0.jpg",
+    "img/Match4_c0010_1.jpg",
+    "img/Match4_c0010_2.jpg",
+    "img/Match4_c0010_3.jpg",
+    "img/Match4_c0010_4.jpg",
+    "img/Match4_c0010_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:40 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40010,
+    "b": 40011,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0011",
+   "images": [
+    "img/Match4_c0011_0.jpg",
+    "img/Match4_c0011_1.jpg",
+    "img/Match4_c0011_2.jpg",
+    "img/Match4_c0011_3.jpg",
+    "img/Match4_c0011_4.jpg",
+    "img/Match4_c0011_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:42 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40059,
+    "b": 40060,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0012",
+   "images": [
+    "img/Match4_c0012_0.jpg",
+    "img/Match4_c0012_1.jpg",
+    "img/Match4_c0012_2.jpg",
+    "img/Match4_c0012_3.jpg",
+    "img/Match4_c0012_4.jpg",
+    "img/Match4_c0012_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:46 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40151,
+    "b": 40152,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0013",
+   "images": [
+    "img/Match4_c0013_0.jpg",
+    "img/Match4_c0013_1.jpg",
+    "img/Match4_c0013_2.jpg",
+    "img/Match4_c0013_3.jpg",
+    "img/Match4_c0013_4.jpg",
+    "img/Match4_c0013_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:53 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40343,
+    "b": 40344,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0014",
+   "images": [
+    "img/Match4_c0014_0.jpg",
+    "img/Match4_c0014_1.jpg",
+    "img/Match4_c0014_2.jpg",
+    "img/Match4_c0014_3.jpg",
+    "img/Match4_c0014_4.jpg",
+    "img/Match4_c0014_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:56 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match4",
+    "a": 40406,
+    "b": 40407,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0015",
+   "images": [
+    "img/Match4_c0015_0.jpg",
+    "img/Match4_c0015_1.jpg",
+    "img/Match4_c0015_2.jpg",
+    "img/Match4_c0015_3.jpg",
+    "img/Match4_c0015_4.jpg",
+    "img/Match4_c0015_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 26:57 \u00b7 proposed 14-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40442,
+    "b": 40455,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0016",
+   "images": [
+    "img/Match4_c0016_0.jpg",
+    "img/Match4_c0016_1.jpg",
+    "img/Match4_c0016_2.jpg",
+    "img/Match4_c0016_3.jpg",
+    "img/Match4_c0016_4.jpg",
+    "img/Match4_c0016_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 27:03 \u00b7 proposed 28-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40578,
+    "b": 40605,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0017",
+   "images": [
+    "img/Match4_c0017_0.jpg",
+    "img/Match4_c0017_1.jpg",
+    "img/Match4_c0017_2.jpg",
+    "img/Match4_c0017_3.jpg",
+    "img/Match4_c0017_4.jpg",
+    "img/Match4_c0017_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 27:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40753,
+    "b": 40754,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0018",
+   "images": [
+    "img/Match4_c0018_0.jpg",
+    "img/Match4_c0018_1.jpg",
+    "img/Match4_c0018_2.jpg",
+    "img/Match4_c0018_3.jpg",
+    "img/Match4_c0018_4.jpg",
+    "img/Match4_c0018_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 27:10 \u00b7 proposed 24-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40768,
+    "b": 40791,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0019",
+   "images": [
+    "img/Match4_c0019_0.jpg",
+    "img/Match4_c0019_1.jpg",
+    "img/Match4_c0019_2.jpg",
+    "img/Match4_c0019_3.jpg",
+    "img/Match4_c0019_4.jpg",
+    "img/Match4_c0019_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 27:12 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 40822,
+    "b": 40823,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0020",
+   "images": [
+    "img/Match4_c0020_0.jpg",
+    "img/Match4_c0020_1.jpg",
+    "img/Match4_c0020_2.jpg",
+    "img/Match4_c0020_3.jpg",
+    "img/Match4_c0020_4.jpg",
+    "img/Match4_c0020_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 28:02 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 42050,
+    "b": 42051,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0021",
+   "images": [
+    "img/Match4_c0021_0.jpg",
+    "img/Match4_c0021_1.jpg",
+    "img/Match4_c0021_2.jpg",
+    "img/Match4_c0021_3.jpg",
+    "img/Match4_c0021_4.jpg",
+    "img/Match4_c0021_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 28:03 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 42094,
+    "b": 42095,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0022",
+   "images": [
+    "img/Match4_c0022_0.jpg",
+    "img/Match4_c0022_1.jpg",
+    "img/Match4_c0022_2.jpg",
+    "img/Match4_c0022_3.jpg",
+    "img/Match4_c0022_4.jpg",
+    "img/Match4_c0022_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 32:03 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 48077,
+    "b": 48078,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0023",
+   "images": [
+    "img/Match4_c0023_0.jpg",
+    "img/Match4_c0023_1.jpg",
+    "img/Match4_c0023_2.jpg",
+    "img/Match4_c0023_3.jpg",
+    "img/Match4_c0023_4.jpg",
+    "img/Match4_c0023_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 32:05 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 48128,
+    "b": 48129,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0024",
+   "images": [
+    "img/Match4_c0024_0.jpg",
+    "img/Match4_c0024_1.jpg",
+    "img/Match4_c0024_2.jpg",
+    "img/Match4_c0024_3.jpg",
+    "img/Match4_c0024_4.jpg",
+    "img/Match4_c0024_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 32:17 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 48426,
+    "b": 48427,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0025",
+   "images": [
+    "img/Match4_c0025_0.jpg",
+    "img/Match4_c0025_1.jpg",
+    "img/Match4_c0025_2.jpg",
+    "img/Match4_c0025_3.jpg",
+    "img/Match4_c0025_4.jpg",
+    "img/Match4_c0025_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 32:18 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 48474,
+    "b": 48475,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0026",
+   "images": [
+    "img/Match4_c0026_0.jpg",
+    "img/Match4_c0026_1.jpg",
+    "img/Match4_c0026_2.jpg",
+    "img/Match4_c0026_3.jpg",
+    "img/Match4_c0026_4.jpg",
+    "img/Match4_c0026_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 32:53 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 49349,
+    "b": 49350,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0027",
+   "images": [
+    "img/Match4_c0027_0.jpg",
+    "img/Match4_c0027_1.jpg",
+    "img/Match4_c0027_2.jpg",
+    "img/Match4_c0027_3.jpg",
+    "img/Match4_c0027_4.jpg",
+    "img/Match4_c0027_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 32:57 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 49428,
+    "b": 49429,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0028",
+   "images": [
+    "img/Match4_c0028_0.jpg",
+    "img/Match4_c0028_1.jpg",
+    "img/Match4_c0028_2.jpg",
+    "img/Match4_c0028_3.jpg",
+    "img/Match4_c0028_4.jpg",
+    "img/Match4_c0028_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 33:49 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 50748,
+    "b": 50749,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0029",
+   "images": [
+    "img/Match4_c0029_0.jpg",
+    "img/Match4_c0029_1.jpg",
+    "img/Match4_c0029_2.jpg",
+    "img/Match4_c0029_3.jpg",
+    "img/Match4_c0029_4.jpg",
+    "img/Match4_c0029_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 33:50 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match4",
+    "a": 50765,
+    "b": 50766,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0030",
+   "images": [
+    "img/Match4_c0030_0.jpg",
+    "img/Match4_c0030_1.jpg",
+    "img/Match4_c0030_2.jpg",
+    "img/Match4_c0030_3.jpg",
+    "img/Match4_c0030_4.jpg",
+    "img/Match4_c0030_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 33:52 \u00b7 proposed 9-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 50804,
+    "b": 50812,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0031",
+   "images": [
+    "img/Match4_c0031_0.jpg",
+    "img/Match4_c0031_1.jpg",
+    "img/Match4_c0031_2.jpg",
+    "img/Match4_c0031_3.jpg",
+    "img/Match4_c0031_4.jpg",
+    "img/Match4_c0031_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 33:53 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 50843,
+    "b": 50844,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0032",
+   "images": [
+    "img/Match4_c0032_0.jpg",
+    "img/Match4_c0032_1.jpg",
+    "img/Match4_c0032_2.jpg",
+    "img/Match4_c0032_3.jpg",
+    "img/Match4_c0032_4.jpg",
+    "img/Match4_c0032_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 33:55 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 50879,
+    "b": 50880,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0033",
+   "images": [
+    "img/Match4_c0033_0.jpg",
+    "img/Match4_c0033_1.jpg",
+    "img/Match4_c0033_2.jpg",
+    "img/Match4_c0033_3.jpg",
+    "img/Match4_c0033_4.jpg",
+    "img/Match4_c0033_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 33:56 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match4",
+    "a": 50923,
+    "b": 50924,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0034",
+   "images": [
+    "img/Match4_c0034_0.jpg",
+    "img/Match4_c0034_1.jpg",
+    "img/Match4_c0034_2.jpg",
+    "img/Match4_c0034_3.jpg",
+    "img/Match4_c0034_4.jpg",
+    "img/Match4_c0034_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 33:58 \u00b7 proposed 5-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 50963,
+    "b": 50967,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0035",
+   "images": [
+    "img/Match4_c0035_0.jpg",
+    "img/Match4_c0035_1.jpg",
+    "img/Match4_c0035_2.jpg",
+    "img/Match4_c0035_3.jpg",
+    "img/Match4_c0035_4.jpg",
+    "img/Match4_c0035_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 33:59 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 50979,
+    "b": 50980,
+    "methods": [
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0036",
+   "images": [
+    "img/Match4_c0036_0.jpg",
+    "img/Match4_c0036_1.jpg",
+    "img/Match4_c0036_2.jpg",
+    "img/Match4_c0036_3.jpg",
+    "img/Match4_c0036_4.jpg",
+    "img/Match4_c0036_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 34:06 \u00b7 proposed 29-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 51166,
+    "b": 51194,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0037",
+   "images": [
+    "img/Match4_c0037_0.jpg",
+    "img/Match4_c0037_1.jpg",
+    "img/Match4_c0037_2.jpg",
+    "img/Match4_c0037_3.jpg",
+    "img/Match4_c0037_4.jpg",
+    "img/Match4_c0037_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 34:25 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 51648,
+    "b": 51649,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0038",
+   "images": [
+    "img/Match4_c0038_0.jpg",
+    "img/Match4_c0038_1.jpg",
+    "img/Match4_c0038_2.jpg",
+    "img/Match4_c0038_3.jpg",
+    "img/Match4_c0038_4.jpg",
+    "img/Match4_c0038_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 34:29 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match4",
+    "a": 51731,
+    "b": 51732,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0039",
+   "images": [
+    "img/Match4_c0039_0.jpg",
+    "img/Match4_c0039_1.jpg",
+    "img/Match4_c0039_2.jpg",
+    "img/Match4_c0039_3.jpg",
+    "img/Match4_c0039_4.jpg",
+    "img/Match4_c0039_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 34:30 \u00b7 proposed 14-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 51770,
+    "b": 51783,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0040",
+   "images": [
+    "img/Match4_c0040_0.jpg",
+    "img/Match4_c0040_1.jpg",
+    "img/Match4_c0040_2.jpg",
+    "img/Match4_c0040_3.jpg",
+    "img/Match4_c0040_4.jpg",
+    "img/Match4_c0040_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 34:36 \u00b7 proposed 29-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 51924,
+    "b": 51952,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0041",
+   "images": [
+    "img/Match4_c0041_0.jpg",
+    "img/Match4_c0041_1.jpg",
+    "img/Match4_c0041_2.jpg",
+    "img/Match4_c0041_3.jpg",
+    "img/Match4_c0041_4.jpg",
+    "img/Match4_c0041_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 34:45 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 52143,
+    "b": 52144,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match4_c0042",
+   "images": [
+    "img/Match4_c0042_0.jpg",
+    "img/Match4_c0042_1.jpg",
+    "img/Match4_c0042_2.jpg",
+    "img/Match4_c0042_3.jpg",
+    "img/Match4_c0042_4.jpg",
+    "img/Match4_c0042_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match4 \u00b7 34:47 \u00b7 proposed 11-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match4",
+    "a": 52186,
+    "b": 52196,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0000",
+   "images": [
+    "img/Match3_c0000_0.jpg",
+    "img/Match3_c0000_1.jpg",
+    "img/Match3_c0000_2.jpg",
+    "img/Match3_c0000_3.jpg",
+    "img/Match3_c0000_4.jpg",
+    "img/Match3_c0000_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 25:01 \u00b7 proposed 21-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 37542,
+    "b": 37562,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0001",
+   "images": [
+    "img/Match3_c0001_0.jpg",
+    "img/Match3_c0001_1.jpg",
+    "img/Match3_c0001_2.jpg",
+    "img/Match3_c0001_3.jpg",
+    "img/Match3_c0001_4.jpg",
+    "img/Match3_c0001_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 25:11 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 37798,
+    "b": 37798,
+    "methods": [
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0002",
+   "images": [
+    "img/Match3_c0002_0.jpg",
+    "img/Match3_c0002_1.jpg",
+    "img/Match3_c0002_2.jpg",
+    "img/Match3_c0002_3.jpg",
+    "img/Match3_c0002_4.jpg",
+    "img/Match3_c0002_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 25:19 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 37999,
+    "b": 38000,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0003",
+   "images": [
+    "img/Match3_c0003_0.jpg",
+    "img/Match3_c0003_1.jpg",
+    "img/Match3_c0003_2.jpg",
+    "img/Match3_c0003_3.jpg",
+    "img/Match3_c0003_4.jpg",
+    "img/Match3_c0003_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 25:20 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 38011,
+    "b": 38012,
+    "methods": [
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0004",
+   "images": [
+    "img/Match3_c0004_0.jpg",
+    "img/Match3_c0004_1.jpg",
+    "img/Match3_c0004_2.jpg",
+    "img/Match3_c0004_3.jpg",
+    "img/Match3_c0004_4.jpg",
+    "img/Match3_c0004_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 26:15 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 39376,
+    "b": 39377,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0005",
+   "images": [
+    "img/Match3_c0005_0.jpg",
+    "img/Match3_c0005_1.jpg",
+    "img/Match3_c0005_2.jpg",
+    "img/Match3_c0005_3.jpg",
+    "img/Match3_c0005_4.jpg",
+    "img/Match3_c0005_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 26:17 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 39442,
+    "b": 39443,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0006",
+   "images": [
+    "img/Match3_c0006_0.jpg",
+    "img/Match3_c0006_1.jpg",
+    "img/Match3_c0006_2.jpg",
+    "img/Match3_c0006_3.jpg",
+    "img/Match3_c0006_4.jpg",
+    "img/Match3_c0006_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:04 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 40612,
+    "b": 40613,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0007",
+   "images": [
+    "img/Match3_c0007_0.jpg",
+    "img/Match3_c0007_1.jpg",
+    "img/Match3_c0007_2.jpg",
+    "img/Match3_c0007_3.jpg",
+    "img/Match3_c0007_4.jpg",
+    "img/Match3_c0007_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:08 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 40713,
+    "b": 40714,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0008",
+   "images": [
+    "img/Match3_c0008_0.jpg",
+    "img/Match3_c0008_1.jpg",
+    "img/Match3_c0008_2.jpg",
+    "img/Match3_c0008_3.jpg",
+    "img/Match3_c0008_4.jpg",
+    "img/Match3_c0008_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:09 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 40747,
+    "b": 40748,
+    "methods": [
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0009",
+   "images": [
+    "img/Match3_c0009_0.jpg",
+    "img/Match3_c0009_1.jpg",
+    "img/Match3_c0009_2.jpg",
+    "img/Match3_c0009_3.jpg",
+    "img/Match3_c0009_4.jpg",
+    "img/Match3_c0009_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 40762,
+    "b": 40763,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0010",
+   "images": [
+    "img/Match3_c0010_0.jpg",
+    "img/Match3_c0010_1.jpg",
+    "img/Match3_c0010_2.jpg",
+    "img/Match3_c0010_3.jpg",
+    "img/Match3_c0010_4.jpg",
+    "img/Match3_c0010_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:15 \u00b7 proposed 22-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 40881,
+    "b": 40902,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0011",
+   "images": [
+    "img/Match3_c0011_0.jpg",
+    "img/Match3_c0011_1.jpg",
+    "img/Match3_c0011_2.jpg",
+    "img/Match3_c0011_3.jpg",
+    "img/Match3_c0011_4.jpg",
+    "img/Match3_c0011_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:20 \u00b7 proposed 13-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 41001,
+    "b": 41013,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0012",
+   "images": [
+    "img/Match3_c0012_0.jpg",
+    "img/Match3_c0012_1.jpg",
+    "img/Match3_c0012_2.jpg",
+    "img/Match3_c0012_3.jpg",
+    "img/Match3_c0012_4.jpg",
+    "img/Match3_c0012_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:36 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 41404,
+    "b": 41405,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0013",
+   "images": [
+    "img/Match3_c0013_0.jpg",
+    "img/Match3_c0013_1.jpg",
+    "img/Match3_c0013_2.jpg",
+    "img/Match3_c0013_3.jpg",
+    "img/Match3_c0013_4.jpg",
+    "img/Match3_c0013_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:37 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 41434,
+    "b": 41435,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0014",
+   "images": [
+    "img/Match3_c0014_0.jpg",
+    "img/Match3_c0014_1.jpg",
+    "img/Match3_c0014_2.jpg",
+    "img/Match3_c0014_3.jpg",
+    "img/Match3_c0014_4.jpg",
+    "img/Match3_c0014_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:41 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 41528,
+    "b": 41529,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0015",
+   "images": [
+    "img/Match3_c0015_0.jpg",
+    "img/Match3_c0015_1.jpg",
+    "img/Match3_c0015_2.jpg",
+    "img/Match3_c0015_3.jpg",
+    "img/Match3_c0015_4.jpg",
+    "img/Match3_c0015_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:41 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 41540,
+    "b": 41541,
+    "methods": [
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0016",
+   "images": [
+    "img/Match3_c0016_0.jpg",
+    "img/Match3_c0016_1.jpg",
+    "img/Match3_c0016_2.jpg",
+    "img/Match3_c0016_3.jpg",
+    "img/Match3_c0016_4.jpg",
+    "img/Match3_c0016_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:50 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 41774,
+    "b": 41775,
+    "methods": [
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0017",
+   "images": [
+    "img/Match3_c0017_0.jpg",
+    "img/Match3_c0017_1.jpg",
+    "img/Match3_c0017_2.jpg",
+    "img/Match3_c0017_3.jpg",
+    "img/Match3_c0017_4.jpg",
+    "img/Match3_c0017_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:52 \u00b7 proposed 13-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 41812,
+    "b": 41824,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0018",
+   "images": [
+    "img/Match3_c0018_0.jpg",
+    "img/Match3_c0018_1.jpg",
+    "img/Match3_c0018_2.jpg",
+    "img/Match3_c0018_3.jpg",
+    "img/Match3_c0018_4.jpg",
+    "img/Match3_c0018_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 27:59 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 41980,
+    "b": 41981,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0019",
+   "images": [
+    "img/Match3_c0019_0.jpg",
+    "img/Match3_c0019_1.jpg",
+    "img/Match3_c0019_2.jpg",
+    "img/Match3_c0019_3.jpg",
+    "img/Match3_c0019_4.jpg",
+    "img/Match3_c0019_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:03 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 42098,
+    "b": 42099,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0020",
+   "images": [
+    "img/Match3_c0020_0.jpg",
+    "img/Match3_c0020_1.jpg",
+    "img/Match3_c0020_2.jpg",
+    "img/Match3_c0020_3.jpg",
+    "img/Match3_c0020_4.jpg",
+    "img/Match3_c0020_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:04 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 42120,
+    "b": 42121,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0021",
+   "images": [
+    "img/Match3_c0021_0.jpg",
+    "img/Match3_c0021_1.jpg",
+    "img/Match3_c0021_2.jpg",
+    "img/Match3_c0021_3.jpg",
+    "img/Match3_c0021_4.jpg",
+    "img/Match3_c0021_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:12 \u00b7 proposed 8-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 42301,
+    "b": 42308,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0022",
+   "images": [
+    "img/Match3_c0022_0.jpg",
+    "img/Match3_c0022_1.jpg",
+    "img/Match3_c0022_2.jpg",
+    "img/Match3_c0022_3.jpg",
+    "img/Match3_c0022_4.jpg",
+    "img/Match3_c0022_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:18 \u00b7 proposed 19-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 42459,
+    "b": 42477,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0023",
+   "images": [
+    "img/Match3_c0023_0.jpg",
+    "img/Match3_c0023_1.jpg",
+    "img/Match3_c0023_2.jpg",
+    "img/Match3_c0023_3.jpg",
+    "img/Match3_c0023_4.jpg",
+    "img/Match3_c0023_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:22 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 42568,
+    "b": 42569,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0024",
+   "images": [
+    "img/Match3_c0024_0.jpg",
+    "img/Match3_c0024_1.jpg",
+    "img/Match3_c0024_2.jpg",
+    "img/Match3_c0024_3.jpg",
+    "img/Match3_c0024_4.jpg",
+    "img/Match3_c0024_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:25 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 42638,
+    "b": 42639,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0025",
+   "images": [
+    "img/Match3_c0025_0.jpg",
+    "img/Match3_c0025_1.jpg",
+    "img/Match3_c0025_2.jpg",
+    "img/Match3_c0025_3.jpg",
+    "img/Match3_c0025_4.jpg",
+    "img/Match3_c0025_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:35 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 42884,
+    "b": 42885,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0026",
+   "images": [
+    "img/Match3_c0026_0.jpg",
+    "img/Match3_c0026_1.jpg",
+    "img/Match3_c0026_2.jpg",
+    "img/Match3_c0026_3.jpg",
+    "img/Match3_c0026_4.jpg",
+    "img/Match3_c0026_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:40 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43009,
+    "b": 43010,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0027",
+   "images": [
+    "img/Match3_c0027_0.jpg",
+    "img/Match3_c0027_1.jpg",
+    "img/Match3_c0027_2.jpg",
+    "img/Match3_c0027_3.jpg",
+    "img/Match3_c0027_4.jpg",
+    "img/Match3_c0027_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:41 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43047,
+    "b": 43048,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0028",
+   "images": [
+    "img/Match3_c0028_0.jpg",
+    "img/Match3_c0028_1.jpg",
+    "img/Match3_c0028_2.jpg",
+    "img/Match3_c0028_3.jpg",
+    "img/Match3_c0028_4.jpg",
+    "img/Match3_c0028_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:43 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43098,
+    "b": 43099,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0029",
+   "images": [
+    "img/Match3_c0029_0.jpg",
+    "img/Match3_c0029_1.jpg",
+    "img/Match3_c0029_2.jpg",
+    "img/Match3_c0029_3.jpg",
+    "img/Match3_c0029_4.jpg",
+    "img/Match3_c0029_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:46 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43159,
+    "b": 43160,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0030",
+   "images": [
+    "img/Match3_c0030_0.jpg",
+    "img/Match3_c0030_1.jpg",
+    "img/Match3_c0030_2.jpg",
+    "img/Match3_c0030_3.jpg",
+    "img/Match3_c0030_4.jpg",
+    "img/Match3_c0030_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:48 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43204,
+    "b": 43205,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0031",
+   "images": [
+    "img/Match3_c0031_0.jpg",
+    "img/Match3_c0031_1.jpg",
+    "img/Match3_c0031_2.jpg",
+    "img/Match3_c0031_3.jpg",
+    "img/Match3_c0031_4.jpg",
+    "img/Match3_c0031_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 28:53 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43335,
+    "b": 43336,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0032",
+   "images": [
+    "img/Match3_c0032_0.jpg",
+    "img/Match3_c0032_1.jpg",
+    "img/Match3_c0032_2.jpg",
+    "img/Match3_c0032_3.jpg",
+    "img/Match3_c0032_4.jpg",
+    "img/Match3_c0032_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 29:08 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43717,
+    "b": 43718,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0033",
+   "images": [
+    "img/Match3_c0033_0.jpg",
+    "img/Match3_c0033_1.jpg",
+    "img/Match3_c0033_2.jpg",
+    "img/Match3_c0033_3.jpg",
+    "img/Match3_c0033_4.jpg",
+    "img/Match3_c0033_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 29:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43770,
+    "b": 43771,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0034",
+   "images": [
+    "img/Match3_c0034_0.jpg",
+    "img/Match3_c0034_1.jpg",
+    "img/Match3_c0034_2.jpg",
+    "img/Match3_c0034_3.jpg",
+    "img/Match3_c0034_4.jpg",
+    "img/Match3_c0034_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 29:14 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 43859,
+    "b": 43860,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0035",
+   "images": [
+    "img/Match3_c0035_0.jpg",
+    "img/Match3_c0035_1.jpg",
+    "img/Match3_c0035_2.jpg",
+    "img/Match3_c0035_3.jpg",
+    "img/Match3_c0035_4.jpg",
+    "img/Match3_c0035_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:15 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 45384,
+    "b": 45385,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0036",
+   "images": [
+    "img/Match3_c0036_0.jpg",
+    "img/Match3_c0036_1.jpg",
+    "img/Match3_c0036_2.jpg",
+    "img/Match3_c0036_3.jpg",
+    "img/Match3_c0036_4.jpg",
+    "img/Match3_c0036_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:19 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 45479,
+    "b": 45480,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0037",
+   "images": [
+    "img/Match3_c0037_0.jpg",
+    "img/Match3_c0037_1.jpg",
+    "img/Match3_c0037_2.jpg",
+    "img/Match3_c0037_3.jpg",
+    "img/Match3_c0037_4.jpg",
+    "img/Match3_c0037_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:20 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match3",
+    "a": 45504,
+    "b": 45505,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0038",
+   "images": [
+    "img/Match3_c0038_0.jpg",
+    "img/Match3_c0038_1.jpg",
+    "img/Match3_c0038_2.jpg",
+    "img/Match3_c0038_3.jpg",
+    "img/Match3_c0038_4.jpg",
+    "img/Match3_c0038_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:21 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match3",
+    "a": 45527,
+    "b": 45528,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0039",
+   "images": [
+    "img/Match3_c0039_0.jpg",
+    "img/Match3_c0039_1.jpg",
+    "img/Match3_c0039_2.jpg",
+    "img/Match3_c0039_3.jpg",
+    "img/Match3_c0039_4.jpg",
+    "img/Match3_c0039_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:21 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 45549,
+    "b": 45550,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0040",
+   "images": [
+    "img/Match3_c0040_0.jpg",
+    "img/Match3_c0040_1.jpg",
+    "img/Match3_c0040_2.jpg",
+    "img/Match3_c0040_3.jpg",
+    "img/Match3_c0040_4.jpg",
+    "img/Match3_c0040_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:23 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match3",
+    "a": 45575,
+    "b": 45576,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0041",
+   "images": [
+    "img/Match3_c0041_0.jpg",
+    "img/Match3_c0041_1.jpg",
+    "img/Match3_c0041_2.jpg",
+    "img/Match3_c0041_3.jpg",
+    "img/Match3_c0041_4.jpg",
+    "img/Match3_c0041_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:25 \u00b7 proposed 8-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 45638,
+    "b": 45645,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0042",
+   "images": [
+    "img/Match3_c0042_0.jpg",
+    "img/Match3_c0042_1.jpg",
+    "img/Match3_c0042_2.jpg",
+    "img/Match3_c0042_3.jpg",
+    "img/Match3_c0042_4.jpg",
+    "img/Match3_c0042_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:30 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match3",
+    "a": 45768,
+    "b": 45769,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0043",
+   "images": [
+    "img/Match3_c0043_0.jpg",
+    "img/Match3_c0043_1.jpg",
+    "img/Match3_c0043_2.jpg",
+    "img/Match3_c0043_3.jpg",
+    "img/Match3_c0043_4.jpg",
+    "img/Match3_c0043_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:31 \u00b7 proposed 13-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 45794,
+    "b": 45806,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0044",
+   "images": [
+    "img/Match3_c0044_0.jpg",
+    "img/Match3_c0044_1.jpg",
+    "img/Match3_c0044_2.jpg",
+    "img/Match3_c0044_3.jpg",
+    "img/Match3_c0044_4.jpg",
+    "img/Match3_c0044_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:33 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 45839,
+    "b": 45840,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0045",
+   "images": [
+    "img/Match3_c0045_0.jpg",
+    "img/Match3_c0045_1.jpg",
+    "img/Match3_c0045_2.jpg",
+    "img/Match3_c0045_3.jpg",
+    "img/Match3_c0045_4.jpg",
+    "img/Match3_c0045_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 30:40 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 46021,
+    "b": 46022,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0046",
+   "images": [
+    "img/Match3_c0046_0.jpg",
+    "img/Match3_c0046_1.jpg",
+    "img/Match3_c0046_2.jpg",
+    "img/Match3_c0046_3.jpg",
+    "img/Match3_c0046_4.jpg",
+    "img/Match3_c0046_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:09 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 46739,
+    "b": 46740,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0047",
+   "images": [
+    "img/Match3_c0047_0.jpg",
+    "img/Match3_c0047_1.jpg",
+    "img/Match3_c0047_2.jpg",
+    "img/Match3_c0047_3.jpg",
+    "img/Match3_c0047_4.jpg",
+    "img/Match3_c0047_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:11 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 46798,
+    "b": 46799,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0048",
+   "images": [
+    "img/Match3_c0048_0.jpg",
+    "img/Match3_c0048_1.jpg",
+    "img/Match3_c0048_2.jpg",
+    "img/Match3_c0048_3.jpg",
+    "img/Match3_c0048_4.jpg",
+    "img/Match3_c0048_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:14 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 46865,
+    "b": 46866,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0049",
+   "images": [
+    "img/Match3_c0049_0.jpg",
+    "img/Match3_c0049_1.jpg",
+    "img/Match3_c0049_2.jpg",
+    "img/Match3_c0049_3.jpg",
+    "img/Match3_c0049_4.jpg",
+    "img/Match3_c0049_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:33 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 47328,
+    "b": 47329,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0050",
+   "images": [
+    "img/Match3_c0050_0.jpg",
+    "img/Match3_c0050_1.jpg",
+    "img/Match3_c0050_2.jpg",
+    "img/Match3_c0050_3.jpg",
+    "img/Match3_c0050_4.jpg",
+    "img/Match3_c0050_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:35 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 47383,
+    "b": 47384,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0051",
+   "images": [
+    "img/Match3_c0051_0.jpg",
+    "img/Match3_c0051_1.jpg",
+    "img/Match3_c0051_2.jpg",
+    "img/Match3_c0051_3.jpg",
+    "img/Match3_c0051_4.jpg",
+    "img/Match3_c0051_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:42 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 47551,
+    "b": 47552,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0052",
+   "images": [
+    "img/Match3_c0052_0.jpg",
+    "img/Match3_c0052_1.jpg",
+    "img/Match3_c0052_2.jpg",
+    "img/Match3_c0052_3.jpg",
+    "img/Match3_c0052_4.jpg",
+    "img/Match3_c0052_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:46 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 47657,
+    "b": 47658,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0053",
+   "images": [
+    "img/Match3_c0053_0.jpg",
+    "img/Match3_c0053_1.jpg",
+    "img/Match3_c0053_2.jpg",
+    "img/Match3_c0053_3.jpg",
+    "img/Match3_c0053_4.jpg",
+    "img/Match3_c0053_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:47 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 47696,
+    "b": 47697,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0054",
+   "images": [
+    "img/Match3_c0054_0.jpg",
+    "img/Match3_c0054_1.jpg",
+    "img/Match3_c0054_2.jpg",
+    "img/Match3_c0054_3.jpg",
+    "img/Match3_c0054_4.jpg",
+    "img/Match3_c0054_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:49 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 47731,
+    "b": 47732,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0055",
+   "images": [
+    "img/Match3_c0055_0.jpg",
+    "img/Match3_c0055_1.jpg",
+    "img/Match3_c0055_2.jpg",
+    "img/Match3_c0055_3.jpg",
+    "img/Match3_c0055_4.jpg",
+    "img/Match3_c0055_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:51 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 47778,
+    "b": 47779,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0056",
+   "images": [
+    "img/Match3_c0056_0.jpg",
+    "img/Match3_c0056_1.jpg",
+    "img/Match3_c0056_2.jpg",
+    "img/Match3_c0056_3.jpg",
+    "img/Match3_c0056_4.jpg",
+    "img/Match3_c0056_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 31:57 \u00b7 proposed 20-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 47938,
+    "b": 47957,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0057",
+   "images": [
+    "img/Match3_c0057_0.jpg",
+    "img/Match3_c0057_1.jpg",
+    "img/Match3_c0057_2.jpg",
+    "img/Match3_c0057_3.jpg",
+    "img/Match3_c0057_4.jpg",
+    "img/Match3_c0057_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:06 \u00b7 proposed 8-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 48150,
+    "b": 48157,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0058",
+   "images": [
+    "img/Match3_c0058_0.jpg",
+    "img/Match3_c0058_1.jpg",
+    "img/Match3_c0058_2.jpg",
+    "img/Match3_c0058_3.jpg",
+    "img/Match3_c0058_4.jpg",
+    "img/Match3_c0058_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:12 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 48313,
+    "b": 48314,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0059",
+   "images": [
+    "img/Match3_c0059_0.jpg",
+    "img/Match3_c0059_1.jpg",
+    "img/Match3_c0059_2.jpg",
+    "img/Match3_c0059_3.jpg",
+    "img/Match3_c0059_4.jpg",
+    "img/Match3_c0059_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:18 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 48460,
+    "b": 48461,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0060",
+   "images": [
+    "img/Match3_c0060_0.jpg",
+    "img/Match3_c0060_1.jpg",
+    "img/Match3_c0060_2.jpg",
+    "img/Match3_c0060_3.jpg",
+    "img/Match3_c0060_4.jpg",
+    "img/Match3_c0060_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:22 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match3",
+    "a": 48559,
+    "b": 48560,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0061",
+   "images": [
+    "img/Match3_c0061_0.jpg",
+    "img/Match3_c0061_1.jpg",
+    "img/Match3_c0061_2.jpg",
+    "img/Match3_c0061_3.jpg",
+    "img/Match3_c0061_4.jpg",
+    "img/Match3_c0061_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:23 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match3",
+    "a": 48585,
+    "b": 48586,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0062",
+   "images": [
+    "img/Match3_c0062_0.jpg",
+    "img/Match3_c0062_1.jpg",
+    "img/Match3_c0062_2.jpg",
+    "img/Match3_c0062_3.jpg",
+    "img/Match3_c0062_4.jpg",
+    "img/Match3_c0062_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:29 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 48743,
+    "b": 48744,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0063",
+   "images": [
+    "img/Match3_c0063_0.jpg",
+    "img/Match3_c0063_1.jpg",
+    "img/Match3_c0063_2.jpg",
+    "img/Match3_c0063_3.jpg",
+    "img/Match3_c0063_4.jpg",
+    "img/Match3_c0063_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:34 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 48855,
+    "b": 48856,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0064",
+   "images": [
+    "img/Match3_c0064_0.jpg",
+    "img/Match3_c0064_1.jpg",
+    "img/Match3_c0064_2.jpg",
+    "img/Match3_c0064_3.jpg",
+    "img/Match3_c0064_4.jpg",
+    "img/Match3_c0064_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:37 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 48928,
+    "b": 48929,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0065",
+   "images": [
+    "img/Match3_c0065_0.jpg",
+    "img/Match3_c0065_1.jpg",
+    "img/Match3_c0065_2.jpg",
+    "img/Match3_c0065_3.jpg",
+    "img/Match3_c0065_4.jpg",
+    "img/Match3_c0065_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:40 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49000,
+    "b": 49001,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0066",
+   "images": [
+    "img/Match3_c0066_0.jpg",
+    "img/Match3_c0066_1.jpg",
+    "img/Match3_c0066_2.jpg",
+    "img/Match3_c0066_3.jpg",
+    "img/Match3_c0066_4.jpg",
+    "img/Match3_c0066_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:41 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49029,
+    "b": 49030,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0067",
+   "images": [
+    "img/Match3_c0067_0.jpg",
+    "img/Match3_c0067_1.jpg",
+    "img/Match3_c0067_2.jpg",
+    "img/Match3_c0067_3.jpg",
+    "img/Match3_c0067_4.jpg",
+    "img/Match3_c0067_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:43 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49078,
+    "b": 49079,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0068",
+   "images": [
+    "img/Match3_c0068_0.jpg",
+    "img/Match3_c0068_1.jpg",
+    "img/Match3_c0068_2.jpg",
+    "img/Match3_c0068_3.jpg",
+    "img/Match3_c0068_4.jpg",
+    "img/Match3_c0068_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:44 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49116,
+    "b": 49117,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0069",
+   "images": [
+    "img/Match3_c0069_0.jpg",
+    "img/Match3_c0069_1.jpg",
+    "img/Match3_c0069_2.jpg",
+    "img/Match3_c0069_3.jpg",
+    "img/Match3_c0069_4.jpg",
+    "img/Match3_c0069_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:46 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49160,
+    "b": 49161,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0070",
+   "images": [
+    "img/Match3_c0070_0.jpg",
+    "img/Match3_c0070_1.jpg",
+    "img/Match3_c0070_2.jpg",
+    "img/Match3_c0070_3.jpg",
+    "img/Match3_c0070_4.jpg",
+    "img/Match3_c0070_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 32:50 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49274,
+    "b": 49275,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0071",
+   "images": [
+    "img/Match3_c0071_0.jpg",
+    "img/Match3_c0071_1.jpg",
+    "img/Match3_c0071_2.jpg",
+    "img/Match3_c0071_3.jpg",
+    "img/Match3_c0071_4.jpg",
+    "img/Match3_c0071_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:02 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49561,
+    "b": 49562,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0072",
+   "images": [
+    "img/Match3_c0072_0.jpg",
+    "img/Match3_c0072_1.jpg",
+    "img/Match3_c0072_2.jpg",
+    "img/Match3_c0072_3.jpg",
+    "img/Match3_c0072_4.jpg",
+    "img/Match3_c0072_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:06 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49672,
+    "b": 49673,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0073",
+   "images": [
+    "img/Match3_c0073_0.jpg",
+    "img/Match3_c0073_1.jpg",
+    "img/Match3_c0073_2.jpg",
+    "img/Match3_c0073_3.jpg",
+    "img/Match3_c0073_4.jpg",
+    "img/Match3_c0073_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:13 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49825,
+    "b": 49826,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0074",
+   "images": [
+    "img/Match3_c0074_0.jpg",
+    "img/Match3_c0074_1.jpg",
+    "img/Match3_c0074_2.jpg",
+    "img/Match3_c0074_3.jpg",
+    "img/Match3_c0074_4.jpg",
+    "img/Match3_c0074_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:14 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49861,
+    "b": 49862,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0075",
+   "images": [
+    "img/Match3_c0075_0.jpg",
+    "img/Match3_c0075_1.jpg",
+    "img/Match3_c0075_2.jpg",
+    "img/Match3_c0075_3.jpg",
+    "img/Match3_c0075_4.jpg",
+    "img/Match3_c0075_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:15 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49896,
+    "b": 49897,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0076",
+   "images": [
+    "img/Match3_c0076_0.jpg",
+    "img/Match3_c0076_1.jpg",
+    "img/Match3_c0076_2.jpg",
+    "img/Match3_c0076_3.jpg",
+    "img/Match3_c0076_4.jpg",
+    "img/Match3_c0076_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:16 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49922,
+    "b": 49923,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0077",
+   "images": [
+    "img/Match3_c0077_0.jpg",
+    "img/Match3_c0077_1.jpg",
+    "img/Match3_c0077_2.jpg",
+    "img/Match3_c0077_3.jpg",
+    "img/Match3_c0077_4.jpg",
+    "img/Match3_c0077_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:19 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 49989,
+    "b": 49990,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0078",
+   "images": [
+    "img/Match3_c0078_0.jpg",
+    "img/Match3_c0078_1.jpg",
+    "img/Match3_c0078_2.jpg",
+    "img/Match3_c0078_3.jpg",
+    "img/Match3_c0078_4.jpg",
+    "img/Match3_c0078_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:20 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match3",
+    "a": 50016,
+    "b": 50017,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0079",
+   "images": [
+    "img/Match3_c0079_0.jpg",
+    "img/Match3_c0079_1.jpg",
+    "img/Match3_c0079_2.jpg",
+    "img/Match3_c0079_3.jpg",
+    "img/Match3_c0079_4.jpg",
+    "img/Match3_c0079_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:23 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50096,
+    "b": 50097,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0080",
+   "images": [
+    "img/Match3_c0080_0.jpg",
+    "img/Match3_c0080_1.jpg",
+    "img/Match3_c0080_2.jpg",
+    "img/Match3_c0080_3.jpg",
+    "img/Match3_c0080_4.jpg",
+    "img/Match3_c0080_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:25 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50143,
+    "b": 50144,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0081",
+   "images": [
+    "img/Match3_c0081_0.jpg",
+    "img/Match3_c0081_1.jpg",
+    "img/Match3_c0081_2.jpg",
+    "img/Match3_c0081_3.jpg",
+    "img/Match3_c0081_4.jpg",
+    "img/Match3_c0081_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:27 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50191,
+    "b": 50192,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0082",
+   "images": [
+    "img/Match3_c0082_0.jpg",
+    "img/Match3_c0082_1.jpg",
+    "img/Match3_c0082_2.jpg",
+    "img/Match3_c0082_3.jpg",
+    "img/Match3_c0082_4.jpg",
+    "img/Match3_c0082_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:29 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50228,
+    "b": 50229,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0083",
+   "images": [
+    "img/Match3_c0083_0.jpg",
+    "img/Match3_c0083_1.jpg",
+    "img/Match3_c0083_2.jpg",
+    "img/Match3_c0083_3.jpg",
+    "img/Match3_c0083_4.jpg",
+    "img/Match3_c0083_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:31 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50284,
+    "b": 50285,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0084",
+   "images": [
+    "img/Match3_c0084_0.jpg",
+    "img/Match3_c0084_1.jpg",
+    "img/Match3_c0084_2.jpg",
+    "img/Match3_c0084_3.jpg",
+    "img/Match3_c0084_4.jpg",
+    "img/Match3_c0084_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:36 \u00b7 proposed 20-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50403,
+    "b": 50422,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0085",
+   "images": [
+    "img/Match3_c0085_0.jpg",
+    "img/Match3_c0085_1.jpg",
+    "img/Match3_c0085_2.jpg",
+    "img/Match3_c0085_3.jpg",
+    "img/Match3_c0085_4.jpg",
+    "img/Match3_c0085_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:44 \u00b7 proposed 110-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50607,
+    "b": 50716,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0086",
+   "images": [
+    "img/Match3_c0086_0.jpg",
+    "img/Match3_c0086_1.jpg",
+    "img/Match3_c0086_2.jpg",
+    "img/Match3_c0086_3.jpg",
+    "img/Match3_c0086_4.jpg",
+    "img/Match3_c0086_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:55 \u00b7 proposed 19-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50892,
+    "b": 50910,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0087",
+   "images": [
+    "img/Match3_c0087_0.jpg",
+    "img/Match3_c0087_1.jpg",
+    "img/Match3_c0087_2.jpg",
+    "img/Match3_c0087_3.jpg",
+    "img/Match3_c0087_4.jpg",
+    "img/Match3_c0087_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 33:58 \u00b7 proposed 13-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 50967,
+    "b": 50979,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0088",
+   "images": [
+    "img/Match3_c0088_0.jpg",
+    "img/Match3_c0088_1.jpg",
+    "img/Match3_c0088_2.jpg",
+    "img/Match3_c0088_3.jpg",
+    "img/Match3_c0088_4.jpg",
+    "img/Match3_c0088_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 34:01 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 51032,
+    "b": 51033,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0089",
+   "images": [
+    "img/Match3_c0089_0.jpg",
+    "img/Match3_c0089_1.jpg",
+    "img/Match3_c0089_2.jpg",
+    "img/Match3_c0089_3.jpg",
+    "img/Match3_c0089_4.jpg",
+    "img/Match3_c0089_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 34:05 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match3",
+    "a": 51149,
+    "b": 51150,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match3_c0090",
+   "images": [
+    "img/Match3_c0090_0.jpg",
+    "img/Match3_c0090_1.jpg",
+    "img/Match3_c0090_2.jpg",
+    "img/Match3_c0090_3.jpg",
+    "img/Match3_c0090_4.jpg",
+    "img/Match3_c0090_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match3 \u00b7 34:12 \u00b7 proposed 22-frame interval",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match3",
+    "a": 51313,
+    "b": 51334,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0000",
+   "images": [
+    "img/Match6_c0000_0.jpg",
+    "img/Match6_c0000_1.jpg",
+    "img/Match6_c0000_2.jpg",
+    "img/Match6_c0000_3.jpg",
+    "img/Match6_c0000_4.jpg",
+    "img/Match6_c0000_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 25:08 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 37711,
+    "b": 37712,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0001",
+   "images": [
+    "img/Match6_c0001_0.jpg",
+    "img/Match6_c0001_1.jpg",
+    "img/Match6_c0001_2.jpg",
+    "img/Match6_c0001_3.jpg",
+    "img/Match6_c0001_4.jpg",
+    "img/Match6_c0001_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 25:11 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 37785,
+    "b": 37786,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0002",
+   "images": [
+    "img/Match6_c0002_0.jpg",
+    "img/Match6_c0002_1.jpg",
+    "img/Match6_c0002_2.jpg",
+    "img/Match6_c0002_3.jpg",
+    "img/Match6_c0002_4.jpg",
+    "img/Match6_c0002_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 25:27 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 38186,
+    "b": 38187,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0003",
+   "images": [
+    "img/Match6_c0003_0.jpg",
+    "img/Match6_c0003_1.jpg",
+    "img/Match6_c0003_2.jpg",
+    "img/Match6_c0003_3.jpg",
+    "img/Match6_c0003_4.jpg",
+    "img/Match6_c0003_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 25:30 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 38261,
+    "b": 38262,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0004",
+   "images": [
+    "img/Match6_c0004_0.jpg",
+    "img/Match6_c0004_1.jpg",
+    "img/Match6_c0004_2.jpg",
+    "img/Match6_c0004_3.jpg",
+    "img/Match6_c0004_4.jpg",
+    "img/Match6_c0004_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 25:35 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 38385,
+    "b": 38386,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0005",
+   "images": [
+    "img/Match6_c0005_0.jpg",
+    "img/Match6_c0005_1.jpg",
+    "img/Match6_c0005_2.jpg",
+    "img/Match6_c0005_3.jpg",
+    "img/Match6_c0005_4.jpg",
+    "img/Match6_c0005_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 25:36 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 38419,
+    "b": 38420,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0006",
+   "images": [
+    "img/Match6_c0006_0.jpg",
+    "img/Match6_c0006_1.jpg",
+    "img/Match6_c0006_2.jpg",
+    "img/Match6_c0006_3.jpg",
+    "img/Match6_c0006_4.jpg",
+    "img/Match6_c0006_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 25:40 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 38514,
+    "b": 38515,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0007",
+   "images": [
+    "img/Match6_c0007_0.jpg",
+    "img/Match6_c0007_1.jpg",
+    "img/Match6_c0007_2.jpg",
+    "img/Match6_c0007_3.jpg",
+    "img/Match6_c0007_4.jpg",
+    "img/Match6_c0007_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 27:06 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 40670,
+    "b": 40671,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0008",
+   "images": [
+    "img/Match6_c0008_0.jpg",
+    "img/Match6_c0008_1.jpg",
+    "img/Match6_c0008_2.jpg",
+    "img/Match6_c0008_3.jpg",
+    "img/Match6_c0008_4.jpg",
+    "img/Match6_c0008_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 27:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 40766,
+    "b": 40767,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0009",
+   "images": [
+    "img/Match6_c0009_0.jpg",
+    "img/Match6_c0009_1.jpg",
+    "img/Match6_c0009_2.jpg",
+    "img/Match6_c0009_3.jpg",
+    "img/Match6_c0009_4.jpg",
+    "img/Match6_c0009_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 27:15 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 40897,
+    "b": 40898,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0010",
+   "images": [
+    "img/Match6_c0010_0.jpg",
+    "img/Match6_c0010_1.jpg",
+    "img/Match6_c0010_2.jpg",
+    "img/Match6_c0010_3.jpg",
+    "img/Match6_c0010_4.jpg",
+    "img/Match6_c0010_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 27:17 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 40939,
+    "b": 40940,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0011",
+   "images": [
+    "img/Match6_c0011_0.jpg",
+    "img/Match6_c0011_1.jpg",
+    "img/Match6_c0011_2.jpg",
+    "img/Match6_c0011_3.jpg",
+    "img/Match6_c0011_4.jpg",
+    "img/Match6_c0011_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 27:19 \u00b7 proposed 37-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 40987,
+    "b": 41023,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0012",
+   "images": [
+    "img/Match6_c0012_0.jpg",
+    "img/Match6_c0012_1.jpg",
+    "img/Match6_c0012_2.jpg",
+    "img/Match6_c0012_3.jpg",
+    "img/Match6_c0012_4.jpg",
+    "img/Match6_c0012_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 27:29 \u00b7 proposed 24-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 41225,
+    "b": 41248,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0013",
+   "images": [
+    "img/Match6_c0013_0.jpg",
+    "img/Match6_c0013_1.jpg",
+    "img/Match6_c0013_2.jpg",
+    "img/Match6_c0013_3.jpg",
+    "img/Match6_c0013_4.jpg",
+    "img/Match6_c0013_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 27:30 \u00b7 proposed 29-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 41270,
+    "b": 41298,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0014",
+   "images": [
+    "img/Match6_c0014_0.jpg",
+    "img/Match6_c0014_1.jpg",
+    "img/Match6_c0014_2.jpg",
+    "img/Match6_c0014_3.jpg",
+    "img/Match6_c0014_4.jpg",
+    "img/Match6_c0014_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 27:36 \u00b7 proposed 29-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 41401,
+    "b": 41429,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0015",
+   "images": [
+    "img/Match6_c0015_0.jpg",
+    "img/Match6_c0015_1.jpg",
+    "img/Match6_c0015_2.jpg",
+    "img/Match6_c0015_3.jpg",
+    "img/Match6_c0015_4.jpg",
+    "img/Match6_c0015_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 28:08 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 42214,
+    "b": 42215,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0016",
+   "images": [
+    "img/Match6_c0016_0.jpg",
+    "img/Match6_c0016_1.jpg",
+    "img/Match6_c0016_2.jpg",
+    "img/Match6_c0016_3.jpg",
+    "img/Match6_c0016_4.jpg",
+    "img/Match6_c0016_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 28:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 42272,
+    "b": 42273,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0017",
+   "images": [
+    "img/Match6_c0017_0.jpg",
+    "img/Match6_c0017_1.jpg",
+    "img/Match6_c0017_2.jpg",
+    "img/Match6_c0017_3.jpg",
+    "img/Match6_c0017_4.jpg",
+    "img/Match6_c0017_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 28:11 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 42297,
+    "b": 42298,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0018",
+   "images": [
+    "img/Match6_c0018_0.jpg",
+    "img/Match6_c0018_1.jpg",
+    "img/Match6_c0018_2.jpg",
+    "img/Match6_c0018_3.jpg",
+    "img/Match6_c0018_4.jpg",
+    "img/Match6_c0018_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 28:35 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 42892,
+    "b": 42893,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0019",
+   "images": [
+    "img/Match6_c0019_0.jpg",
+    "img/Match6_c0019_1.jpg",
+    "img/Match6_c0019_2.jpg",
+    "img/Match6_c0019_3.jpg",
+    "img/Match6_c0019_4.jpg",
+    "img/Match6_c0019_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 28:38 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 42951,
+    "b": 42952,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0020",
+   "images": [
+    "img/Match6_c0020_0.jpg",
+    "img/Match6_c0020_1.jpg",
+    "img/Match6_c0020_2.jpg",
+    "img/Match6_c0020_3.jpg",
+    "img/Match6_c0020_4.jpg",
+    "img/Match6_c0020_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 29:43 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 44579,
+    "b": 44580,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0021",
+   "images": [
+    "img/Match6_c0021_0.jpg",
+    "img/Match6_c0021_1.jpg",
+    "img/Match6_c0021_2.jpg",
+    "img/Match6_c0021_3.jpg",
+    "img/Match6_c0021_4.jpg",
+    "img/Match6_c0021_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 29:45 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 44641,
+    "b": 44642,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0022",
+   "images": [
+    "img/Match6_c0022_0.jpg",
+    "img/Match6_c0022_1.jpg",
+    "img/Match6_c0022_2.jpg",
+    "img/Match6_c0022_3.jpg",
+    "img/Match6_c0022_4.jpg",
+    "img/Match6_c0022_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 29:50 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 44750,
+    "b": 44751,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0023",
+   "images": [
+    "img/Match6_c0023_0.jpg",
+    "img/Match6_c0023_1.jpg",
+    "img/Match6_c0023_2.jpg",
+    "img/Match6_c0023_3.jpg",
+    "img/Match6_c0023_4.jpg",
+    "img/Match6_c0023_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 29:53 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 44843,
+    "b": 44844,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0024",
+   "images": [
+    "img/Match6_c0024_0.jpg",
+    "img/Match6_c0024_1.jpg",
+    "img/Match6_c0024_2.jpg",
+    "img/Match6_c0024_3.jpg",
+    "img/Match6_c0024_4.jpg",
+    "img/Match6_c0024_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 29:56 \u00b7 proposed 28-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 44914,
+    "b": 44941,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0025",
+   "images": [
+    "img/Match6_c0025_0.jpg",
+    "img/Match6_c0025_1.jpg",
+    "img/Match6_c0025_2.jpg",
+    "img/Match6_c0025_3.jpg",
+    "img/Match6_c0025_4.jpg",
+    "img/Match6_c0025_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:02 \u00b7 proposed 23-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45062,
+    "b": 45084,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0026",
+   "images": [
+    "img/Match6_c0026_0.jpg",
+    "img/Match6_c0026_1.jpg",
+    "img/Match6_c0026_2.jpg",
+    "img/Match6_c0026_3.jpg",
+    "img/Match6_c0026_4.jpg",
+    "img/Match6_c0026_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:04 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45114,
+    "b": 45115,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0027",
+   "images": [
+    "img/Match6_c0027_0.jpg",
+    "img/Match6_c0027_1.jpg",
+    "img/Match6_c0027_2.jpg",
+    "img/Match6_c0027_3.jpg",
+    "img/Match6_c0027_4.jpg",
+    "img/Match6_c0027_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:08 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45209,
+    "b": 45210,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0028",
+   "images": [
+    "img/Match6_c0028_0.jpg",
+    "img/Match6_c0028_1.jpg",
+    "img/Match6_c0028_2.jpg",
+    "img/Match6_c0028_3.jpg",
+    "img/Match6_c0028_4.jpg",
+    "img/Match6_c0028_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:11 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45283,
+    "b": 45284,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0029",
+   "images": [
+    "img/Match6_c0029_0.jpg",
+    "img/Match6_c0029_1.jpg",
+    "img/Match6_c0029_2.jpg",
+    "img/Match6_c0029_3.jpg",
+    "img/Match6_c0029_4.jpg",
+    "img/Match6_c0029_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:12 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 45308,
+    "b": 45309,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0030",
+   "images": [
+    "img/Match6_c0030_0.jpg",
+    "img/Match6_c0030_1.jpg",
+    "img/Match6_c0030_2.jpg",
+    "img/Match6_c0030_3.jpg",
+    "img/Match6_c0030_4.jpg",
+    "img/Match6_c0030_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:12 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45321,
+    "b": 45322,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0031",
+   "images": [
+    "img/Match6_c0031_0.jpg",
+    "img/Match6_c0031_1.jpg",
+    "img/Match6_c0031_2.jpg",
+    "img/Match6_c0031_3.jpg",
+    "img/Match6_c0031_4.jpg",
+    "img/Match6_c0031_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:14 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45361,
+    "b": 45362,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0032",
+   "images": [
+    "img/Match6_c0032_0.jpg",
+    "img/Match6_c0032_1.jpg",
+    "img/Match6_c0032_2.jpg",
+    "img/Match6_c0032_3.jpg",
+    "img/Match6_c0032_4.jpg",
+    "img/Match6_c0032_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:25 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45627,
+    "b": 45628,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0033",
+   "images": [
+    "img/Match6_c0033_0.jpg",
+    "img/Match6_c0033_1.jpg",
+    "img/Match6_c0033_2.jpg",
+    "img/Match6_c0033_3.jpg",
+    "img/Match6_c0033_4.jpg",
+    "img/Match6_c0033_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:27 \u00b7 proposed 47-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45688,
+    "b": 45734,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0034",
+   "images": [
+    "img/Match6_c0034_0.jpg",
+    "img/Match6_c0034_1.jpg",
+    "img/Match6_c0034_2.jpg",
+    "img/Match6_c0034_3.jpg",
+    "img/Match6_c0034_4.jpg",
+    "img/Match6_c0034_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:33 \u00b7 proposed 18-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45831,
+    "b": 45848,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0035",
+   "images": [
+    "img/Match6_c0035_0.jpg",
+    "img/Match6_c0035_1.jpg",
+    "img/Match6_c0035_2.jpg",
+    "img/Match6_c0035_3.jpg",
+    "img/Match6_c0035_4.jpg",
+    "img/Match6_c0035_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 30:39 \u00b7 proposed 23-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 45977,
+    "b": 45999,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0036",
+   "images": [
+    "img/Match6_c0036_0.jpg",
+    "img/Match6_c0036_1.jpg",
+    "img/Match6_c0036_2.jpg",
+    "img/Match6_c0036_3.jpg",
+    "img/Match6_c0036_4.jpg",
+    "img/Match6_c0036_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 31:04 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 46605,
+    "b": 46606,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0037",
+   "images": [
+    "img/Match6_c0037_0.jpg",
+    "img/Match6_c0037_1.jpg",
+    "img/Match6_c0037_2.jpg",
+    "img/Match6_c0037_3.jpg",
+    "img/Match6_c0037_4.jpg",
+    "img/Match6_c0037_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 31:04 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 46622,
+    "b": 46623,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0038",
+   "images": [
+    "img/Match6_c0038_0.jpg",
+    "img/Match6_c0038_1.jpg",
+    "img/Match6_c0038_2.jpg",
+    "img/Match6_c0038_3.jpg",
+    "img/Match6_c0038_4.jpg",
+    "img/Match6_c0038_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 31:07 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 46697,
+    "b": 46698,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0039",
+   "images": [
+    "img/Match6_c0039_0.jpg",
+    "img/Match6_c0039_1.jpg",
+    "img/Match6_c0039_2.jpg",
+    "img/Match6_c0039_3.jpg",
+    "img/Match6_c0039_4.jpg",
+    "img/Match6_c0039_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 32:37 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 48939,
+    "b": 48940,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0040",
+   "images": [
+    "img/Match6_c0040_0.jpg",
+    "img/Match6_c0040_1.jpg",
+    "img/Match6_c0040_2.jpg",
+    "img/Match6_c0040_3.jpg",
+    "img/Match6_c0040_4.jpg",
+    "img/Match6_c0040_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 32:38 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 48974,
+    "b": 48975,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0041",
+   "images": [
+    "img/Match6_c0041_0.jpg",
+    "img/Match6_c0041_1.jpg",
+    "img/Match6_c0041_2.jpg",
+    "img/Match6_c0041_3.jpg",
+    "img/Match6_c0041_4.jpg",
+    "img/Match6_c0041_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 32:40 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 49009,
+    "b": 49010,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0042",
+   "images": [
+    "img/Match6_c0042_0.jpg",
+    "img/Match6_c0042_1.jpg",
+    "img/Match6_c0042_2.jpg",
+    "img/Match6_c0042_3.jpg",
+    "img/Match6_c0042_4.jpg",
+    "img/Match6_c0042_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 32:41 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 49041,
+    "b": 49042,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0043",
+   "images": [
+    "img/Match6_c0043_0.jpg",
+    "img/Match6_c0043_1.jpg",
+    "img/Match6_c0043_2.jpg",
+    "img/Match6_c0043_3.jpg",
+    "img/Match6_c0043_4.jpg",
+    "img/Match6_c0043_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 32:43 \u00b7 proposed 25-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 49081,
+    "b": 49105,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0044",
+   "images": [
+    "img/Match6_c0044_0.jpg",
+    "img/Match6_c0044_1.jpg",
+    "img/Match6_c0044_2.jpg",
+    "img/Match6_c0044_3.jpg",
+    "img/Match6_c0044_4.jpg",
+    "img/Match6_c0044_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 32:46 \u00b7 proposed 23-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 49169,
+    "b": 49191,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0045",
+   "images": [
+    "img/Match6_c0045_0.jpg",
+    "img/Match6_c0045_1.jpg",
+    "img/Match6_c0045_2.jpg",
+    "img/Match6_c0045_3.jpg",
+    "img/Match6_c0045_4.jpg",
+    "img/Match6_c0045_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 32:53 \u00b7 proposed 21-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 49335,
+    "b": 49355,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0046",
+   "images": [
+    "img/Match6_c0046_0.jpg",
+    "img/Match6_c0046_1.jpg",
+    "img/Match6_c0046_2.jpg",
+    "img/Match6_c0046_3.jpg",
+    "img/Match6_c0046_4.jpg",
+    "img/Match6_c0046_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 32:59 \u00b7 proposed 24-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 49482,
+    "b": 49505,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0047",
+   "images": [
+    "img/Match6_c0047_0.jpg",
+    "img/Match6_c0047_1.jpg",
+    "img/Match6_c0047_2.jpg",
+    "img/Match6_c0047_3.jpg",
+    "img/Match6_c0047_4.jpg",
+    "img/Match6_c0047_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:12 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 49803,
+    "b": 49804,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0048",
+   "images": [
+    "img/Match6_c0048_0.jpg",
+    "img/Match6_c0048_1.jpg",
+    "img/Match6_c0048_2.jpg",
+    "img/Match6_c0048_3.jpg",
+    "img/Match6_c0048_4.jpg",
+    "img/Match6_c0048_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:15 \u00b7 proposed 25-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 49881,
+    "b": 49905,
+    "methods": [
+     "ours",
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0049",
+   "images": [
+    "img/Match6_c0049_0.jpg",
+    "img/Match6_c0049_1.jpg",
+    "img/Match6_c0049_2.jpg",
+    "img/Match6_c0049_3.jpg",
+    "img/Match6_c0049_4.jpg",
+    "img/Match6_c0049_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:21 \u00b7 proposed 19-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 50045,
+    "b": 50063,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0050",
+   "images": [
+    "img/Match6_c0050_0.jpg",
+    "img/Match6_c0050_1.jpg",
+    "img/Match6_c0050_2.jpg",
+    "img/Match6_c0050_3.jpg",
+    "img/Match6_c0050_4.jpg",
+    "img/Match6_c0050_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:28 \u00b7 proposed 19-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 50214,
+    "b": 50232,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0051",
+   "images": [
+    "img/Match6_c0051_0.jpg",
+    "img/Match6_c0051_1.jpg",
+    "img/Match6_c0051_2.jpg",
+    "img/Match6_c0051_3.jpg",
+    "img/Match6_c0051_4.jpg",
+    "img/Match6_c0051_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:34 \u00b7 proposed 19-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 50374,
+    "b": 50392,
+    "methods": [
+     "ours",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0052",
+   "images": [
+    "img/Match6_c0052_0.jpg",
+    "img/Match6_c0052_1.jpg",
+    "img/Match6_c0052_2.jpg",
+    "img/Match6_c0052_3.jpg",
+    "img/Match6_c0052_4.jpg",
+    "img/Match6_c0052_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:40 \u00b7 proposed 24-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 50524,
+    "b": 50547,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0053",
+   "images": [
+    "img/Match6_c0053_0.jpg",
+    "img/Match6_c0053_1.jpg",
+    "img/Match6_c0053_2.jpg",
+    "img/Match6_c0053_3.jpg",
+    "img/Match6_c0053_4.jpg",
+    "img/Match6_c0053_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:49 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 50745,
+    "b": 50746,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0054",
+   "images": [
+    "img/Match6_c0054_0.jpg",
+    "img/Match6_c0054_1.jpg",
+    "img/Match6_c0054_2.jpg",
+    "img/Match6_c0054_3.jpg",
+    "img/Match6_c0054_4.jpg",
+    "img/Match6_c0054_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:56 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 50916,
+    "b": 50917,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0055",
+   "images": [
+    "img/Match6_c0055_0.jpg",
+    "img/Match6_c0055_1.jpg",
+    "img/Match6_c0055_2.jpg",
+    "img/Match6_c0055_3.jpg",
+    "img/Match6_c0055_4.jpg",
+    "img/Match6_c0055_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:58 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 50952,
+    "b": 50953,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0056",
+   "images": [
+    "img/Match6_c0056_0.jpg",
+    "img/Match6_c0056_1.jpg",
+    "img/Match6_c0056_2.jpg",
+    "img/Match6_c0056_3.jpg",
+    "img/Match6_c0056_4.jpg",
+    "img/Match6_c0056_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 33:59 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 50978,
+    "b": 50979,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0057",
+   "images": [
+    "img/Match6_c0057_0.jpg",
+    "img/Match6_c0057_1.jpg",
+    "img/Match6_c0057_2.jpg",
+    "img/Match6_c0057_3.jpg",
+    "img/Match6_c0057_4.jpg",
+    "img/Match6_c0057_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:00 \u00b7 proposed hard cut",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 51010,
+    "b": 51011,
+    "methods": [
+     "pyscenedetect"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0058",
+   "images": [
+    "img/Match6_c0058_0.jpg",
+    "img/Match6_c0058_1.jpg",
+    "img/Match6_c0058_2.jpg",
+    "img/Match6_c0058_3.jpg",
+    "img/Match6_c0058_4.jpg",
+    "img/Match6_c0058_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:10 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 51253,
+    "b": 51254,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0059",
+   "images": [
+    "img/Match6_c0059_0.jpg",
+    "img/Match6_c0059_1.jpg",
+    "img/Match6_c0059_2.jpg",
+    "img/Match6_c0059_3.jpg",
+    "img/Match6_c0059_4.jpg",
+    "img/Match6_c0059_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:20 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 51505,
+    "b": 51506,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0060",
+   "images": [
+    "img/Match6_c0060_0.jpg",
+    "img/Match6_c0060_1.jpg",
+    "img/Match6_c0060_2.jpg",
+    "img/Match6_c0060_3.jpg",
+    "img/Match6_c0060_4.jpg",
+    "img/Match6_c0060_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:24 \u00b7 proposed hard cut",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 51621,
+    "b": 51622,
+    "methods": [
+     "ours",
+     "pyscenedetect",
+     "transnetv2"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0061",
+   "images": [
+    "img/Match6_c0061_0.jpg",
+    "img/Match6_c0061_1.jpg",
+    "img/Match6_c0061_2.jpg",
+    "img/Match6_c0061_3.jpg",
+    "img/Match6_c0061_4.jpg",
+    "img/Match6_c0061_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:29 \u00b7 proposed 23-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 51730,
+    "b": 51752,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0062",
+   "images": [
+    "img/Match6_c0062_0.jpg",
+    "img/Match6_c0062_1.jpg",
+    "img/Match6_c0062_2.jpg",
+    "img/Match6_c0062_3.jpg",
+    "img/Match6_c0062_4.jpg",
+    "img/Match6_c0062_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:34 \u00b7 proposed 20-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 51867,
+    "b": 51886,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0063",
+   "images": [
+    "img/Match6_c0063_0.jpg",
+    "img/Match6_c0063_1.jpg",
+    "img/Match6_c0063_2.jpg",
+    "img/Match6_c0063_3.jpg",
+    "img/Match6_c0063_4.jpg",
+    "img/Match6_c0063_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:41 \u00b7 proposed 20-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 52030,
+    "b": 52049,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0064",
+   "images": [
+    "img/Match6_c0064_0.jpg",
+    "img/Match6_c0064_1.jpg",
+    "img/Match6_c0064_2.jpg",
+    "img/Match6_c0064_3.jpg",
+    "img/Match6_c0064_4.jpg",
+    "img/Match6_c0064_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:44 \u00b7 proposed 9-frame interval",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 52109,
+    "b": 52117,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0065",
+   "images": [
+    "img/Match6_c0065_0.jpg",
+    "img/Match6_c0065_1.jpg",
+    "img/Match6_c0065_2.jpg",
+    "img/Match6_c0065_3.jpg",
+    "img/Match6_c0065_4.jpg",
+    "img/Match6_c0065_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:47 \u00b7 proposed 9-frame interval",
+   "prelabel": "none",
+   "meta": {
+    "match": "Match6",
+    "a": 52175,
+    "b": 52183,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0066",
+   "images": [
+    "img/Match6_c0066_0.jpg",
+    "img/Match6_c0066_1.jpg",
+    "img/Match6_c0066_2.jpg",
+    "img/Match6_c0066_3.jpg",
+    "img/Match6_c0066_4.jpg",
+    "img/Match6_c0066_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:48 \u00b7 proposed 20-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 52211,
+    "b": 52230,
+    "methods": [
+     "ours"
+    ]
+   }
+  },
+  {
+   "id": "Match6_c0067",
+   "images": [
+    "img/Match6_c0067_0.jpg",
+    "img/Match6_c0067_1.jpg",
+    "img/Match6_c0067_2.jpg",
+    "img/Match6_c0067_3.jpg",
+    "img/Match6_c0067_4.jpg",
+    "img/Match6_c0067_5.jpg"
+   ],
+   "image_labels": [
+    "\u221212 fr",
+    "\u22124 fr",
+    "start",
+    "end",
+    "+4 fr",
+    "+12 fr"
+   ],
+   "caption": "Match6 \u00b7 34:55 \u00b7 proposed 23-frame interval",
+   "prelabel": "transition",
+   "meta": {
+    "match": "Match6",
+    "a": 52386,
+    "b": 52408,
+    "methods": [
+     "ours"
+    ]
+   }
+  }
+ ]
+}
