@@ -1,22 +1,26 @@
 {
  "title": "R1.3 \u00b7 Play / no-play of long shots",
- "instructions": "Each item is one shot detected by the pipeline (only shots of 4 s or more). Decide what the shot shows: <b>live play</b> is wide-angle footage of the match as it happens; <b>replays</b> (often with a logo transition and without the scoreboard) are not live play even if wide; <b>other</b> covers close-ups, crowd, bench, coaches and graphics. Use <b>mixed</b> if the three frames clearly belong to different shots. The suggestion comes from a visual pre-labelling, not from the pipeline.",
+ "instructions": "Each item is one shot detected by the pipeline (only shots of 4 s or more), shown by three frames. Decide what the shot shows. <b>Live play, wide</b>: the match as it happens, seen from a camera that frames a large part of the pitch (main camera or wide alternative angles). <b>Live play, close/medium</b>: the match as it happens but tightly framed on a few players. <b>Replay</b>: anything re-broadcast (usually framed by a logo transition and without the live scoreboard), including VAR split screens. <b>Other</b>: close-ups of a single person, crowd, bench, coaches, pre-match and stoppages (injuries, substitutions) and graphics. <b>Mixed</b>: the three frames clearly come from different shots (a cut was missed). The suggestion comes from a visual pre-labelling, not from the pipeline.",
  "options": [
   {
    "value": "play",
-   "label": "Live play (wide-angle game action)"
+   "label": "Live play, wide/long view of the pitch"
+  },
+  {
+   "value": "closeup_play",
+   "label": "Live play, close or medium framing"
   },
   {
    "value": "replay",
-   "label": "Replay (any framing)"
+   "label": "Replay (incl. VAR split screens)"
   },
   {
    "value": "other",
-   "label": "Other (close-up, crowd, bench, graphics...)"
+   "label": "Other (close-up of a person, crowd, bench, pre-match, stoppage, graphics)"
   },
   {
    "value": "mixed",
-   "label": "Mixed (shot contains a missed cut)"
+   "label": "Mixed (the frames belong to different shots)"
   },
   {
    "value": "unsure",
@@ -3118,7 +3122,7 @@
     "80%"
    ],
    "caption": "Match1 \u00b7 shot 273 \u00b7 starts 40:49 \u00b7 7.3 s",
-   "prelabel": "other",
+   "prelabel": "mixed",
    "meta": {
     "match": "Match1",
     "shot_id": 273,
@@ -4020,7 +4024,7 @@
     "80%"
    ],
    "caption": "Match1 \u00b7 shot 354 \u00b7 starts 53:07 \u00b7 6.1 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match1",
     "shot_id": 354,
@@ -6880,7 +6884,7 @@
     "80%"
    ],
    "caption": "Match1 \u00b7 shot 637 \u00b7 starts 88:45 \u00b7 9.1 s",
-   "prelabel": "other",
+   "prelabel": "mixed",
    "meta": {
     "match": "Match1",
     "shot_id": 637,
@@ -6924,7 +6928,7 @@
     "80%"
    ],
    "caption": "Match1 \u00b7 shot 643 \u00b7 starts 89:13 \u00b7 12.6 s",
-   "prelabel": "other",
+   "prelabel": "mixed",
    "meta": {
     "match": "Match1",
     "shot_id": 643,
@@ -8772,7 +8776,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 31 \u00b7 starts 4:49 \u00b7 18.4 s",
-   "prelabel": "other",
+   "prelabel": "mixed",
    "meta": {
     "match": "Match6",
     "shot_id": 31,
@@ -8948,7 +8952,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 44 \u00b7 starts 7:34 \u00b7 6.2 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 44,
@@ -9388,7 +9392,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 89 \u00b7 starts 13:32 \u00b7 6.8 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 89,
@@ -9718,7 +9722,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 114 \u00b7 starts 17:45 \u00b7 5.0 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 114,
@@ -10620,7 +10624,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 192 \u00b7 starts 29:57 \u00b7 4.8 s",
-   "prelabel": "other",
+   "prelabel": "replay",
    "meta": {
     "match": "Match6",
     "shot_id": 192,
@@ -10994,7 +10998,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 220 \u00b7 starts 34:24 \u00b7 4.2 s",
-   "prelabel": "other",
+   "prelabel": "replay",
    "meta": {
     "match": "Match6",
     "shot_id": 220,
@@ -11016,7 +11020,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 221 \u00b7 starts 34:30 \u00b7 4.5 s",
-   "prelabel": "other",
+   "prelabel": "replay",
    "meta": {
     "match": "Match6",
     "shot_id": 221,
@@ -11038,7 +11042,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 222 \u00b7 starts 34:35 \u00b7 5.7 s",
-   "prelabel": "other",
+   "prelabel": "replay",
    "meta": {
     "match": "Match6",
     "shot_id": 222,
@@ -11060,7 +11064,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 228 \u00b7 starts 34:49 \u00b7 6.2 s",
-   "prelabel": "other",
+   "prelabel": "replay",
    "meta": {
     "match": "Match6",
     "shot_id": 228,
@@ -11082,7 +11086,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 229 \u00b7 starts 34:56 \u00b7 6.3 s",
-   "prelabel": "other",
+   "prelabel": "replay",
    "meta": {
     "match": "Match6",
     "shot_id": 229,
@@ -11566,7 +11570,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 268 \u00b7 starts 43:47 \u00b7 6.0 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 268,
@@ -11918,7 +11922,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 295 \u00b7 starts 49:04 \u00b7 8.7 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 295,
@@ -12270,7 +12274,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 332 \u00b7 starts 53:50 \u00b7 4.6 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 332,
@@ -12490,7 +12494,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 344 \u00b7 starts 55:09 \u00b7 7.0 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 344,
@@ -13216,7 +13220,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 401 \u00b7 starts 64:46 \u00b7 4.8 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 401,
@@ -13876,7 +13880,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 462 \u00b7 starts 76:14 \u00b7 5.7 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 462,
@@ -13964,7 +13968,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 468 \u00b7 starts 77:23 \u00b7 4.6 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 468,
@@ -14118,7 +14122,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 478 \u00b7 starts 79:23 \u00b7 8.0 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 478,
@@ -14800,7 +14804,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 533 \u00b7 starts 86:48 \u00b7 4.3 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 533,
@@ -15174,7 +15178,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 566 \u00b7 starts 90:15 \u00b7 5.3 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 566,
@@ -15284,7 +15288,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 574 \u00b7 starts 91:21 \u00b7 14.0 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 574,
@@ -15350,7 +15354,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 585 \u00b7 starts 92:14 \u00b7 5.0 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 585,
@@ -15416,7 +15420,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 589 \u00b7 starts 92:38 \u00b7 10.2 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 589,
@@ -15768,7 +15772,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 618 \u00b7 starts 97:28 \u00b7 7.9 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 618,
@@ -15790,7 +15794,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 619 \u00b7 starts 97:36 \u00b7 7.9 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 619,
@@ -16054,7 +16058,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 642 \u00b7 starts 101:10 \u00b7 11.3 s",
-   "prelabel": "other",
+   "prelabel": "play",
    "meta": {
     "match": "Match6",
     "shot_id": 642,
@@ -16648,7 +16652,7 @@
     "80%"
    ],
    "caption": "Match6 \u00b7 shot 689 \u00b7 starts 108:21 \u00b7 4.3 s",
-   "prelabel": "other",
+   "prelabel": "closeup_play",
    "meta": {
     "match": "Match6",
     "shot_id": 689,

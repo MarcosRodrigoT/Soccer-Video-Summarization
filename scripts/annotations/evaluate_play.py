@@ -4,7 +4,10 @@
 
 Ground truth: annotations/play_noplay/labels.json (human review). Items not
 reviewed yet fall back to the suggested label and the output is flagged as
-preliminary. "mixed" and "unsure" items are excluded.
+preliminary. Positive class: live play in wide view ("play"); negatives:
+"replay" and "other". Live play in close/medium framing ("closeup_play") is
+neither (the pipeline only needs to retrieve wide live play) and is reported
+separately; "mixed" and "unsure" items are excluded.
 
 Writes annotations/play_noplay/results.json.
 """
@@ -38,6 +41,9 @@ def main():
             excluded += 1
             continue
         classes[lab] += 1
+        if lab == "closeup_play":
+            per["closeup_play"]["as_play" if pred[it["id"]]["pipeline_play"] else "as_noplay"] += 1
+            continue
         gt = lab == "play"
         pp = pred[it["id"]]["pipeline_play"]
         key = ("tp" if pp else "fn") if gt else ("fp" if pp else "tn")
@@ -48,12 +54,16 @@ def main():
     out = {"preliminary": reviewed < len(items), "reviewed": reviewed, "total": len(items),
            "excluded_mixed_unsure": excluded, "classes": dict(classes), "false_positive_classes": dict(errors)}
     for k, c in per.items():
-        out[k] = prf(c["tp"], c["fp"], c["fn"], c["tn"])
+        if k == "closeup_play":
+            out[k] = dict(c)
+        else:
+            out[k] = prf(c["tp"], c["fp"], c["fn"], c["tn"])
     json.dump(out, open(TASK / "results.json", "w"), indent=2)
     a = out["all"]
     print(f"{'PRELIMINARY ' if out['preliminary'] else ''}reviewed {reviewed}/{len(items)}; "
           f"TP {a['tp']} FP {a['fp']} FN {a['fn']} TN {a['tn']}  P {a['precision']:.3f} R {a['recall']:.3f} "
-          f"F1 {a['f1']:.3f} acc {a['accuracy']:.3f}; FP classes {dict(errors)}")
+          f"F1 {a['f1']:.3f} acc {a['accuracy']:.3f}; FP classes {dict(errors)}; "
+          f"closeup live play {out.get('closeup_play', {})}")
 
 
 if __name__ == "__main__":
