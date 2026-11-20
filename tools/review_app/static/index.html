@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annotation review</title>
+<style>
+  :root { --bg:#16181d; --panel:#20232a; --text:#e8e8ea; --muted:#9aa0aa; --accent:#4f9cf9;
+          --ok:#3fb950; --warn:#d29922; --bad:#f85149; --border:#30343c; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.4 system-ui, sans-serif; }
+  header { display:flex; gap:16px; align-items:center; padding:8px 16px; background:var(--panel);
+           border-bottom:1px solid var(--border); position:sticky; top:0; z-index:5; }
+  header h1 { font-size:15px; margin:0; font-weight:600; }
+  .pill { padding:2px 8px; border-radius:10px; background:#2b2f37; color:var(--muted); font-size:12px; }
+  .progress { flex:1; height:6px; background:#2b2f37; border-radius:3px; overflow:hidden; }
+  .progress > div { height:100%; background:var(--ok); width:0; transition:width .2s; }
+  main { padding:12px 16px 90px; }
+  #images { display:grid; gap:6px; }
+  #images figure { margin:0; position:relative; background:#000; border-radius:4px; overflow:hidden; cursor:zoom-in; }
+  #images img { width:100%; display:block; }
+  #images figcaption { position:absolute; left:4px; top:4px; background:rgba(0,0,0,.65); color:#fff;
+                       padding:1px 6px; border-radius:3px; font-size:12px; }
+  #caption { margin:10px 0 6px; font-size:15px; }
+  #caption .id { color:var(--muted); font-size:12px; margin-left:8px; }
+  #info { color:var(--muted); margin-bottom:8px; white-space:pre-line; }
+  #options { display:flex; flex-wrap:wrap; gap:8px; }
+  .opt { border:2px solid var(--border); background:var(--panel); color:var(--text); padding:8px 14px;
+         border-radius:6px; cursor:pointer; font-size:14px; }
+  .opt kbd { background:#2b2f37; border-radius:3px; padding:0 6px; margin-right:6px; font-weight:700; }
+  .opt.suggested { border-style:dashed; border-color:var(--warn); }
+  .opt.chosen { border-style:solid; border-color:var(--ok); background:#1f3324; }
+  #status { margin-top:8px; color:var(--muted); min-height:20px; }
+  footer { position:fixed; bottom:0; left:0; right:0; background:var(--panel); border-top:1px solid var(--border);
+           padding:8px 16px; font-size:13px; color:var(--muted); display:flex; flex-wrap:wrap; gap:4px 18px; }
+  footer kbd, #help kbd { background:#2b2f37; color:var(--text); border-radius:3px; padding:0 5px; font-weight:600; }
+  #help { position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; align-items:center; justify-content:center; z-index:20; }
+  #help .box { background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:20px 26px; max-width:720px; }
+  #help h2 { margin-top:0; font-size:17px; }
+  #help table td { padding:3px 12px 3px 0; vertical-align:top; }
+  #zoom { position:fixed; inset:0; background:rgba(0,0,0,.92); display:none; align-items:center; justify-content:center; z-index:15; cursor:zoom-out; }
+  #zoom img { max-width:96vw; max-height:92vh; }
+  #tasks { display:grid; gap:10px; max-width:720px; }
+  .task { background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:14px; cursor:pointer; }
+  .task:hover { border-color:var(--accent); }
+  .badge-ok { color:var(--ok); } .badge-warn { color:var(--warn); }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">Annotation review</h1>
+  <span class="pill" id="pos"></span>
+  <span class="pill" id="done"></span>
+  <span class="pill" id="filter"></span>
+  <div class="progress"><div id="bar"></div></div>
+</header>
+<main>
+  <div id="tasks"></div>
+  <div id="review" style="display:none">
+    <div id="images"></div>
+    <div id="caption"></div>
+    <div id="info"></div>
+    <div id="options"></div>
+    <div id="status"></div>
+  </div>
+</main>
+<footer id="hints"></footer>
+
+<div id="help"><div class="box">
+  <h2>Keyboard shortcuts</h2>
+  <div id="instructions" style="margin-bottom:12px"></div>
+  <table>
+    <tr><td><kbd>1</kbd>…<kbd>9</kbd></td><td>choose that answer, save it and go to the next item</td></tr>
+    <tr><td><kbd>Enter</kbd> / <kbd>Space</kbd></td><td>accept the suggested answer (dashed yellow border) and go on</td></tr>
+    <tr><td><kbd>→</kbd> / <kbd>D</kbd>, <kbd>←</kbd> / <kbd>A</kbd></td><td>next / previous item without changing anything</td></tr>
+    <tr><td><kbd>N</kbd></td><td>jump to the next item you have not reviewed yet</td></tr>
+    <tr><td><kbd>U</kbd></td><td>undo: clear your answer for this item</td></tr>
+    <tr><td><kbd>C</kbd></td><td>add a short note to this item</td></tr>
+    <tr><td><kbd>F</kbd></td><td>cycle filter: all / not reviewed / reviewed / answer differs from suggestion</td></tr>
+    <tr><td><kbd>Z</kbd> or click</td><td>enlarge the first image (click a specific image to enlarge it); <kbd>Esc</kbd> closes</td></tr>
+    <tr><td><kbd>?</kbd></td><td>show / hide this help</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>back to the task list (everything is already saved)</td></tr>
+  </table>
+  <p style="color:var(--muted)">Every answer is saved immediately to <code>annotations/&lt;task&gt;/labels.json</code>. You can stop at any time and continue later from the same place.</p>
+  <p style="text-align:right"><kbd>?</kbd> or <kbd>Esc</kbd> to close</p>
+</div></div>
+<div id="zoom"><img alt=""></div>
+
+<script>
+const FILTERS = ["all", "not reviewed", "reviewed", "differs from suggestion"];
+let task = null, data = null, labels = {}, idx = 0, filter = 0, order = [];
+
+const $ = (id) => document.getElementById(id);
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+};
+
+async function api(path, body) {
+  const r = await fetch(path, body ? {method: "POST", headers: {"Content-Type": "application/json"},
+                                      body: JSON.stringify(body)} : {});
+  if (!r.ok) throw new Error(path + " -> " + r.status);
+  return r.json();
+}
+
+function hints(mode) {
+  $("hints").innerHTML = mode === "tasks"
+    ? "<span>Click a task to start reviewing</span>"
+    : "<span><kbd>1</kbd>-<kbd>9</kbd> answer</span><span><kbd>Enter</kbd> accept suggestion</span>" +
+      "<span><kbd>←</kbd><kbd>→</kbd> move</span><span><kbd>N</kbd> next unreviewed</span>" +
+      "<span><kbd>U</kbd> undo</span><span><kbd>C</kbd> note</span><span><kbd>F</kbd> filter</span>" +
+      "<span><kbd>Z</kbd> zoom</span><span><kbd>?</kbd> help</span><span><kbd>Esc</kbd> tasks</span>";
+}
+
+async function showTasks() {
+  task = null; $("review").style.display = "none"; $("tasks").style.display = "grid";
+  $("title").textContent = "Annotation review"; ["pos", "done", "filter"].forEach(i => $(i).textContent = "");
+  $("bar").style.width = "0";
+  const tasks = await api("/api/tasks");
+  $("tasks").innerHTML = tasks.length ? "" : "<p>No tasks found in annotations/.</p>";
+  for (const t of tasks) {
+    const el = document.createElement("div");
+    el.className = "task";
+    const cls = t.done === t.total ? "badge-ok" : "badge-warn";
+    el.innerHTML = `<b>${t.title}</b><br><span class="${cls}">${t.done} / ${t.total} reviewed</span>`;
+    el.onclick = () => openTask(t.name);
+    $("tasks").appendChild(el);
+  }
+  hints("tasks");
+}
+
+async function openTask(name) {
+  task = name; data = await api("/api/task/" + name); labels = data.labels || {};
+  $("tasks").style.display = "none"; $("review").style.display = "block";
+  $("title").textContent = data.title || name;
+  $("instructions").innerHTML = data.instructions || "";
+  filter = 0; rebuild();
+  const saved = parseInt(store.get("pos:" + name) || "", 10);
+  idx = Number.isFinite(saved) && saved < order.length ? saved : firstUnreviewed();
+  hints("review"); render();
+  if (!store.get("helpSeen:" + name)) { toggleHelp(true); store.set("helpSeen:" + name, "1"); }
+}
+
+function differs(it) { const l = labels[it.id]; return l && it.prelabel != null && l.value !== it.prelabel; }
+function rebuild() {
+  const keep = [(i) => true, (i) => !labels[i.id], (i) => !!labels[i.id], differs][filter];
+  order = data.items.map((it, i) => [it, i]).filter(([it]) => keep(it)).map(([, i]) => i);
+  if (!order.length) order = [];
+}
+function firstUnreviewed() { const k = order.findIndex(i => !labels[data.items[i].id]); return k < 0 ? 0 : k; }
+
+function render() {
+  const n = data.items.length, done = Object.keys(labels).filter(k => data.items.some(it => it.id === k)).length;
+  $("done").textContent = `${done} / ${n} reviewed`;
+  $("bar").style.width = (100 * done / n) + "%";
+  $("filter").textContent = "filter: " + FILTERS[filter];
+  if (!order.length) {
+    $("pos").textContent = "0 / 0"; $("images").innerHTML = ""; $("options").innerHTML = "";
+    $("caption").textContent = "No items match this filter (press F to change it)."; $("info").textContent = "";
+    return;
+  }
+  idx = Math.max(0, Math.min(idx, order.length - 1));
+  store.set("pos:" + task, String(idx));
+  const it = data.items[order[idx]];
+  $("pos").textContent = `item ${idx + 1} / ${order.length}`;
+  const cols = it.columns || data.columns || Math.min(it.images.length, 3);
+  $("images").style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  $("images").innerHTML = it.images.map((src, k) =>
+    `<figure data-k="${k}"><img src="/media/${task}/${src}" alt=""><figcaption>${(it.image_labels || [])[k] || ""}</figcaption></figure>`
+  ).join("");
+  document.querySelectorAll("#images figure").forEach(f => f.onclick = () => zoom(f.querySelector("img").src));
+  $("caption").innerHTML = `${it.caption || ""}<span class="id">${it.id}</span>`;
+  const lab = labels[it.id];
+  $("info").textContent = (it.info || "") + (lab && lab.note ? `\nNote: ${lab.note}` : "");
+  $("options").innerHTML = "";
+  data.options.forEach((o, k) => {
+    const b = document.createElement("button");
+    b.className = "opt" + (o.value === it.prelabel ? " suggested" : "") + (lab && lab.value === o.value ? " chosen" : "");
+    b.innerHTML = `<kbd>${k + 1}</kbd>${o.label}`;
+    b.onclick = () => answer(o.value);
+    $("options").appendChild(b);
+  });
+  $("status").textContent = lab ? `Saved: ${lab.value}` : (it.prelabel != null ? "Suggested answer has a dashed yellow border — Enter accepts it." : "");
+  // Preload the next item's images.
+  const nx = data.items[order[idx + 1]];
+  if (nx) nx.images.forEach(src => { const im = new Image(); im.src = `/media/${task}/${src}`; });
+}
+
+async function answer(value, note) {
+  const it = data.items[order[idx]];
+  const prev = labels[it.id];
+  const body = {id: it.id, value, note: note !== undefined ? note : (prev ? prev.note : "")};
+  await api("/api/label/" + task, body);
+  if (value === null) delete labels[it.id]; else labels[it.id] = {value, note: body.note};
+  if (value !== null && note === undefined) idx++;
+  if (filter !== 0) { const cur = order[Math.min(idx, order.length - 1)]; rebuild(); idx = Math.max(0, order.indexOf(cur)); }
+  render();
+}
+
+function zoom(src) { $("zoom").querySelector("img").src = src; $("zoom").style.display = "flex"; }
+function toggleHelp(force) {
+  const show = force !== undefined ? force : $("help").style.display !== "flex";
+  $("help").style.display = show ? "flex" : "none";
+}
+$("zoom").onclick = () => $("zoom").style.display = "none";
+$("help").onclick = (e) => { if (e.target.id === "help") toggleHelp(false); };
+
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key;
+  if (k === "?") { toggleHelp(); e.preventDefault(); return; }
+  if (k === "Escape") {
+    if ($("zoom").style.display === "flex") $("zoom").style.display = "none";
+    else if ($("help").style.display === "flex") toggleHelp(false);
+    else if (task) showTasks();
+    return;
+  }
+  if (!task || $("help").style.display === "flex" || !order.length) return;
+  const it = data.items[order[idx]];
+  if (/^[1-9]$/.test(k)) { const o = data.options[+k - 1]; if (o) answer(o.value); }
+  else if (k === "Enter" || k === " ") { e.preventDefault(); if (it.prelabel != null) answer(it.prelabel); }
+  else if (k === "ArrowRight" || k === "d" || k === "D") { idx = Math.min(idx + 1, order.length - 1); render(); }
+  else if (k === "ArrowLeft" || k === "a" || k === "A") { idx = Math.max(idx - 1, 0); render(); }
+  else if (k === "n" || k === "N") {
+    const j = order.findIndex((i, p) => p > idx && !labels[data.items[i].id]);
+    if (j >= 0) { idx = j; render(); } else $("status").textContent = "No unreviewed items after this one.";
+  }
+  else if (k === "u" || k === "U") answer(null);
+  else if (k === "c" || k === "C") {
+    const prev = labels[it.id];
+    if (!prev) { $("status").textContent = "Answer the item first, then add a note."; return; }
+    const note = prompt("Note for " + it.id, prev.note || "");
+    if (note !== null) answer(prev.value, note);
+  }
+  else if (k === "f" || k === "F") { filter = (filter + 1) % FILTERS.length; rebuild(); idx = 0; render(); }
+  else if (k === "z" || k === "Z") { const img = document.querySelector("#images img"); if (img) zoom(img.src); }
+});
+
+showTasks();
+</script>
+</body>
+</html>

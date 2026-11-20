@@ -1,0 +1,35 @@
+# Cross-league test matches (reviewer comment R1.5), official league channels on YouTube.
+# video_dir is relative to data_dir of the pipeline config.
+matches:
+  PL1:
+    league: Premier League
+    season: 2014/15
+    home_team: Tottenham Hotspur
+    away_team: Chelsea
+    score: 5-3
+    youtube_id: X6VNTk-Vl5w
+    video_dir: OtherLeagues_HR/PL1
+  SA1:
+    league: Serie A
+    season: 2024/25
+    home_team: Inter
+    away_team: Juventus
+    score: 4-4
+    youtube_id: ZPXbqoiM4PY
+    video_dir: OtherLeagues_HR/SA1
+  BL1:
+    league: Bundesliga
+    season: 2016/17
+    home_team: RB Leipzig
+    away_team: Bayern Munich
+    score: 4-5
+    youtube_id: 1yHWGw8DH4A
+    video_dir: OtherLeagues_HR/BL1
+  L1:
+    league: Ligue 1
+    season: 2015/16
+    home_team: Troyes
+    away_team: Paris Saint-Germain
+    score: 0-9
+    youtube_id: ZEGyZkJe-60
+    video_dir: OtherLeagues_HR/L1
