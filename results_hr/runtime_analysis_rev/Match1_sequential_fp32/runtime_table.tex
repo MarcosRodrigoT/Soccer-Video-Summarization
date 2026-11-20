@@ -1,0 +1,49 @@
+\begin{table}[!tbp]
+\centering
+\caption{Substage-level wall-clock runtime on Match~1 (Valencia~CF~vs.~FC~Barcelona, 2013/14; $1\,\mathrm{h}\,44\,\mathrm{min}$ at $1920\times 1080$, $25$~fps). Wall-clock time is reported per substage with its share of the total pipeline cost; stage subtotals are bolded. Substages whose wall-clock time falls below the $0.1$~s noise floor are reported as such. All numbers come from a single cold-cache run on the hardware described in the text; the overall pipeline runs at a real-time factor of $0.11$ ($9.08\times$ faster than real-time).}
+\label{tab:runtime}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrr}
+\toprule
+\textbf{Stage} & \textbf{Substage} & \textbf{Time (s)} & \textbf{Share (\%)} \\
+\midrule
+Shot segmentation & Per-frame histogram differences & $254.4$ & $36.9$ \\
+ & Abrupt-cut detection & $< 0.1$ & $\sim 0$ \\
+ & Gradual-transition detection & $< 0.1$ & $\sim 0$ \\
+ & Shot assembly & $< 0.1$ & $\sim 0$ \\
+\cmidrule(lr){2-4}
+ & \textit{Subtotal} & $\mathbf{254.5}$ & $\mathbf{36.9}$ \\
+\midrule
+Player detection (YOLOv8) & YOLOv8 model load & $1.9$ & $0.3$ \\
+ & Video decoding of sampled frames & $32.1$ & $4.6$ \\
+ & YOLOv8 inference + post-processing & $218.4$ & $31.6$ \\
+\cmidrule(lr){2-4}
+ & \textit{Subtotal} & $\mathbf{252.4}$ & $\mathbf{36.6}$ \\
+\midrule
+Play classification & Rolling smoothing + thresholding & $1.7$ & $0.2$ \\
+\cmidrule(lr){2-4}
+ & \textit{Subtotal} & $\mathbf{1.7}$ & $\mathbf{0.2}$ \\
+\midrule
+Scoreboard branch & IQR variability map & $17.0$ & $2.5$ \\
+ & Overlay mask construction & $< 0.1$ & $\sim 0$ \\
+ & Scoreboard region search & $3.7$ & $0.5$ \\
+ & OCR sampling + EasyOCR inference & $160.8$ & $23.3$ \\
+ & Multi-strategy parsing & $< 0.1$ & $\sim 0$ \\
+ & Robustness cascade & $< 0.1$ & $\sim 0$ \\
+\cmidrule(lr){2-4}
+ & \textit{Subtotal} & $\mathbf{181.5}$ & $\mathbf{26.3}$ \\
+\midrule
+Highlight assembly & Play long-shot selection & $< 0.1$ & $\sim 0$ \\
+ & Goal-shot anchoring & $0.1$ & $0.0$ \\
+\cmidrule(lr){2-4}
+ & \textit{Subtotal} & $\mathbf{0.2}$ & $\mathbf{0.0}$ \\
+\midrule
+Evaluation & Load ground-truth annotations & $< 0.1$ & $\sim 0$ \\
+ & Matching + scoring & $< 0.1$ & $\sim 0$ \\
+\cmidrule(lr){2-4}
+ & \textit{Subtotal} & $\mathbf{< 0.1}$ & $\mathbf{\sim 0}$ \\
+\midrule
+\multicolumn{2}{l}{\textbf{Total pipeline}} & $\mathbf{690.2}$ & $\mathbf{100.0}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
