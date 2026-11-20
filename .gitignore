@@ -51,3 +51,4 @@ annotations/*/img/
 # Shot boundary baselines: keep shot lists and timings, not raw predictions
 results_sbd/**/transnetv2_predictions.npy
 results_sbd/logs/
+results_sbd/timing_match1/*/
