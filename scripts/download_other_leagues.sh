@@ -18,10 +18,14 @@ for MATCH in PL1 SA1 BL1 L1; do
     VID="${MATCHES[$MATCH]}"
     DIR="$OUTDIR/$MATCH"
     mkdir -p "$DIR"
-    if ls "$DIR"/*.mp4 1>/dev/null 2>&1; then echo "[$MATCH] exists"; continue; fi
+    if ls "$DIR"/*\].mp4 "$DIR"/*.25fps.mp4 1>/dev/null 2>&1; then echo "[$MATCH] exists"; continue; fi
     echo "[$MATCH] downloading $VID at $(date)"
-    yt-dlp -f "bestvideo[height<=1080][vcodec^=avc1]+bestaudio[ext=m4a]/best[height<=1080]" --merge-output-format mp4 \
-        -o "$DIR/%(title)s [%(id)s].%(ext)s" "https://www.youtube.com/watch?v=${VID}"
+    # YouTube occasionally answers 403 mid-download; retry (yt-dlp resumes .part files).
+    for attempt in 1 2 3 4 5 6; do
+        yt-dlp -f "bestvideo[height<=1080][vcodec^=avc1]+bestaudio[ext=m4a]/best[height<=1080]" --merge-output-format mp4 \
+            -o "$DIR/%(title)s [%(id)s].%(ext)s" "https://www.youtube.com/watch?v=${VID}" && break
+        echo "[$MATCH] attempt $attempt failed, retrying in 20 s"; sleep 20
+    done
     F=$(ls "$DIR"/*.mp4 | head -1)
     FPS=$(ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of csv=p=0 "$F")
     if [ "$FPS" != "25/1" ]; then
