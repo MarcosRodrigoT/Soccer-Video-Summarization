@@ -9,6 +9,7 @@ matches:
     score: 5-3
     youtube_id: X6VNTk-Vl5w
     video_dir: OtherLeagues_HR/PL1
+    annotate_goals: true
   SA1:
     league: Serie A
     season: 2024/25
@@ -17,6 +18,7 @@ matches:
     score: 4-4
     youtube_id: ZPXbqoiM4PY
     video_dir: OtherLeagues_HR/SA1
+    annotate_goals: true
   BL1:
     league: Bundesliga
     season: 2016/17
@@ -25,6 +27,7 @@ matches:
     score: 4-5
     youtube_id: 1yHWGw8DH4A
     video_dir: OtherLeagues_HR/BL1
+    annotate_goals: false
   L1:
     league: Ligue 1
     season: 2015/16
@@ -33,3 +36,4 @@ matches:
     score: 0-9
     youtube_id: ZEGyZkJe-60
     video_dir: OtherLeagues_HR/L1
+    annotate_goals: false

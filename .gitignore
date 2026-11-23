@@ -52,3 +52,7 @@ annotations/*/img/
 results_sbd/**/transnetv2_predictions.npy
 results_sbd/logs/
 results_sbd/timing_match1/*/
+
+# Annotator runtime files (annotations themselves are tracked)
+annotations_v2/cache/
+annotations_v2/logs/
