@@ -1,0 +1,136 @@
+{
+ "session_id": "Match25_30000_37500",
+ "match_id": "Match25",
+ "start_frame": 30000,
+ "end_frame": 37500,
+ "schema": 1,
+ "updated": "2026-11-24T17:35:18+01:00",
+ "revision": 106,
+ "complete": true,
+ "transitions": [
+  {
+   "id": "t1",
+   "type": "cut",
+   "frame": 34188
+  },
+  {
+   "id": "t2",
+   "type": "gradual",
+   "start": 34262,
+   "end": 34284
+  },
+  {
+   "id": "t3",
+   "type": "gradual",
+   "start": 34494,
+   "end": 34516
+  },
+  {
+   "id": "t4",
+   "type": "cut",
+   "frame": 35524
+  },
+  {
+   "id": "t5",
+   "type": "cut",
+   "frame": 35610
+  },
+  {
+   "id": "t6",
+   "type": "cut",
+   "frame": 36018
+  },
+  {
+   "id": "t7",
+   "type": "cut",
+   "frame": 36073
+  },
+  {
+   "id": "t8",
+   "type": "cut",
+   "frame": 36102
+  },
+  {
+   "id": "t9",
+   "type": "cut",
+   "frame": 36141
+  },
+  {
+   "id": "t10",
+   "type": "gradual",
+   "start": 36368,
+   "end": 36390
+  },
+  {
+   "id": "t11",
+   "type": "gradual",
+   "start": 36531,
+   "end": 36538
+  },
+  {
+   "id": "t12",
+   "type": "gradual",
+   "start": 36647,
+   "end": 36669
+  },
+  {
+   "id": "t13",
+   "type": "cut",
+   "frame": 36903
+  },
+  {
+   "id": "t14",
+   "type": "cut",
+   "frame": 37014
+  },
+  {
+   "id": "t15",
+   "type": "cut",
+   "frame": 37065
+  },
+  {
+   "id": "t16",
+   "type": "cut",
+   "frame": 37303
+  },
+  {
+   "id": "t17",
+   "type": "cut",
+   "frame": 37383
+  },
+  {
+   "id": "t18",
+   "type": "gradual",
+   "start": 37454,
+   "end": 37476
+  }
+ ],
+ "shot_labels": {
+  "30000": "play",
+  "34188": "no_play",
+  "34285": "play",
+  "34517": "play",
+  "35524": "no_play",
+  "35610": "play",
+  "36018": "no_play",
+  "36073": "no_play",
+  "36102": "no_play",
+  "36141": "no_play",
+  "36391": "no_play",
+  "36539": "no_play",
+  "36670": "play",
+  "36903": "no_play",
+  "37014": "no_play",
+  "37065": "play",
+  "37303": "no_play",
+  "37383": "no_play",
+  "37477": "no_play"
+ },
+ "reviewed": [
+  [
+   30000,
+   37499
+  ]
+ ],
+ "open_gradual_start": null
+}

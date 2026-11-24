@@ -1,0 +1,170 @@
+{
+ "session_id": "Match20_30000_37500",
+ "match_id": "Match20",
+ "start_frame": 30000,
+ "end_frame": 37500,
+ "schema": 1,
+ "updated": "2026-11-24T16:07:04+01:00",
+ "revision": 112,
+ "complete": true,
+ "transitions": [
+  {
+   "id": "t1",
+   "type": "cut",
+   "frame": 30003
+  },
+  {
+   "id": "t2",
+   "type": "cut",
+   "frame": 30111
+  },
+  {
+   "id": "t3",
+   "type": "cut",
+   "frame": 30356
+  },
+  {
+   "id": "t4",
+   "type": "cut",
+   "frame": 30447
+  },
+  {
+   "id": "t5",
+   "type": "cut",
+   "frame": 30535
+  },
+  {
+   "id": "t6",
+   "type": "cut",
+   "frame": 30845
+  },
+  {
+   "id": "t7",
+   "type": "cut",
+   "frame": 30890
+  },
+  {
+   "id": "t8",
+   "type": "cut",
+   "frame": 31717
+  },
+  {
+   "id": "t9",
+   "type": "cut",
+   "frame": 31832
+  },
+  {
+   "id": "t10",
+   "type": "cut",
+   "frame": 31946
+  },
+  {
+   "id": "t11",
+   "type": "cut",
+   "frame": 32412
+  },
+  {
+   "id": "t12",
+   "type": "cut",
+   "frame": 32618
+  },
+  {
+   "id": "t13",
+   "type": "cut",
+   "frame": 33812
+  },
+  {
+   "id": "t14",
+   "type": "cut",
+   "frame": 34214
+  },
+  {
+   "id": "t15",
+   "type": "cut",
+   "frame": 34511
+  },
+  {
+   "id": "t16",
+   "type": "gradual",
+   "start": 34605,
+   "end": 34627
+  },
+  {
+   "id": "t17",
+   "type": "gradual",
+   "start": 34720,
+   "end": 34742
+  },
+  {
+   "id": "t18",
+   "type": "cut",
+   "frame": 36172
+  },
+  {
+   "id": "t19",
+   "type": "cut",
+   "frame": 36224
+  },
+  {
+   "id": "t20",
+   "type": "cut",
+   "frame": 36315
+  },
+  {
+   "id": "t21",
+   "type": "cut",
+   "frame": 37059
+  },
+  {
+   "id": "t22",
+   "type": "cut",
+   "frame": 37126
+  },
+  {
+   "id": "t23",
+   "type": "gradual",
+   "start": 37177,
+   "end": 37199
+  },
+  {
+   "id": "t24",
+   "type": "gradual",
+   "start": 37483,
+   "end": 37488
+  }
+ ],
+ "shot_labels": {
+  "30000": "no_play",
+  "30003": "no_play",
+  "30111": "play",
+  "30356": "no_play",
+  "30447": "no_play",
+  "30535": "play",
+  "30845": "no_play",
+  "30890": "play",
+  "31717": "no_play",
+  "31832": "no_play",
+  "31946": "play",
+  "32412": "no_play",
+  "32618": "play",
+  "33812": "no_play",
+  "34214": "play",
+  "34511": "no_play",
+  "34628": "no_play",
+  "34743": "play",
+  "36172": "no_play",
+  "36224": "no_play",
+  "36315": "play",
+  "37059": "no_play",
+  "37126": "no_play",
+  "37200": "play",
+  "37489": "no_play"
+ },
+ "reviewed": [
+  [
+   30000,
+   37499
+  ]
+ ],
+ "open_gradual_start": null
+}

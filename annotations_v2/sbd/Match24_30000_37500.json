@@ -1,0 +1,273 @@
+{
+ "session_id": "Match24_30000_37500",
+ "match_id": "Match24",
+ "start_frame": 30000,
+ "end_frame": 37500,
+ "schema": 1,
+ "updated": "2026-11-24T17:24:07+01:00",
+ "revision": 164,
+ "complete": true,
+ "transitions": [
+  {
+   "id": "t1",
+   "type": "cut",
+   "frame": 30086
+  },
+  {
+   "id": "t2",
+   "type": "cut",
+   "frame": 30163
+  },
+  {
+   "id": "t3",
+   "type": "gradual",
+   "start": 30236,
+   "end": 30254
+  },
+  {
+   "id": "t4",
+   "type": "gradual",
+   "start": 30361,
+   "end": 30364
+  },
+  {
+   "id": "t5",
+   "type": "gradual",
+   "start": 30469,
+   "end": 30473
+  },
+  {
+   "id": "t6",
+   "type": "gradual",
+   "start": 30574,
+   "end": 30579
+  },
+  {
+   "id": "t7",
+   "type": "gradual",
+   "start": 30656,
+   "end": 30659
+  },
+  {
+   "id": "t8",
+   "type": "gradual",
+   "start": 30695,
+   "end": 30714
+  },
+  {
+   "id": "t9",
+   "type": "cut",
+   "frame": 31934
+  },
+  {
+   "id": "t10",
+   "type": "cut",
+   "frame": 32194
+  },
+  {
+   "id": "t11",
+   "type": "cut",
+   "frame": 32290
+  },
+  {
+   "id": "t12",
+   "type": "cut",
+   "frame": 32459
+  },
+  {
+   "id": "t13",
+   "type": "cut",
+   "frame": 32535
+  },
+  {
+   "id": "t14",
+   "type": "cut",
+   "frame": 32703
+  },
+  {
+   "id": "t15",
+   "type": "cut",
+   "frame": 32751
+  },
+  {
+   "id": "t16",
+   "type": "gradual",
+   "start": 32815,
+   "end": 32833
+  },
+  {
+   "id": "t17",
+   "type": "gradual",
+   "start": 32999,
+   "end": 33003
+  },
+  {
+   "id": "t18",
+   "type": "gradual",
+   "start": 33129,
+   "end": 33146
+  },
+  {
+   "id": "t19",
+   "type": "cut",
+   "frame": 33324
+  },
+  {
+   "id": "t20",
+   "type": "cut",
+   "frame": 33713
+  },
+  {
+   "id": "t21",
+   "type": "gradual",
+   "start": 33757,
+   "end": 33775
+  },
+  {
+   "id": "t22",
+   "type": "gradual",
+   "start": 33925,
+   "end": 33929
+  },
+  {
+   "id": "t23",
+   "type": "gradual",
+   "start": 34026,
+   "end": 34044
+  },
+  {
+   "id": "t24",
+   "type": "cut",
+   "frame": 34094
+  },
+  {
+   "id": "t25",
+   "type": "cut",
+   "frame": 34361
+  },
+  {
+   "id": "t26",
+   "type": "cut",
+   "frame": 34395
+  },
+  {
+   "id": "t27",
+   "type": "cut",
+   "frame": 35685
+  },
+  {
+   "id": "t28",
+   "type": "cut",
+   "frame": 35805
+  },
+  {
+   "id": "t29",
+   "type": "cut",
+   "frame": 35848
+  },
+  {
+   "id": "t30",
+   "type": "cut",
+   "frame": 35900
+  },
+  {
+   "id": "t31",
+   "type": "cut",
+   "frame": 35951
+  },
+  {
+   "id": "t32",
+   "type": "cut",
+   "frame": 36122
+  },
+  {
+   "id": "t33",
+   "type": "cut",
+   "frame": 36178
+  },
+  {
+   "id": "t34",
+   "type": "cut",
+   "frame": 36235
+  },
+  {
+   "id": "t35",
+   "type": "gradual",
+   "start": 36295,
+   "end": 36313
+  },
+  {
+   "id": "t36",
+   "type": "gradual",
+   "start": 36640,
+   "end": 36644
+  },
+  {
+   "id": "t37",
+   "type": "gradual",
+   "start": 36782,
+   "end": 36786
+  },
+  {
+   "id": "t38",
+   "type": "gradual",
+   "start": 36910,
+   "end": 36915
+  },
+  {
+   "id": "t39",
+   "type": "gradual",
+   "start": 37015,
+   "end": 37033
+  }
+ ],
+ "shot_labels": {
+  "30000": "play",
+  "30086": "no_play",
+  "30163": "no_play",
+  "30255": "no_play",
+  "30365": "play",
+  "30474": "no_play",
+  "30580": "no_play",
+  "30660": "no_play",
+  "30715": "play",
+  "31934": "no_play",
+  "32194": "no_play",
+  "32290": "play",
+  "32459": "no_play",
+  "32535": "play",
+  "32703": "no_play",
+  "32751": "no_play",
+  "32834": "play",
+  "33004": "no_play",
+  "33147": "no_play",
+  "33324": "play",
+  "33713": "no_play",
+  "33776": "play",
+  "33930": "no_play",
+  "34045": "no_play",
+  "34094": "play",
+  "34361": "no_play",
+  "34395": "play",
+  "35685": "no_play",
+  "35805": "no_play",
+  "35848": "no_play",
+  "35900": "no_play",
+  "35951": "no_play",
+  "36122": "no_play",
+  "36178": "no_play",
+  "36235": "no_play",
+  "36314": "play",
+  "36645": "no_play",
+  "36787": "no_play",
+  "36916": "no_play",
+  "37034": "play"
+ },
+ "reviewed": [
+  [
+   30000,
+   37499
+  ]
+ ],
+ "open_gradual_start": null
+}

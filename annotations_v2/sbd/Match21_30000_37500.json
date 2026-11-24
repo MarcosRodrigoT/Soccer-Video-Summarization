@@ -1,0 +1,205 @@
+{
+ "session_id": "Match21_30000_37500",
+ "match_id": "Match21",
+ "start_frame": 30000,
+ "end_frame": 37500,
+ "schema": 1,
+ "updated": "2026-11-24T16:16:05+01:00",
+ "revision": 129,
+ "complete": true,
+ "transitions": [
+  {
+   "id": "t1",
+   "type": "cut",
+   "frame": 30142
+  },
+  {
+   "id": "t2",
+   "type": "cut",
+   "frame": 30259
+  },
+  {
+   "id": "t3",
+   "type": "cut",
+   "frame": 30333
+  },
+  {
+   "id": "t4",
+   "type": "cut",
+   "frame": 30544
+  },
+  {
+   "id": "t5",
+   "type": "gradual",
+   "start": 30922,
+   "end": 30944
+  },
+  {
+   "id": "t6",
+   "type": "gradual",
+   "start": 31089,
+   "end": 31094
+  },
+  {
+   "id": "t7",
+   "type": "gradual",
+   "start": 31230,
+   "end": 31252
+  },
+  {
+   "id": "t8",
+   "type": "cut",
+   "frame": 31679
+  },
+  {
+   "id": "t9",
+   "type": "cut",
+   "frame": 31796
+  },
+  {
+   "id": "t10",
+   "type": "cut",
+   "frame": 31981
+  },
+  {
+   "id": "t11",
+   "type": "cut",
+   "frame": 32182
+  },
+  {
+   "id": "t12",
+   "type": "gradual",
+   "start": 32391,
+   "end": 32413
+  },
+  {
+   "id": "t13",
+   "type": "gradual",
+   "start": 32654,
+   "end": 32676
+  },
+  {
+   "id": "t14",
+   "type": "cut",
+   "frame": 32744
+  },
+  {
+   "id": "t15",
+   "type": "gradual",
+   "start": 32936,
+   "end": 32958
+  },
+  {
+   "id": "t16",
+   "type": "gradual",
+   "start": 33218,
+   "end": 33240
+  },
+  {
+   "id": "t17",
+   "type": "cut",
+   "frame": 33383
+  },
+  {
+   "id": "t18",
+   "type": "cut",
+   "frame": 33504
+  },
+  {
+   "id": "t19",
+   "type": "cut",
+   "frame": 34518
+  },
+  {
+   "id": "t20",
+   "type": "cut",
+   "frame": 34747
+  },
+  {
+   "id": "t21",
+   "type": "cut",
+   "frame": 36143
+  },
+  {
+   "id": "t22",
+   "type": "cut",
+   "frame": 36201
+  },
+  {
+   "id": "t23",
+   "type": "gradual",
+   "start": 36237,
+   "end": 36259
+  },
+  {
+   "id": "t24",
+   "type": "gradual",
+   "start": 36450,
+   "end": 36472
+  },
+  {
+   "id": "t25",
+   "type": "cut",
+   "frame": 36513
+  },
+  {
+   "id": "t26",
+   "type": "cut",
+   "frame": 36596
+  },
+  {
+   "id": "t27",
+   "type": "cut",
+   "frame": 36849
+  },
+  {
+   "id": "t28",
+   "type": "cut",
+   "frame": 37037
+  },
+  {
+   "id": "t29",
+   "type": "cut",
+   "frame": 37103
+  }
+ ],
+ "shot_labels": {
+  "30000": "play",
+  "30142": "no_play",
+  "30259": "no_play",
+  "30333": "no_play",
+  "30544": "no_play",
+  "30945": "no_play",
+  "31095": "no_play",
+  "31253": "play",
+  "31679": "no_play",
+  "31796": "no_play",
+  "31981": "no_play",
+  "32182": "no_play",
+  "32414": "play",
+  "32677": "no_play",
+  "32744": "play",
+  "32959": "no_play",
+  "33241": "no_play",
+  "33383": "no_play",
+  "33504": "play",
+  "34518": "no_play",
+  "34747": "play",
+  "36143": "no_play",
+  "36201": "no_play",
+  "36260": "no_play",
+  "36473": "play",
+  "36513": "no_play",
+  "36596": "play",
+  "36849": "no_play",
+  "37037": "no_play",
+  "37103": "play"
+ },
+ "reviewed": [
+  [
+   30000,
+   37499
+  ]
+ ],
+ "open_gradual_start": null
+}
