@@ -1,0 +1,112 @@
+{
+ "session_id": "Match16_30000_37500",
+ "match_id": "Match16",
+ "start_frame": 30000,
+ "end_frame": 37500,
+ "schema": 1,
+ "updated": "2026-11-24T12:58:05+01:00",
+ "revision": 91,
+ "complete": true,
+ "transitions": [
+  {
+   "id": "t1",
+   "type": "cut",
+   "frame": 32368
+  },
+  {
+   "id": "t2",
+   "type": "cut",
+   "frame": 32584
+  },
+  {
+   "id": "t3",
+   "type": "cut",
+   "frame": 33454
+  },
+  {
+   "id": "t4",
+   "type": "cut",
+   "frame": 33510
+  },
+  {
+   "id": "t5",
+   "type": "gradual",
+   "start": 33545,
+   "end": 33567
+  },
+  {
+   "id": "t6",
+   "type": "gradual",
+   "start": 33642,
+   "end": 33647
+  },
+  {
+   "id": "t7",
+   "type": "gradual",
+   "start": 33794,
+   "end": 33816
+  },
+  {
+   "id": "t8",
+   "type": "cut",
+   "frame": 34671
+  },
+  {
+   "id": "t9",
+   "type": "gradual",
+   "start": 34795,
+   "end": 34817
+  },
+  {
+   "id": "t10",
+   "type": "gradual",
+   "start": 34989,
+   "end": 34997
+  },
+  {
+   "id": "t11",
+   "type": "gradual",
+   "start": 35131,
+   "end": 35153
+  },
+  {
+   "id": "t12",
+   "type": "cut",
+   "frame": 37095
+  },
+  {
+   "id": "t13",
+   "type": "cut",
+   "frame": 37130
+  },
+  {
+   "id": "t14",
+   "type": "cut",
+   "frame": 37176
+  }
+ ],
+ "shot_labels": {
+  "30000": "play",
+  "32368": "no_play",
+  "32584": "play",
+  "33454": "no_play",
+  "33510": "no_play",
+  "33568": "no_play",
+  "33648": "play",
+  "33817": "play",
+  "34671": "no_play",
+  "34818": "play",
+  "34998": "play",
+  "35154": "play",
+  "37095": "no_play",
+  "37130": "no_play",
+  "37176": "play"
+ },
+ "reviewed": [
+  [
+   30000,
+   37499
+  ]
+ ],
+ "open_gradual_start": null
+}
