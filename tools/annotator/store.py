@@ -322,7 +322,7 @@ class Store:
             _invalid("La petición debe ser un objeto JSON con match_id, start_frame y end_frame.")
         mid = body.get("match_id")
         info = self._info(mid)
-        if info.get("view") not in (None, "sbd"):
+        if "sbd" not in info.get("views", [info.get("view") or "sbd"]):
             _invalid(f"El partido {mid} no pertenece a la vista de planos.")
         S, E = body.get("start_frame"), body.get("end_frame")
         if not _is_int(S) or not _is_int(E):

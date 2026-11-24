@@ -45,6 +45,11 @@ class Match:
     video_path: Path | None
     hints_dir: Path
     meta: dict = field(default_factory=dict)
+    extra_views: tuple = ()          # other views where the match also appears
+    view_labels: dict = field(default_factory=dict)  # label per view, if different
+
+    def in_view(self, view: str) -> bool:
+        return view == self.view or view in self.extra_views
 
 
 def _natural_key(s: str):
@@ -94,8 +99,14 @@ class Catalog:
             home, away = m.get("home_team", ""), m.get("away_team", "")
             score, season, league = str(m.get("score", "")), str(m.get("season", "")), m.get("league", "")
             label = f"{mid} · {home} {score} {away} ({league} {season})"
+            # Also offered in the shot/play view, numbered after the LaLiga matches (sbd_number).
+            extra, labels = (), {}
+            if m.get("sbd_number"):
+                extra = ("sbd",)
+                labels["sbd"] = f"M{m['sbd_number']} · {home} {score} {away} ({league} {season})"
             matches[mid] = Match(mid, "goals", label, league, season, home, away, score, video,
-                                 root / "results_other_leagues" / "per_match" / mid)
+                                 root / "results_other_leagues" / "per_match" / mid,
+                                 extra_views=extra, view_labels=labels)
 
         with open(root / "config" / "matches_hr.yaml", encoding="utf-8") as f:
             laliga = yaml.safe_load(f).get("matches", {}) or {}
@@ -111,8 +122,9 @@ class Catalog:
 
     # ------------------------------------------------------------------ access
     def ids(self, view: str | None = None) -> list[str]:
-        ids = [m.id for m in self._matches.values() if view is None or m.view == view]
-        return sorted(ids, key=_natural_key)
+        ms = [m for m in self._matches.values() if view is None or m.in_view(view)]
+        # LaLiga first (Match1..Match25), then the other leagues by their sbd number.
+        return [m.id for m in sorted(ms, key=lambda m: (m.view != "sbd", _natural_key(m.view_labels.get("sbd", m.id))))]
 
     def get(self, match_id: str) -> Match:
         try:
@@ -173,11 +185,12 @@ class Catalog:
             self._save_meta_disk()
             return m.meta
 
-    def info(self, match_id: str) -> dict:
+    def info(self, match_id: str, view: str | None = None) -> dict:
         m = self.get(match_id)
         meta = self.meta(match_id)
         return {
-            "id": m.id, "label": m.label, "view": m.view, "league": m.league, "season": m.season,
+            "id": m.id, "label": m.view_labels.get(view, m.label), "view": m.view,
+            "views": [m.view, *m.extra_views], "league": m.league, "season": m.season,
             "home": m.home, "away": m.away, "score": m.score,
             "fps": meta["fps"], "total_frames": meta["total_frames"],
             "duration_sec": round(meta["total_frames"] / meta["fps"], 3) if meta["fps"] else None,

@@ -256,6 +256,22 @@ class FrameExactnessMixin:
             svc.close()
 
 
+class OtherLeagueSbdSession(unittest.TestCase):
+    """PL1 / SA1 can be annotated in the shot/play view as well."""
+
+    def test_create_and_save_session_pl1(self):
+        code, doc, _ = http("POST", "/api/sbd/sessions", {"match_id": "PL1", "start_frame": 30000, "end_frame": 37500})
+        self.assertIn(code, (200, 201), doc)
+        doc["transitions"] = [{"id": "t1", "type": "cut", "frame": 30100}]
+        doc["shot_labels"] = {"30000": "play", "30100": "no_play"}
+        code, saved, _ = http("PUT", f"/api/sbd/{doc['session_id']}", doc)
+        self.assertEqual(code, 200, saved)
+        self.assertEqual(saved["shot_labels"], {"30000": "play", "30100": "no_play"})
+        code, body, _ = http("GET", "/api/sbd/sessions")
+        self.assertIn("PL1_30000_37500", [s["session_id"] for s in body])
+        http("DELETE", f"/api/sbd/{doc['session_id']}")
+
+
 class FrameExactnessPL1(FrameExactnessMixin, unittest.TestCase):
     mid = "PL1"
 
@@ -285,10 +301,14 @@ class HttpTest(unittest.TestCase):
         self.assertEqual(body[1]["total_frames"], 163543)
         code, body, _ = http("GET", "/api/matches?view=sbd")
         self.assertEqual(code, 200)
-        self.assertEqual(len(body), 25)
+        self.assertEqual(len(body), 27)
         self.assertEqual(body[0]["id"], "Match1")
         self.assertEqual(body[0]["label"], "M1 · Valencia CF 2-3 FC Barcelona (2013/14)")
-        self.assertEqual(body[-1]["id"], "Match25")
+        self.assertEqual(body[24]["id"], "Match25")
+        # The two other-league matches follow as M26 / M27 (same ids as in the goals view).
+        self.assertEqual([m["id"] for m in body[25:]], ["PL1", "SA1"])
+        self.assertTrue(body[25]["label"].startswith("M26 · Tottenham Hotspur 5-3 Chelsea"))
+        self.assertTrue(body[26]["label"].startswith("M27 · Inter 4-4 Juventus"))
         self.assertTrue(all("error" not in m for m in body))
         code, body, _ = http("GET", "/api/matches?view=nada")
         self.assertEqual(code, 400)
@@ -603,7 +623,6 @@ class SbdTest(unittest.TestCase):
                                   ("Match1", 0, 90001, 400),          # > 60 min
                                   ("Match1", 150000, 160000, 400),    # beyond the video
                                   ("Match1", -10, 1000, 400),
-                                  ("PL1", 1000, 2000, 400),           # not a LaLiga match
                                   ("Nope", 1000, 2000, 404)]:
             code, body, _ = self.create(mid, s, e)
             self.assertEqual(code, status, (mid, s, e, body))

@@ -9,6 +9,7 @@ matches:
     score: 5-3
     youtube_id: X6VNTk-Vl5w
     video_dir: OtherLeagues_HR/PL1
+    sbd_number: 26
     annotate_goals: true
   SA1:
     league: Serie A
@@ -18,6 +19,7 @@ matches:
     score: 4-4
     youtube_id: ZPXbqoiM4PY
     video_dir: OtherLeagues_HR/SA1
+    sbd_number: 27
     annotate_goals: true
   BL1:
     league: Bundesliga

@@ -70,7 +70,8 @@ class App:
     def _match_info(self, match_id: str) -> dict:
         m = self.catalog.get(match_id)              # UnknownMatch is a KeyError
         meta = self.catalog.meta(match_id)
-        return {"total_frames": meta["total_frames"], "fps": meta["fps"], "view": m.view}
+        return {"total_frames": meta["total_frames"], "fps": meta["fps"], "view": m.view,
+                "views": [m.view, *m.extra_views]}
 
     def match(self, match_id: str):
         try:
@@ -78,10 +79,10 @@ class App:
         except UnknownMatch:
             raise ApiError(404, f"Partido desconocido: {match_id}") from None
 
-    def info(self, match_id: str) -> dict:
+    def info(self, match_id: str, view: str | None = None) -> dict:
         self.match(match_id)
         try:
-            return self.catalog.info(match_id)
+            return self.catalog.info(match_id, view)
         except FileNotFoundError as e:
             raise ApiError(404, str(e)) from None
         except OSError as e:
@@ -280,7 +281,7 @@ class Handler(BaseHTTPRequestHandler):
             out = []
             for mid in app.catalog.ids(view):
                 try:
-                    out.append(app.info(mid))
+                    out.append(app.info(mid, view))
                 except ApiError as e:
                     m = app.catalog.get(mid)
                     out.append({"id": mid, "label": m.label, "league": m.league, "season": m.season,
