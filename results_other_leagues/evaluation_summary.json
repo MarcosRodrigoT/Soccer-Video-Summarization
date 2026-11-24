@@ -1,0 +1,156 @@
+{
+  "tail_10s": {
+    "summary": {
+      "num_matches": 2,
+      "tp": 16,
+      "fp": 0,
+      "fn": 0,
+      "f1_mean": 1.0,
+      "f1_std": 0.0,
+      "num_perfect_matches": 2,
+      "iou_mean": 0.9988349935529381,
+      "mae_start_mean": 0.0075000000000216005,
+      "mae_end_mean": 0.0,
+      "compression_mean": 0.9881451418203143,
+      "ocr_tp": 16,
+      "ocr_fp": 0,
+      "ocr_fn": 0
+    },
+    "per_match": {
+      "PL1": {
+        "clip_aware_tp": 8,
+        "clip_aware_fp": 0,
+        "clip_aware_fn": 0,
+        "clip_aware_f1": 1.0,
+        "true_positives": 8,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "compression_ratio": 0.9877306999225851,
+        "iou_tp_mean": 0.9990875912408766,
+        "mae_start_tp_mean": 0.0049999999999954525,
+        "mae_end_tp_mean": 0.0,
+        "clip_iou_per_gt": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.9927007299270133
+        ]
+      },
+      "SA1": {
+        "clip_aware_tp": 8,
+        "clip_aware_fp": 0,
+        "clip_aware_fn": 0,
+        "clip_aware_f1": 1.0,
+        "true_positives": 8,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "compression_ratio": 0.9885595837180435,
+        "iou_tp_mean": 0.9985823958649998,
+        "mae_start_tp_mean": 0.010000000000047748,
+        "mae_end_tp_mean": 0.0,
+        "clip_iou_per_gt": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.9930069930069997,
+          0.9956521739129981,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  },
+  "full_shot": {
+    "summary": {
+      "num_matches": 2,
+      "tp": 16,
+      "fp": 0,
+      "fn": 0,
+      "f1_mean": 1.0,
+      "f1_std": 0.0,
+      "num_perfect_matches": 2,
+      "iou_mean": 0.9975294396942609,
+      "mae_start_mean": 0.03999999999999204,
+      "mae_end_mean": 0.0,
+      "compression_mean": 0.9684026148204904,
+      "ocr_tp": 16,
+      "ocr_fp": 0,
+      "ocr_fn": 0
+    },
+    "per_match": {
+      "PL1": {
+        "clip_aware_tp": 8,
+        "clip_aware_fp": 0,
+        "clip_aware_fn": 0,
+        "clip_aware_f1": 1.0,
+        "true_positives": 8,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "compression_ratio": 0.9628473103170112,
+        "iou_tp_mean": 0.9977184889821908,
+        "mae_start_tp_mean": 0.03999999999996362,
+        "mae_end_tp_mean": 0.0,
+        "clip_iou_per_gt": [
+          0.9985507246376825,
+          0.9980916030534368,
+          0.9985228951255553,
+          0.9980276134122306,
+          0.998868778280544,
+          0.9994731296101164,
+          0.9975124378109476,
+          0.9927007299270133
+        ]
+      },
+      "SA1": {
+        "clip_aware_tp": 8,
+        "clip_aware_fp": 0,
+        "clip_aware_fn": 0,
+        "clip_aware_f1": 1.0,
+        "true_positives": 8,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "compression_ratio": 0.9739579193239696,
+        "iou_tp_mean": 0.9973403904063309,
+        "mae_start_tp_mean": 0.040000000000020464,
+        "mae_end_tp_mean": 0.0,
+        "clip_iou_per_gt": [
+          0.9980657640232126,
+          0.9980237154150216,
+          0.9983305509181986,
+          0.9984025559105446,
+          0.9930069930069997,
+          0.9956521739129981,
+          0.9981447124304285,
+          0.9990966576332438
+        ]
+      }
+    }
+  },
+  "scoreboard_delay_sec": {
+    "PL1": [
+      -2.84,
+      -2.52,
+      -1.2,
+      -2.04,
+      -1.76,
+      -1.2,
+      -1.32,
+      -1.2
+    ],
+    "SA1": [
+      2.84,
+      6.48,
+      5.32,
+      5.44,
+      2.72,
+      4.44,
+      5.92,
+      4.0
+    ]
+  }
+}
