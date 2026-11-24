@@ -37,6 +37,18 @@ import pandas as pd
 
 METHODS = {"ours": "results_hr/per_match", "transnetv2": "results_sbd/transnetv2/per_match",
            "pyscenedetect": "results_sbd/pyscenedetect/per_match"}
+OTHER_LEAGUES = ("PL1", "SA1")  # pipeline outputs live in results_other_leagues/per_match
+
+
+def pipeline_dir(match_id):
+    root = "results_other_leagues/per_match" if match_id in OTHER_LEAGUES else "results_hr/per_match"
+    return Path(root) / match_id
+
+
+def shots_csv(method, match_id):
+    if method == "ours":
+        return pipeline_dir(match_id) / "shot_boundaries.csv"
+    return Path(METHODS[method]) / match_id / "shot_boundaries.csv"
 FPS, TAU_PLAY, D_SHOT = 25, 5.0, 4.0
 
 
@@ -109,6 +121,8 @@ def main():
     ap.add_argument("--out", default="annotations_v2/results_sbd_play.json")
     args = ap.parse_args()
     sessions = [json.load(open(f)) for f in sorted(Path(args.sessions).glob("*.json"))]
+    # Only sessions whose detector outputs all exist (TransNetV2 / PySceneDetect may still be running).
+    sessions = [d for d in sessions if all(shots_csv(m, d["match_id"]).exists() for m in METHODS)]
     out = {"sessions": [d["session_id"] for d in sessions], "sbd": {}, "play": {}}
 
     for tol in (0, 1, 2, 5):
@@ -120,7 +134,7 @@ def main():
                 per = {}
                 for d in sessions:
                     S, E, gts, _ = gt_from_session(d)
-                    dets, _ = detections(Path(root) / d["match_id"] / "shot_boundaries.csv", S, E)
+                    dets, _ = detections(shots_csv(m, d["match_id"]), S, E)
                     r = match(gts, dets, tol, dup_ok)
                     per[d["match_id"]] = {k: r[k] for k in ("tp", "fp", "fn")} | {
                         "fp_frames": r["fp_frames"], "fn_items": r["fn_items"]}
@@ -137,7 +151,7 @@ def main():
     allshots, frame_stats = [], {"agree": 0, "total": 0, "tp": 0, "fp": 0, "fn": 0, "tn": 0}
     for d in sessions:
         S, E, _, shots = gt_from_session(d)
-        res = Path("results_hr/per_match") / d["match_id"]
+        res = pipeline_dir(d["match_id"])
         pc = pd.read_csv(res / "player_counts.csv")
         for s, e, lab in shots:
             m = (pc["frame"] >= s) & (pc["frame"] <= e)

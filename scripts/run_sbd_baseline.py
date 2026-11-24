@@ -78,6 +78,16 @@ def run_pyscenedetect(video_path, out_dir):
 METHODS = {"transnetv2": run_transnetv2, "pyscenedetect": run_pyscenedetect}
 
 
+def video_info(match_id, cfg, config_dir):
+    """LaLiga matches from matches_hr.yaml, other leagues (PL1, SA1...) from matches_other_leagues.yaml."""
+    import yaml
+    other = yaml.safe_load(open(config_dir / "matches_other_leagues.yaml"))["matches"]
+    if match_id in other:
+        video = next((Path(cfg.data_dir) / other[match_id]["video_dir"]).glob("*.mp4"))
+        return {"video_path": str(video)}
+    return load_match_info(match_id, cfg, matches_yaml=str(config_dir / "matches_hr.yaml"))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--method", choices=METHODS, required=True)
@@ -93,7 +103,7 @@ def main():
             print(match_id, "already done", flush=True)
             continue
         out_dir.mkdir(parents=True, exist_ok=True)
-        info = load_match_info(match_id, cfg, matches_yaml=str(Path(args.config).parent / "matches_hr.yaml"))
+        info = video_info(match_id, cfg, Path(args.config).parent)
         props = get_video_properties(info["video_path"])
         scenes, elapsed, n_frames = METHODS[args.method](info["video_path"], out_dir)
         scenes_to_df(scenes, props["fps"]).to_csv(out_dir / "shot_boundaries.csv", index=False)
