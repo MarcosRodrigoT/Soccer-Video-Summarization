@@ -1,0 +1,81 @@
+{
+ "match_id": "SA1",
+ "schema": 1,
+ "updated": "2026-11-23T18:21:31+01:00",
+ "revision": 1,
+ "complete": false,
+ "goals": [
+  {
+   "id": "g1",
+   "hint_frame": 36750,
+   "start_frame": null,
+   "end_frame_shot": null,
+   "end_frame_scoreboard": null,
+   "notes": "",
+   "skipped": false
+  },
+  {
+   "id": "g2",
+   "hint_frame": 44100,
+   "start_frame": null,
+   "end_frame_shot": null,
+   "end_frame_scoreboard": null,
+   "notes": "",
+   "skipped": false
+  },
+  {
+   "id": "g3",
+   "hint_frame": 54150,
+   "start_frame": null,
+   "end_frame_shot": null,
+   "end_frame_scoreboard": null,
+   "notes": "",
+   "skipped": false
+  },
+  {
+   "id": "g4",
+   "hint_frame": 66375,
+   "start_frame": null,
+   "end_frame_shot": null,
+   "end_frame_scoreboard": null,
+   "notes": "",
+   "skipped": false
+  },
+  {
+   "id": "g5",
+   "hint_frame": 70725,
+   "start_frame": null,
+   "end_frame_shot": null,
+   "end_frame_scoreboard": null,
+   "notes": "",
+   "skipped": false
+  },
+  {
+   "id": "g6",
+   "hint_frame": 101850,
+   "start_frame": null,
+   "end_frame_shot": null,
+   "end_frame_scoreboard": null,
+   "notes": "",
+   "skipped": false
+  },
+  {
+   "id": "g7",
+   "hint_frame": 129225,
+   "start_frame": null,
+   "end_frame_shot": null,
+   "end_frame_scoreboard": null,
+   "notes": "",
+   "skipped": false
+  },
+  {
+   "id": "g8",
+   "hint_frame": 144525,
+   "start_frame": null,
+   "end_frame_shot": null,
+   "end_frame_scoreboard": null,
+   "notes": "",
+   "skipped": false
+  }
+ ]
+}
