@@ -1,0 +1,518 @@
+{
+ "match_id": "Match1",
+ "fps": 25,
+ "window": {
+  "start_frame": 30000,
+  "end_frame_exclusive": 37500
+ },
+ "note": "cut: start_frame is the first frame of the new shot; gradual: first and last frame of the transition (inclusive). Shot labels: play = live action, no_play = replays, close-ups, crowd, bench, graphics, stoppages.",
+ "transitions": [
+  {
+   "type": "cut",
+   "start_frame": 30321,
+   "end_frame": 30321
+  },
+  {
+   "type": "cut",
+   "start_frame": 30403,
+   "end_frame": 30403
+  },
+  {
+   "type": "gradual",
+   "start_frame": 30544,
+   "end_frame": 30557
+  },
+  {
+   "type": "cut",
+   "start_frame": 30608,
+   "end_frame": 30608
+  },
+  {
+   "type": "cut",
+   "start_frame": 30626,
+   "end_frame": 30626
+  },
+  {
+   "type": "cut",
+   "start_frame": 30716,
+   "end_frame": 30716
+  },
+  {
+   "type": "cut",
+   "start_frame": 30865,
+   "end_frame": 30865
+  },
+  {
+   "type": "cut",
+   "start_frame": 30919,
+   "end_frame": 30919
+  },
+  {
+   "type": "cut",
+   "start_frame": 31107,
+   "end_frame": 31107
+  },
+  {
+   "type": "gradual",
+   "start_frame": 31154,
+   "end_frame": 31184
+  },
+  {
+   "type": "gradual",
+   "start_frame": 31288,
+   "end_frame": 31318
+  },
+  {
+   "type": "cut",
+   "start_frame": 31423,
+   "end_frame": 31423
+  },
+  {
+   "type": "cut",
+   "start_frame": 31485,
+   "end_frame": 31485
+  },
+  {
+   "type": "cut",
+   "start_frame": 31527,
+   "end_frame": 31527
+  },
+  {
+   "type": "cut",
+   "start_frame": 32101,
+   "end_frame": 32101
+  },
+  {
+   "type": "cut",
+   "start_frame": 32159,
+   "end_frame": 32159
+  },
+  {
+   "type": "cut",
+   "start_frame": 32665,
+   "end_frame": 32665
+  },
+  {
+   "type": "gradual",
+   "start_frame": 32705,
+   "end_frame": 32735
+  },
+  {
+   "type": "gradual",
+   "start_frame": 32817,
+   "end_frame": 32847
+  },
+  {
+   "type": "cut",
+   "start_frame": 33164,
+   "end_frame": 33164
+  },
+  {
+   "type": "cut",
+   "start_frame": 33215,
+   "end_frame": 33215
+  },
+  {
+   "type": "cut",
+   "start_frame": 33348,
+   "end_frame": 33348
+  },
+  {
+   "type": "cut",
+   "start_frame": 33383,
+   "end_frame": 33383
+  },
+  {
+   "type": "cut",
+   "start_frame": 33587,
+   "end_frame": 33587
+  },
+  {
+   "type": "cut",
+   "start_frame": 33645,
+   "end_frame": 33645
+  },
+  {
+   "type": "cut",
+   "start_frame": 33853,
+   "end_frame": 33853
+  },
+  {
+   "type": "cut",
+   "start_frame": 33931,
+   "end_frame": 33931
+  },
+  {
+   "type": "cut",
+   "start_frame": 34022,
+   "end_frame": 34022
+  },
+  {
+   "type": "cut",
+   "start_frame": 34151,
+   "end_frame": 34151
+  },
+  {
+   "type": "gradual",
+   "start_frame": 34233,
+   "end_frame": 34263
+  },
+  {
+   "type": "gradual",
+   "start_frame": 34346,
+   "end_frame": 34352
+  },
+  {
+   "type": "gradual",
+   "start_frame": 34477,
+   "end_frame": 34485
+  },
+  {
+   "type": "gradual",
+   "start_frame": 34590,
+   "end_frame": 34606
+  },
+  {
+   "type": "gradual",
+   "start_frame": 34718,
+   "end_frame": 34748
+  },
+  {
+   "type": "cut",
+   "start_frame": 34868,
+   "end_frame": 34868
+  },
+  {
+   "type": "cut",
+   "start_frame": 34998,
+   "end_frame": 34998
+  },
+  {
+   "type": "cut",
+   "start_frame": 35015,
+   "end_frame": 35015
+  },
+  {
+   "type": "cut",
+   "start_frame": 35251,
+   "end_frame": 35251
+  },
+  {
+   "type": "cut",
+   "start_frame": 35273,
+   "end_frame": 35273
+  },
+  {
+   "type": "cut",
+   "start_frame": 35672,
+   "end_frame": 35672
+  },
+  {
+   "type": "gradual",
+   "start_frame": 35828,
+   "end_frame": 35858
+  },
+  {
+   "type": "gradual",
+   "start_frame": 36029,
+   "end_frame": 36041
+  },
+  {
+   "type": "gradual",
+   "start_frame": 36147,
+   "end_frame": 36177
+  },
+  {
+   "type": "cut",
+   "start_frame": 36443,
+   "end_frame": 36443
+  },
+  {
+   "type": "gradual",
+   "start_frame": 36494,
+   "end_frame": 36524
+  },
+  {
+   "type": "gradual",
+   "start_frame": 36610,
+   "end_frame": 36640
+  },
+  {
+   "type": "cut",
+   "start_frame": 37236,
+   "end_frame": 37236
+  },
+  {
+   "type": "cut",
+   "start_frame": 37277,
+   "end_frame": 37277
+  },
+  {
+   "type": "gradual",
+   "start_frame": 37321,
+   "end_frame": 37351
+  },
+  {
+   "type": "gradual",
+   "start_frame": 37428,
+   "end_frame": 37458
+  }
+ ],
+ "shots": [
+  {
+   "start_frame": 30000,
+   "end_frame": 30320,
+   "label": "play"
+  },
+  {
+   "start_frame": 30321,
+   "end_frame": 30402,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 30403,
+   "end_frame": 30543,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 30558,
+   "end_frame": 30607,
+   "label": "play"
+  },
+  {
+   "start_frame": 30608,
+   "end_frame": 30625,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 30626,
+   "end_frame": 30715,
+   "label": "play"
+  },
+  {
+   "start_frame": 30716,
+   "end_frame": 30864,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 30865,
+   "end_frame": 30918,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 30919,
+   "end_frame": 31106,
+   "label": "play"
+  },
+  {
+   "start_frame": 31107,
+   "end_frame": 31153,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 31185,
+   "end_frame": 31287,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 31319,
+   "end_frame": 31422,
+   "label": "play"
+  },
+  {
+   "start_frame": 31423,
+   "end_frame": 31484,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 31485,
+   "end_frame": 31526,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 31527,
+   "end_frame": 32100,
+   "label": "play"
+  },
+  {
+   "start_frame": 32101,
+   "end_frame": 32158,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 32159,
+   "end_frame": 32664,
+   "label": "play"
+  },
+  {
+   "start_frame": 32665,
+   "end_frame": 32704,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 32736,
+   "end_frame": 32816,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 32848,
+   "end_frame": 33163,
+   "label": "play"
+  },
+  {
+   "start_frame": 33164,
+   "end_frame": 33214,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 33215,
+   "end_frame": 33347,
+   "label": "play"
+  },
+  {
+   "start_frame": 33348,
+   "end_frame": 33382,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 33383,
+   "end_frame": 33586,
+   "label": "play"
+  },
+  {
+   "start_frame": 33587,
+   "end_frame": 33644,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 33645,
+   "end_frame": 33852,
+   "label": "play"
+  },
+  {
+   "start_frame": 33853,
+   "end_frame": 33930,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 33931,
+   "end_frame": 34021,
+   "label": "play"
+  },
+  {
+   "start_frame": 34022,
+   "end_frame": 34150,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 34151,
+   "end_frame": 34232,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 34264,
+   "end_frame": 34345,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 34353,
+   "end_frame": 34476,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 34486,
+   "end_frame": 34589,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 34607,
+   "end_frame": 34717,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 34749,
+   "end_frame": 34867,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 34868,
+   "end_frame": 34997,
+   "label": "play"
+  },
+  {
+   "start_frame": 34998,
+   "end_frame": 35014,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 35015,
+   "end_frame": 35250,
+   "label": "play"
+  },
+  {
+   "start_frame": 35251,
+   "end_frame": 35272,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 35273,
+   "end_frame": 35671,
+   "label": "play"
+  },
+  {
+   "start_frame": 35672,
+   "end_frame": 35827,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 35859,
+   "end_frame": 36028,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 36042,
+   "end_frame": 36146,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 36178,
+   "end_frame": 36442,
+   "label": "play"
+  },
+  {
+   "start_frame": 36443,
+   "end_frame": 36493,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 36525,
+   "end_frame": 36609,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 36641,
+   "end_frame": 37235,
+   "label": "play"
+  },
+  {
+   "start_frame": 37236,
+   "end_frame": 37276,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 37277,
+   "end_frame": 37320,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 37352,
+   "end_frame": 37427,
+   "label": "no_play"
+  },
+  {
+   "start_frame": 37459,
+   "end_frame": 37499,
+   "label": "play"
+  }
+ ]
+}
