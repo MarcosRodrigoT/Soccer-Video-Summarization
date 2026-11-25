@@ -14,9 +14,9 @@
 | Shot segmentation | Abrupt-cut detection | 0.01 | 0.0 | 578618.2× |
 | Shot segmentation | Gradual-transition detection | 0.05 | 0.0 | 122697.1× |
 | Shot segmentation | Shot assembly | 0.00 | 0.0 | 19140786.5× |
-| Player detection (YOLOv8) | YOLOv8 model load | 1.86 | 0.3 | 3367.7× |
-| Player detection (YOLOv8) | Video decoding of sampled frames | 32.09 | 4.6 | 195.3× |
-| Player detection (YOLOv8) | YOLOv8 inference + post-processing | 218.42 | 31.6 | 28.7× |
+| Player detection | Detector model load | 1.86 | 0.3 | 3367.7× |
+| Player detection | Video decoding of sampled frames | 32.09 | 4.6 | 195.3× |
+| Player detection | Detector inference + post-processing | 218.42 | 31.6 | 28.7× |
 | Play classification | Rolling smoothing + thresholding | 1.68 | 0.2 | 3721.0× |
 | Scoreboard branch | IQR variability map | 16.96 | 2.5 | 369.3× |
 | Scoreboard branch | Overlay mask construction | 0.03 | 0.0 | 225112.6× |

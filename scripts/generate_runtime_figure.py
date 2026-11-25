@@ -43,7 +43,7 @@ STAGE_ORDER = [
 ]
 STAGE_LABEL = {
     "shot_segmentation":  "Shot segmentation",
-    "object_detection":   "Player detection (YOLOv8)",
+    "object_detection":   "Player detection",
     "play_classifier":    "Play classification",
     "ocr_scoreboard":     "Scoreboard branch",
     "highlight_assembly": "Highlight assembly",
@@ -65,10 +65,10 @@ SUBSTAGE_LABEL = {
     "gradual_detection":          "Gradual-transition detection",
     "shot_assembly":              "Shot assembly",
     # object_detection
-    "model_load":                 "YOLOv8 model load",
+    "model_load":                 "Detector model load",
     "inference_loop":             "Frame extraction + inference loop",
     "frame_decode":               "Video decoding of sampled frames",
-    "yolo_inference":             "YOLOv8 inference + post-processing",
+    "yolo_inference":             "Detector inference + post-processing",
     # play_classifier
     "smoothing_threshold":        "Rolling smoothing + thresholding",
     # ocr_scoreboard
@@ -219,9 +219,9 @@ HIGH_VOLUME_KEYS = [
     ("shot_segmentation",  "frame_difference",
      "Shot dissimilarity signal (Sec. 4)",        "#388E3C"),
     ("object_detection",   "inference_loop",
-     "YOLOv8 player detection (Sec. 5)",          "#1976D2"),
+     "Player detection (Sec. 5)",          "#1976D2"),
     ("object_detection",   "yolo_inference",
-     "YOLOv8 player detection (Sec. 5)",          "#1976D2"),
+     "Player detection (Sec. 5)",          "#1976D2"),
     ("object_detection",   "frame_decode",
      "Video decoding for detection (Sec. 5)",     "#64B5F6"),
     ("ocr_scoreboard",     "ocr_sampling_recognition",
