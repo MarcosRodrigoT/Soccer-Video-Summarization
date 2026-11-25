@@ -64,7 +64,8 @@ def gt_from_session(d):
             gts.append(("gradual", t["start"], t["end"]))
             ends.append(t["start"] - 1); starts.append(t["end"] + 1)
     ends.append(E - 1)
-    shots = [(s, e, d["shot_labels"].get(str(s))) for s, e in zip(starts, ends)]
+    # A transition reaching the last frame of the window leaves an empty "shot": skip it.
+    shots = [(s, e, d["shot_labels"].get(str(s))) for s, e in zip(starts, ends) if e >= s]
     return S, E, gts, shots
 
 

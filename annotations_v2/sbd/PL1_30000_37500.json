@@ -1,0 +1,152 @@
+{
+ "session_id": "PL1_30000_37500",
+ "match_id": "PL1",
+ "start_frame": 30000,
+ "end_frame": 37500,
+ "schema": 1,
+ "updated": "2026-11-25T11:11:20+01:00",
+ "revision": 113,
+ "complete": true,
+ "transitions": [
+  {
+   "id": "t1",
+   "type": "gradual",
+   "start": 30087,
+   "end": 30096
+  },
+  {
+   "id": "t2",
+   "type": "gradual",
+   "start": 30233,
+   "end": 30242
+  },
+  {
+   "id": "t3",
+   "type": "gradual",
+   "start": 30340,
+   "end": 30357
+  },
+  {
+   "id": "t4",
+   "type": "cut",
+   "frame": 31631
+  },
+  {
+   "id": "t5",
+   "type": "cut",
+   "frame": 32095
+  },
+  {
+   "id": "t6",
+   "type": "cut",
+   "frame": 32957
+  },
+  {
+   "id": "t7",
+   "type": "gradual",
+   "start": 33033,
+   "end": 33049
+  },
+  {
+   "id": "t8",
+   "type": "gradual",
+   "start": 33262,
+   "end": 33278
+  },
+  {
+   "id": "t9",
+   "type": "cut",
+   "frame": 34052
+  },
+  {
+   "id": "t10",
+   "type": "cut",
+   "frame": 34123
+  },
+  {
+   "id": "t11",
+   "type": "cut",
+   "frame": 34260
+  },
+  {
+   "id": "t12",
+   "type": "cut",
+   "frame": 34779
+  },
+  {
+   "id": "t13",
+   "type": "cut",
+   "frame": 34833
+  },
+  {
+   "id": "t14",
+   "type": "cut",
+   "frame": 36459
+  },
+  {
+   "id": "t15",
+   "type": "gradual",
+   "start": 36504,
+   "end": 36520
+  },
+  {
+   "id": "t16",
+   "type": "gradual",
+   "start": 36664,
+   "end": 36673
+  },
+  {
+   "id": "t17",
+   "type": "gradual",
+   "start": 36749,
+   "end": 36758
+  },
+  {
+   "id": "t18",
+   "type": "gradual",
+   "start": 36846,
+   "end": 36862
+  },
+  {
+   "id": "t19",
+   "type": "cut",
+   "frame": 37249
+  },
+  {
+   "id": "t20",
+   "type": "gradual",
+   "start": 37405,
+   "end": 37421
+  }
+ ],
+ "shot_labels": {
+  "30000": "play",
+  "30097": "no_play",
+  "30243": "no_play",
+  "30358": "play",
+  "31631": "no_play",
+  "32095": "play",
+  "32957": "no_play",
+  "33050": "no_play",
+  "33279": "play",
+  "34052": "no_play",
+  "34123": "no_play",
+  "34260": "play",
+  "34779": "no_play",
+  "34833": "play",
+  "36459": "no_play",
+  "36521": "no_play",
+  "36674": "play",
+  "36759": "no_play",
+  "36863": "play",
+  "37249": "no_play",
+  "37422": "play"
+ },
+ "reviewed": [
+  [
+   30000,
+   37499
+  ]
+ ],
+ "open_gradual_start": null
+}
