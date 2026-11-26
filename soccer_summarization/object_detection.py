@@ -1,4 +1,4 @@
-"""YOLOv8-based object detection for per-frame player counting.
+"""YOLO-based object detection for per-frame player counting.
 
 Runs YOLO inference on video frames (with configurable sampling rate) and
 produces per-frame player counts and bounding box statistics.
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 class PlayerDetector:
-    """Detect and count players per frame using YOLOv8."""
+    """Detect and count players per frame using a YOLO detector (Ultralytics)."""
 
     # Model classes: ball=0, goalkeeper=1, player=2, referee=3
     # For people counting: all non-ball classes

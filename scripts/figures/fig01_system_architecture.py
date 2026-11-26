@@ -70,7 +70,7 @@ def build_figure():
     rounded_box(
         ax, col_mid - BW / 2, 10.6, BW, BH,
         "Player Detection",
-        subtitle="YOLOv8 · 4 classes · sampled @ 5 fps",
+        subtitle="YOLOv5 · 4 classes · sampled @ 5 fps",
         color="visual",
     )
     rounded_box(

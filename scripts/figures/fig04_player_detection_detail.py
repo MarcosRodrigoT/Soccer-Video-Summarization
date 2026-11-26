@@ -1,8 +1,8 @@
 """Figure 4 — Player detection detail.
 
-Diagrams the YOLOv8-based per-frame detection module:
+Diagrams the YOLOv5-based per-frame detection module:
   - frame sub-sampling at 5 fps (every 5th frame at 25 fps)
-  - YOLOv8 inference with confidence threshold
+  - YOLOv5 inference with confidence threshold
   - 4-class output (ball, goalkeeper, player, referee)
   - aggregation into player_counts.csv with avg bbox diagonal
 """
@@ -38,7 +38,7 @@ def build_figure():
                 subtitle="every 5th frame ⇒ 5 fps",
                 color="visual", fontsize=9.5)
     rounded_box(ax, 8.3, 2.3, 3.8, 1.4,
-                "YOLOv8 inference",
+                "YOLOv5 inference",
                 subtitle="best.pt · GPU",
                 color="visual", fontsize=9.5)
     rounded_box(ax, 12.7, 2.3, 3.8, 1.4,
@@ -73,7 +73,7 @@ def build_figure():
                 ha="left", va="center")
         x0 += 2.7
 
-    ax.text(10, 5.4, "(a) YOLOv8 player-detection sub-pipeline",
+    ax.text(10, 5.4, "(a) YOLOv5 player-detection sub-pipeline",
             ha="center", fontsize=10, fontweight="bold")
 
     # =================================================== Synthetic frame (bottom)
@@ -118,7 +118,7 @@ def build_figure():
              ha="center", fontsize=9, color="#212121", fontweight="bold",
              bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
                        edgecolor="#9E9E9E", linewidth=0.8))
-    ax2.set_title("(b) Schematic of YOLOv8 output on a play-phase frame",
+    ax2.set_title("(b) Schematic of YOLOv5 output on a play-phase frame",
                   fontsize=10, pad=4, loc="center")
 
     return fig

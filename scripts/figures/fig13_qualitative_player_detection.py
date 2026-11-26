@@ -1,4 +1,4 @@
-"""Figure 13 — Qualitative YOLOv8 player detection on Match1.
+"""Figure 13 — Qualitative YOLOv5 player detection on Match1.
 
 The figure illustrates the *asymmetric* response of the detector that
 specialises in long-range (small-silhouette) players: it fires densely on
