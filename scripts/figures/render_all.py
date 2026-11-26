@@ -27,7 +27,6 @@ FIGURES = [
     ("fig08_highlight_assembly_detail",  "highlight_assembly_detail"),
     ("fig09_evaluation_framework",       "evaluation_framework"),
     ("fig10_dataset_overview",           "dataset_overview_v2"),
-    ("fig11_experiment_suite",           "experiment_suite"),
     ("fig12_qualitative_scoreboard",     "qualitative_scoreboard"),
     ("fig13_qualitative_player_detection","qualitative_player_detection"),
     ("fig14_qualitative_timeline",       "qualitative_timeline"),

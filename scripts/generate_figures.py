@@ -6,10 +6,6 @@ Figures:
     2. Dataset overview — goals distribution, seasons
     3. Scoreboard detection example (external, polish only)
     4. Full-match timeline visualization
-    5. Play threshold ablation plot
-    6. Smoothing window ablation plot
-    7. Speed-accuracy tradeoff (frame_step)
-    8. Tolerance window sensitivity
     9. Error analysis examples (requires frame extraction)
    10. Player count distribution
 
@@ -177,137 +173,6 @@ def fig_match_timeline(results_dir: Path, match_id: str, output_path: Path):
     print(f"  Saved: {output_path}")
 
 
-def fig_ablation_plot(ablation_file: Path, param_name: str, output_path: Path):
-    """Figures 5-6: Ablation line plots."""
-    with open(ablation_file) as f:
-        data = json.load(f)
-
-    values = []
-    f1s, precisions, recalls = [], [], []
-    compressions, coverages = [], []
-
-    for key in sorted(data.keys(), key=lambda k: float(data[k]["value"])):
-        val = data[key]
-        values.append(val["value"])
-        agg = val["aggregate"]
-        f1s.append(agg["f1_mean"])
-        precisions.append(agg["precision_mean"])
-        recalls.append(agg["recall_mean"])
-        compressions.append(agg["compression_mean"] * 100)
-        coverages.append(agg["goal_coverage_mean"] * 100)
-
-    # Find default
-    default_idx = None
-    for i, key in enumerate(sorted(data.keys(), key=lambda k: float(data[k]["value"]))):
-        if data[key].get("is_default"):
-            default_idx = i
-            break
-
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
-
-    # Left: P/R/F1
-    ax1.plot(values, f1s, "o-", color="#2196F3", label="F1", linewidth=2, markersize=6)
-    ax1.plot(values, precisions, "s--", color="#4CAF50", label="Precision", linewidth=1.5, markersize=5)
-    ax1.plot(values, recalls, "^--", color="#FF9800", label="Recall", linewidth=1.5, markersize=5)
-    if default_idx is not None:
-        ax1.axvline(values[default_idx], color="gray", linestyle=":", alpha=0.5, label="Default")
-    ax1.set_xlabel(param_name.replace("_", " ").title())
-    ax1.set_ylabel("Score")
-    ax1.set_title("Goal Detection Performance")
-    ax1.legend()
-    ax1.grid(True, alpha=0.3)
-
-    # Right: Compression and Coverage
-    ax2.plot(values, compressions, "o-", color="#9C27B0", label="Compression %", linewidth=2, markersize=6)
-    ax2.plot(values, coverages, "s-", color="#E91E63", label="Goal Coverage %", linewidth=2, markersize=6)
-    if default_idx is not None:
-        ax2.axvline(values[default_idx], color="gray", linestyle=":", alpha=0.5, label="Default")
-    ax2.set_xlabel(param_name.replace("_", " ").title())
-    ax2.set_ylabel("Percentage")
-    ax2.set_title("Highlight Quality")
-    ax2.legend()
-    ax2.grid(True, alpha=0.3)
-
-    fig.suptitle(f"Ablation: {param_name.replace('_', ' ').title()}", fontsize=12)
-    plt.tight_layout()
-    plt.savefig(output_path)
-    plt.close()
-    print(f"  Saved: {output_path}")
-
-
-def fig_speed_accuracy(ablation_file: Path, output_path: Path):
-    """Figure 7: Speed-accuracy tradeoff (frame_step)."""
-    with open(ablation_file) as f:
-        data = json.load(f)
-
-    values, f1s = [], []
-    for key in sorted(data.keys(), key=lambda k: float(data[k]["value"])):
-        val = data[key]
-        values.append(val["value"])
-        f1s.append(val["aggregate"]["f1_mean"])
-
-    # Speed is inversely proportional to frame_step
-    relative_speeds = [v / min(values) for v in values]
-
-    fig, ax1 = plt.subplots(figsize=(7, 4))
-
-    color1 = "#2196F3"
-    ax1.plot(values, f1s, "o-", color=color1, linewidth=2, markersize=8, label="F1 Score")
-    ax1.set_xlabel("Frame Step (every Nth frame)")
-    ax1.set_ylabel("F1 Score", color=color1)
-    ax1.tick_params(axis="y", labelcolor=color1)
-
-    ax2 = ax1.twinx()
-    color2 = "#FF9800"
-    ax2.plot(values, relative_speeds, "s--", color=color2, linewidth=2, markersize=8, label="Relative Speed")
-    ax2.set_ylabel("Relative Speed (×)", color=color2)
-    ax2.tick_params(axis="y", labelcolor=color2)
-
-    fig.suptitle("Speed-Accuracy Tradeoff (YOLO Frame Sampling)", fontsize=12)
-    lines1, labels1 = ax1.get_legend_handles_labels()
-    lines2, labels2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines1 + lines2, labels1 + labels2, loc="center right")
-    ax1.grid(True, alpha=0.3)
-
-    plt.tight_layout()
-    plt.savefig(output_path)
-    plt.close()
-    print(f"  Saved: {output_path}")
-
-
-def fig_tolerance_sensitivity(ablation_file: Path, output_path: Path):
-    """Figure 8: Tolerance window sensitivity."""
-    with open(ablation_file) as f:
-        data = json.load(f)
-
-    values, f1s = [], []
-    for key in sorted(data.keys(), key=lambda k: float(data[k]["value"])):
-        val = data[key]
-        values.append(val["value"])
-        f1s.append(val["aggregate"]["f1_mean"])
-
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.plot(values, f1s, "o-", color="#2196F3", linewidth=2, markersize=8)
-
-    # Mark default
-    default_val = 30
-    if default_val in values:
-        idx = values.index(default_val)
-        ax.plot(default_val, f1s[idx], "o", color="#F44336", markersize=12, zorder=5,
-                label=f"Default ({default_val}s)")
-
-    ax.set_xlabel("Tolerance Window (seconds)")
-    ax.set_ylabel("F1 Score")
-    ax.set_title("Evaluation Protocol Sensitivity")
-    ax.legend()
-    ax.grid(True, alpha=0.3)
-
-    plt.tight_layout()
-    plt.savefig(output_path)
-    plt.close()
-    print(f"  Saved: {output_path}")
-
-
 def fig_player_count_distribution(results_dir: Path, match_id: str, output_path: Path):
     """Figure 10: Player count distribution with bimodal pattern."""
     match_dir = results_dir / match_id
@@ -353,54 +218,9 @@ def fig_player_count_distribution(results_dir: Path, match_id: str, output_path:
     print(f"  Saved: {output_path}")
 
 
-def fig_baselines_comparison(baseline_file: Path, output_path: Path):
-    """Generate baseline comparison bar chart."""
-    with open(baseline_file) as f:
-        baselines = json.load(f)
-
-    names = []
-    f1s, compressions = [], []
-    for bl_name in ["random", "uniform", "shot_only", "play_only", "ocr_only", "oracle"]:
-        if bl_name in baselines:
-            names.append(baselines[bl_name]["display_name"])
-            f1s.append(baselines[bl_name]["aggregate"]["f1_mean"])
-            compressions.append(baselines[bl_name]["aggregate"]["compression_mean"] * 100)
-
-    if not names:
-        print("  Skipped (no baseline results)")
-        return
-
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-
-    x = np.arange(len(names))
-    width = 0.6
-
-    ax1.bar(x, f1s, width, color="#2196F3", edgecolor="white")
-    ax1.set_ylabel("F1 Score")
-    ax1.set_title("Goal Detection F1")
-    ax1.set_xticks(x)
-    ax1.set_xticklabels(names, rotation=30, ha="right")
-    ax1.grid(axis="y", alpha=0.3)
-
-    ax2.bar(x, compressions, width, color="#4CAF50", edgecolor="white")
-    ax2.set_ylabel("Compression (%)")
-    ax2.set_title("Video Compression")
-    ax2.set_xticks(x)
-    ax2.set_xticklabels(names, rotation=30, ha="right")
-    ax2.grid(axis="y", alpha=0.3)
-
-    fig.suptitle("Baseline Comparison", fontsize=12)
-    plt.tight_layout()
-    plt.savefig(output_path)
-    plt.close()
-    print(f"  Saved: {output_path}")
-
-
 def main():
     parser = argparse.ArgumentParser(description="Generate paper figures")
     parser.add_argument("--results-dir", default="results/per_match")
-    parser.add_argument("--ablation-dir", default="results/ablation")
-    parser.add_argument("--baseline-file", default="results/baselines/baseline_results.json")
     parser.add_argument("--output-dir", default="results/figures")
     parser.add_argument("--figures", default="all",
                         help="Comma-separated figure numbers or 'all'")
@@ -416,7 +236,6 @@ def main():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     results_dir = Path(args.results_dir)
-    ablation_dir = Path(args.ablation_dir)
     matches_yaml = Path(__file__).parent.parent / "config" / "matches.yaml"
 
     if args.figures == "all":
@@ -440,52 +259,10 @@ def main():
         else:
             print(f"  Skipped (no results for {args.timeline_match})")
 
-    if 5 in figures:
-        print("\nFigure 5: Play Threshold Ablation")
-        abl_file = ablation_dir / "play_threshold_results.json"
-        if abl_file.exists():
-            fig_ablation_plot(abl_file, "play_threshold",
-                            output_dir / "fig5_play_threshold_ablation.pdf")
-        else:
-            print("  Skipped (no ablation results)")
-
-    if 6 in figures:
-        print("\nFigure 6: Smoothing Window Ablation")
-        abl_file = ablation_dir / "smoothing_window_results.json"
-        if abl_file.exists():
-            fig_ablation_plot(abl_file, "smoothing_window",
-                            output_dir / "fig6_smoothing_window_ablation.pdf")
-        else:
-            print("  Skipped (no ablation results)")
-
-    if 7 in figures:
-        print("\nFigure 7: Speed-Accuracy Tradeoff")
-        abl_file = ablation_dir / "frame_step_results.json"
-        if abl_file.exists():
-            fig_speed_accuracy(abl_file, output_dir / "fig7_speed_accuracy.pdf")
-        else:
-            print("  Skipped (no frame_step ablation results)")
-
-    if 8 in figures:
-        print("\nFigure 8: Tolerance Window Sensitivity")
-        abl_file = ablation_dir / "tolerance_window_results.json"
-        if abl_file.exists():
-            fig_tolerance_sensitivity(abl_file,
-                                    output_dir / "fig8_tolerance_sensitivity.pdf")
-        else:
-            print("  Skipped (no tolerance_window ablation results)")
-
     if 10 in figures:
         print(f"\nFigure 10: Player Count Distribution ({args.timeline_match})")
         fig_player_count_distribution(results_dir, args.timeline_match,
                                      output_dir / "fig10_player_distribution.pdf")
-
-    # Baseline comparison (bonus)
-    baseline_file = Path(args.baseline_file)
-    if baseline_file.exists():
-        print("\nBaseline Comparison Figure")
-        fig_baselines_comparison(baseline_file,
-                               output_dir / "fig_baselines_comparison.pdf")
 
     print("\nDone generating figures.")
 
