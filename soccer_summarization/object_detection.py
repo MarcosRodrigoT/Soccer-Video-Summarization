@@ -6,9 +6,9 @@ produces per-frame player counts and bounding box statistics.
 The model has 4 classes: ball=0, goalkeeper=1, player=2, referee=3.
 For people counting, all non-ball classes (1,2,3) are summed.
 
-Note: A 2-class version (ball=0, players=1) was also trained by merging
-goalkeeper/player/referee into a single class, but the 4-class model
-significantly outperforms it in detection coverage.
+The weights are the public YOLOv5l6u model of the Football Analysis project
+(see README). The 2-class YOLOv8m models (ball, players) trained in the
+original thesis are not used: on wide shots they detect far fewer people.
 """
 
 import logging
