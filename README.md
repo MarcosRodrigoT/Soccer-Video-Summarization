@@ -4,10 +4,6 @@ Code, ground truth and results of the paper *"Broadcast-State-Guided Generation 
 
 Given a full-length broadcast, the pipeline returns one short clip per goal: the final seconds of the live play that leads to it. It needs no event-level training data. Goals are located by reading the on-screen scoreboard, and the clip is taken from the wide-angle play shot that precedes the score update.
 
-## Background
-
-This project originates from a Master's thesis (TFM) by Lixing Fan at Universidad Politécnica de Madrid, titled *"Development of a Deep Learning Model for Video Summarization of Soccer Matches"*. The thesis explored multiple approaches (multimodal fusion, CLIP embeddings, transformer-based methods, WhisperX audio transcription) before converging on a pragmatic pipeline that combines visual analysis with scoreboard OCR. The original codebase was scattered across many experimental files. This repository is a clean, modular rewrite of the working components, designed to scale evaluation across 25 La Liga matches and produce journal-quality results.
-
 ## Pipeline
 
 Two branches run on the input video and meet at the highlight assembly stage.
@@ -118,11 +114,7 @@ annotations_v2/          raw annotation sessions and their evaluation
 tools/annotator/         web tool used for the shot and goal annotations
 results_hr_10s/          per-match evaluation and aggregate results reported in the paper
 results_hr/              cached intermediate outputs, full-shot variant, runtime analysis
-results_sbd/             TransNetV2 and PySceneDetect outputs and their end-to-end results
+results_sbd/             TransNetV2, SportSBD and PySceneDetect outputs and their end-to-end results
 results_other_leagues/   cross-league runs and evaluation
 docs/                    documentation figures and package versions
 ```
-
-## Original Thesis
-
-Fan, L. (2024). *Development of a Deep Learning Model for Video Summarization of Soccer Matches*. Master's Thesis, Universidad Politécnica de Madrid.

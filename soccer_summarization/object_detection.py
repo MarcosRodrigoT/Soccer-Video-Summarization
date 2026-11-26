@@ -7,8 +7,7 @@ The model has 4 classes: ball=0, goalkeeper=1, player=2, referee=3.
 For people counting, all non-ball classes (1,2,3) are summed.
 
 The weights are the public YOLOv5l6u model of the Football Analysis project
-(see README). The 2-class YOLOv8m models (ball, players) trained in the
-original thesis are not used: on wide shots they detect far fewer people.
+(see README).
 """
 
 import logging
