@@ -1,0 +1,8 @@
+{
+  "method": "sportsbd",
+  "seconds": 1382.277679206978,
+  "frames_processed": 156637,
+  "frames_opencv": 156637,
+  "num_shots": 673,
+  "device": "GPU (NVIDIA GeForce RTX 4090), CPU preprocessing"
+}

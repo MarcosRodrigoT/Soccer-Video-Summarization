@@ -8,7 +8,7 @@ Ground truth per session (window [S, E)):
   * shot_labels         -> play / no_play per shot (keyed by first frame)
 
 Detections: each detector's shot list (results_hr/per_match for ours,
-results_sbd/<method>/per_match for TransNetV2 and PySceneDetect) converted to
+results_sbd/<method>/per_match for TransNetV2, PySceneDetect and SportSBD) converted to
 transition intervals: between consecutive shots, [end_prev + 1, start_next]
 (a hard cut gives [f, f]). Only detections whose interval intersects the
 window are evaluated.
@@ -19,6 +19,8 @@ Matching (one-to-one, greedy by distance):
     (agreed rule: any detection inside a gradual transition is a hit).
   Unmatched detections are false positives; with --dup-ok, extra detections
   that fall inside an already-matched gradual are ignored instead.
+  SportSBD reports its boundaries on a 4-frame grid (window centres, stride 4),
+  0-3 frames before the annotated cut, so it is also scored with tol = 3.
 
 Play/no-play: for each GT shot, average people count of the pipeline
 (results_hr/per_match/<m>/player_counts.csv, every 5th frame) over the shot;
@@ -36,7 +38,7 @@ from pathlib import Path
 import pandas as pd
 
 METHODS = {"ours": "results_hr/per_match", "transnetv2": "results_sbd/transnetv2/per_match",
-           "pyscenedetect": "results_sbd/pyscenedetect/per_match"}
+           "pyscenedetect": "results_sbd/pyscenedetect/per_match", "sportsbd": "results_sbd/sportsbd/per_match"}
 OTHER_LEAGUES = ("PL1", "SA1")  # pipeline outputs live in results_other_leagues/per_match
 
 
@@ -126,7 +128,7 @@ def main():
     sessions = [d for d in sessions if all(shots_csv(m, d["match_id"]).exists() for m in METHODS)]
     out = {"sessions": [d["session_id"] for d in sessions], "sbd": {}, "play": {}}
 
-    for tol in (0, 1, 2, 5):
+    for tol in (0, 1, 2, 3, 5):
         for dup_ok in (False, True):
             key = f"tol{tol}{'_dupok' if dup_ok else ''}"
             out["sbd"][key] = {}
@@ -192,7 +194,7 @@ def main():
     out["play"]["shots"] = allshots
     json.dump(out, open(args.out, "w"), indent=1)
 
-    for key in ("tol2", "tol2_dupok", "tol0", "tol5"):
+    for key in ("tol2", "tol2_dupok", "tol3_dupok", "tol0", "tol5"):
         print(f"--- SBD {key}")
         for m, r in out["sbd"][key].items():
             print(f"  {m:14s} TP {r['tp']:3d} FP {r['fp']:3d} FN {r['fn']:3d}  P {r['precision']:.3f} "

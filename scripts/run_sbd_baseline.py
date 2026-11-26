@@ -13,6 +13,12 @@ Methods (default settings of each tool):
                  original weights; threshold 0.5 on the single-frame output.
   pyscenedetect  PySceneDetect ContentDetector (threshold 27, min. scene
                  length 15 frames, automatic downscaling).
+  sportsbd       sportsbd 0.1.2 (r2plus1d_18, released weights, path in
+                 $SPORTSBD_WEIGHTS): 16-frame windows every 4 frames, boundary
+                 at the centre of windows whose top class is a transition with
+                 probability >= 0.7, NMS over 25 frames. The video is streamed
+                 in chunks instead of loaded whole; a boundary at frame b starts
+                 a new shot at b.
 
 Usage:
     python scripts/run_sbd_baseline.py --method transnetv2 --matches Match1 Match2
@@ -75,7 +81,55 @@ def run_pyscenedetect(video_path, out_dir):
     return out, elapsed, int(video.frame_number)
 
 
-METHODS = {"transnetv2": run_transnetv2, "pyscenedetect": run_pyscenedetect}
+def run_sportsbd(video_path, out_dir, t_frames=16, stride=4, thresh=0.7, chunk=1024, batch=16):
+    import os
+
+    import cv2
+    import torch
+    from PIL import Image
+    from sportsbd.config import DEFAULT_CONFIG
+    from sportsbd.inference import _apply_nms
+    from sportsbd.model import load_model
+    from sportsbd.transforms import get_frame_transform
+
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    model = load_model(os.environ.get("SPORTSBD_WEIGHTS", "data/models/sportsbd_best.pt"), device=dev)
+    tf = get_frame_transform()
+    t0 = time.perf_counter()
+    cap = cv2.VideoCapture(str(video_path))
+    buf, off, next_start, n, dets, done = [], 0, 0, 0, [], False
+    with torch.no_grad():
+        while not done:
+            while len(buf) < chunk:
+                ok, im = cap.read()
+                if not ok:
+                    done = True
+                    break
+                buf.append(tf(Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))))
+                n += 1
+            if len(buf) < t_frames:
+                break
+            bank = torch.stack(buf)
+            starts = list(range(next_start - off, len(buf) - t_frames + 1, stride))
+            for i in range(0, len(starts), batch):
+                b = torch.stack([bank[s:s + t_frames] for s in starts[i:i + batch]]).permute(0, 2, 1, 3, 4).to(dev)
+                probs = torch.softmax(model(b), dim=1).cpu().numpy()
+                for s, p in zip(starts[i:i + batch], probs):
+                    k = int(np.argmax(p))
+                    if k < 3 and float(p.max()) >= thresh:  # class 3 = no boundary
+                        dets.append({"frame_idx": off + s + t_frames // 2, "confidence": float(p.max()),
+                                     "predicted_class": DEFAULT_CONFIG.class_names[k]})
+            if starts:
+                next_start = off + starts[-1] + stride
+            buf, off = buf[next_start - off:], next_start
+    dets = _apply_nms(dets, nms_threshold_frames=25)
+    elapsed = time.perf_counter() - t0
+    json.dump(dets, open(out_dir / "sportsbd_detections.json", "w"))
+    cuts = sorted(d["frame_idx"] for d in dets)
+    return list(zip([0] + cuts, [c - 1 for c in cuts] + [n - 1])), elapsed, n
+
+
+METHODS = {"transnetv2": run_transnetv2, "pyscenedetect": run_pyscenedetect, "sportsbd": run_sportsbd}
 
 
 def video_info(match_id, cfg, config_dir):

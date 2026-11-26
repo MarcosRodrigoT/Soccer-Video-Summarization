@@ -50,6 +50,8 @@ pip install ultralytics opencv-python easyocr pandas numpy matplotlib pyyaml tqd
 
 A CUDA GPU is recommended for the detector and EasyOCR. `docs/env/` records the exact package versions used.
 
+The shot boundary baselines need `transnetv2-pytorch`, `scenedetect` and `sportsbd` (0.1.2; set `SPORTSBD_WEIGHTS` to its released `best.pt`).
+
 ## Reproducing the paper
 
 ```bash
@@ -65,9 +67,9 @@ python scripts/analyze_scoreboard_delay.py
 python scripts/run_tail_sweep.py
 
 # Component-level evaluation on the annotated windows
-python scripts/run_sbd_baseline.py --method transnetv2      # also: pyscenedetect
+python scripts/run_sbd_baseline.py --method transnetv2      # also: pyscenedetect, sportsbd
 python scripts/annotations/evaluate_carlos_sbd.py
-python scripts/run_sbd_end_to_end.py --methods ours transnetv2 pyscenedetect
+python scripts/run_sbd_end_to_end.py --methods ours transnetv2 pyscenedetect sportsbd
 
 # Premier League and Serie A matches
 python scripts/run_other_leagues.py --matches PL1 SA1
@@ -98,7 +100,10 @@ Component level, 27 annotated 5-min windows (`annotations_v2/results_sbd_play.js
 |---|---|---|---|---|---|
 | Ours | 0.94 | 0.98 | 0.96 | 1.00 | 0.95 |
 | TransNetV2 | 1.00 | 0.80 | 0.89 | 0.98 | 0.42 |
+| SportSBD* | 0.98 | 0.91 | 0.95 | 0.97 | 0.79 |
 | PySceneDetect | 0.75 | 0.85 | 0.80 | 0.94 | 0.67 |
+
+*SportSBD reports its boundaries on a 4-frame grid, 0–3 frames before the cut, so it is matched within ±3 frames; the other detectors within ±2 frames.
 
 The play / no-play decision reaches a precision of 0.93 and a recall of 1.00 over all annotated shots. On the Premier League and Serie A matches, run with the same parameters, all 16 goals are found (`results_other_leagues/evaluation_summary.json`). The Bundesliga and Ligue 1 broadcasts in `results_other_leagues/` were processed but have no ground truth.
 
