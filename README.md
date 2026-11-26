@@ -50,7 +50,7 @@ pip install ultralytics opencv-python easyocr pandas numpy matplotlib pyyaml tqd
 
 A CUDA GPU is recommended for the detector and EasyOCR. `docs/env/` records the exact package versions used.
 
-The shot boundary baselines need `transnetv2-pytorch`, `scenedetect` and `sportsbd` (0.1.2; set `SPORTSBD_WEIGHTS` to its released `best.pt`).
+The shot boundary baselines need `transnetv2-pytorch`, `scenedetect` and `sportsbd` 0.1.2 (`pip install --no-deps sportsbd==0.1.2`, since it pins an older NumPy; its released weights go to `data/models/sportsbd_best.pt`, or set `SPORTSBD_WEIGHTS`).
 
 ## Reproducing the paper
 

@@ -16,6 +16,7 @@ venv/
 # Results and data (too large for git)
 results/
 data/models/*.pt
+data/packages/
 
 # Figure generation caches (derived, per-match binary files)
 results_hr*/**/iqr_map.npy

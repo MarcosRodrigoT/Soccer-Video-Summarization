@@ -81,8 +81,10 @@ def run_pyscenedetect(video_path, out_dir):
     return out, elapsed, int(video.frame_number)
 
 
-def run_sportsbd(video_path, out_dir, t_frames=16, stride=4, thresh=0.7, chunk=1024, batch=16):
+def run_sportsbd(video_path, out_dir, t_frames=16, stride=4, thresh=0.7, chunk=1024, batch=None):
     import os
+
+    batch = batch or int(os.environ.get("SPORTSBD_BATCH", 16))  # inference only: does not change the output
 
     import cv2
     import torch

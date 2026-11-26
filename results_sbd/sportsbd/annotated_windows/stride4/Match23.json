@@ -1,0 +1,119 @@
+{
+ "match_id": "Match23",
+ "window": [
+  30000,
+  37500
+ ],
+ "context_frames": [
+  29948,
+  37550
+ ],
+ "seconds": 69.67075138600194,
+ "detections": [
+  {
+   "frame_idx": 30932,
+   "confidence": 0.9993501305580139,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 31016,
+   "confidence": 0.9998615980148315,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 31708,
+   "confidence": 0.9887237548828125,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 31792,
+   "confidence": 0.9996641874313354,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 31920,
+   "confidence": 0.9998942613601685,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 31984,
+   "confidence": 0.9994364380836487,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 32028,
+   "confidence": 0.9992353916168213,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 32124,
+   "confidence": 0.9995859265327454,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 32216,
+   "confidence": 0.9998555183410645,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 32440,
+   "confidence": 0.9268884062767029,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 32652,
+   "confidence": 0.9854668378829956,
+   "predicted_class": "fadein"
+  },
+  {
+   "frame_idx": 32952,
+   "confidence": 0.9983142614364624,
+   "predicted_class": "fadein"
+  },
+  {
+   "frame_idx": 33148,
+   "confidence": 0.7787231802940369,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 33200,
+   "confidence": 0.9998526573181152,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 35816,
+   "confidence": 0.9995610117912292,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 35908,
+   "confidence": 0.9997538924217224,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 36012,
+   "confidence": 0.9992520213127136,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 36880,
+   "confidence": 0.9830321073532104,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 36920,
+   "confidence": 0.9996157884597778,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 37316,
+   "confidence": 0.9995064735412598,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 37388,
+   "confidence": 0.9992713332176208,
+   "predicted_class": "hard"
+  }
+ ]
+}

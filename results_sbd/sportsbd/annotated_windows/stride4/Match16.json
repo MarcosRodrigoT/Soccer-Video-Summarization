@@ -1,0 +1,54 @@
+{
+ "match_id": "Match16",
+ "window": [
+  30000,
+  37500
+ ],
+ "context_frames": [
+  29948,
+  37550
+ ],
+ "seconds": 70.41353518501273,
+ "detections": [
+  {
+   "frame_idx": 32368,
+   "confidence": 0.9994999170303345,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 32584,
+   "confidence": 0.9997991919517517,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 33452,
+   "confidence": 0.9994640946388245,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 33508,
+   "confidence": 0.9995218515396118,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 34668,
+   "confidence": 0.999556839466095,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 34988,
+   "confidence": 0.9983454942703247,
+   "predicted_class": "fadein"
+  },
+  {
+   "frame_idx": 37128,
+   "confidence": 0.9768566489219666,
+   "predicted_class": "hard"
+  },
+  {
+   "frame_idx": 37176,
+   "confidence": 0.9996545314788818,
+   "predicted_class": "hard"
+  }
+ ]
+}

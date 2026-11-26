@@ -1,0 +1,126 @@
+{
+ "offset_cuts": {
+  "stride4": {
+   "windows": [
+    "Match1",
+    "Match10",
+    "Match11",
+    "Match12",
+    "Match13",
+    "Match14",
+    "Match15",
+    "Match16",
+    "Match17",
+    "Match18",
+    "Match19",
+    "Match2",
+    "Match20",
+    "Match21",
+    "Match22",
+    "Match23",
+    "Match24",
+    "Match25",
+    "Match3",
+    "Match4",
+    "Match5",
+    "Match6",
+    "Match7",
+    "Match8",
+    "Match9",
+    "PL1",
+    "SA1"
+   ],
+   "offset_counts": {
+    "-3": 120,
+    "-2": 112,
+    "-1": 148,
+    "0": 126,
+    "1": 2
+   }
+  },
+  "stride1": {
+   "windows": [
+    "Match10",
+    "Match11"
+   ],
+   "offset_counts": {
+    "-3": 4,
+    "-2": 12,
+    "-1": 21,
+    "0": 1
+   }
+  }
+ },
+ "by_tolerance": {
+  "tol0_dupok": {
+   "tp": 292,
+   "fp": 419,
+   "fn": 473,
+   "cut_hit": 126,
+   "n_cut": 523,
+   "grad_hit": 166,
+   "n_gradual": 242,
+   "precision": 0.41068917018284107,
+   "recall": 0.38169934640522873,
+   "f1": 0.3956639566395664,
+   "recall_cut": 0.24091778202676864,
+   "recall_gradual": 0.6859504132231405
+  },
+  "tol1_dupok": {
+   "tp": 459,
+   "fp": 252,
+   "fn": 306,
+   "cut_hit": 276,
+   "n_cut": 523,
+   "grad_hit": 183,
+   "n_gradual": 242,
+   "precision": 0.6455696202531646,
+   "recall": 0.6,
+   "f1": 0.6219512195121951,
+   "recall_cut": 0.5277246653919694,
+   "recall_gradual": 0.756198347107438
+  },
+  "tol2_dupok": {
+   "tp": 574,
+   "fp": 137,
+   "fn": 191,
+   "cut_hit": 388,
+   "n_cut": 523,
+   "grad_hit": 186,
+   "n_gradual": 242,
+   "precision": 0.8073136427566807,
+   "recall": 0.7503267973856209,
+   "f1": 0.7777777777777778,
+   "recall_cut": 0.7418738049713193,
+   "recall_gradual": 0.768595041322314
+  },
+  "tol3_dupok": {
+   "tp": 699,
+   "fp": 12,
+   "fn": 66,
+   "cut_hit": 508,
+   "n_cut": 523,
+   "grad_hit": 191,
+   "n_gradual": 242,
+   "precision": 0.9831223628691983,
+   "recall": 0.9137254901960784,
+   "f1": 0.9471544715447153,
+   "recall_cut": 0.97131931166348,
+   "recall_gradual": 0.7892561983471075
+  },
+  "tol5_dupok": {
+   "tp": 707,
+   "fp": 4,
+   "fn": 58,
+   "cut_hit": 508,
+   "n_cut": 523,
+   "grad_hit": 199,
+   "n_gradual": 242,
+   "precision": 0.9943741209563994,
+   "recall": 0.9241830065359478,
+   "f1": 0.9579945799457995,
+   "recall_cut": 0.97131931166348,
+   "recall_gradual": 0.8223140495867769
+  }
+ }
+}
