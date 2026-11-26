@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Run the unchanged pipeline on the cross-league matches (reviewer R1.5).
 
-Same configuration and parameters as the LaLiga corpus (default_hr_10s.yaml);
-no evaluation against frame-level ground truth (there is none for these
-matches): results are reviewed with scripts/annotations/prepare_goals_task.py.
+Same configuration and parameters as the LaLiga corpus (default_hr_10s.yaml).
+PL1 and SA1 are evaluated against their frame-level ground truth with
+scripts/evaluate_other_leagues.py.
 
     python scripts/run_other_leagues.py --matches PL1 SA1 BL1 L1
 """
